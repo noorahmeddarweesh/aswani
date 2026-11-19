@@ -64,12 +64,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             HeroBadge(
               icon: LucideIcons.landmark,
               tone: BadgeTone.gold,
-              alignment: AlignmentDirectional(1, -0.85),
+              alignment: AlignmentDirectional(1.17, -0.79),
             ),
             HeroBadge(
               icon: LucideIcons.map,
               tone: BadgeTone.navy,
-              alignment: AlignmentDirectional(-1.1, 0.9),
+              alignment: AlignmentDirectional(-1.19, 0.99),
             ),
           ],
         ),
@@ -88,12 +88,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             HeroBadge(
               icon: LucideIcons.sparkles,
               tone: BadgeTone.gold,
-              alignment: AlignmentDirectional(-1, -0.95),
+              alignment: AlignmentDirectional(-1.1, -0.92),
             ),
             HeroBadge(
               icon: LucideIcons.map,
               tone: BadgeTone.navy,
-              alignment: AlignmentDirectional(1, 0.85),
+              alignment: AlignmentDirectional(1.13, 0.98),
             ),
           ],
         ),
@@ -114,12 +114,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             HeroBadge(
               icon: LucideIcons.landmark,
               tone: BadgeTone.gold,
-              alignment: AlignmentDirectional(1, -0.95),
+              alignment: AlignmentDirectional(1.22, -0.78),
             ),
             HeroBadge(
               icon: LucideIcons.users,
               tone: BadgeTone.navy,
-              alignment: AlignmentDirectional(-1.05, 0.55),
+              alignment: AlignmentDirectional(-1.24, 1.25),
             ),
           ],
         ),

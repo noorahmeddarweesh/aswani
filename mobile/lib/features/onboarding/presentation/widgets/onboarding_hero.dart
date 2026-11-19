@@ -14,14 +14,17 @@ class HeroBadge {
     required this.icon,
     required this.tone,
     required this.alignment,
-    this.tilt = -0.12,
+    this.tilt,
   });
 
   final IconData icon;
 
-  /// Rotation in radians as in the design (negative = counter-clockwise).
-  /// Mirrored automatically in right-to-left layouts.
-  final double tilt;
+  /// Rotation in radians (positive = clockwise), mirrored in right-to-left
+  /// layouts. Defaults to the design: gold badges lean clockwise (~7°),
+  /// navy badges counter-clockwise.
+  final double? tilt;
+
+  double get angle => tilt ?? (tone == BadgeTone.gold ? 0.12 : -0.12);
   final BadgeTone tone;
 
   /// Position relative to the arch: (-1,-1) top-start ... (1,1) bottom-end.
@@ -114,29 +117,27 @@ class OnboardingHero extends StatelessWidget {
       PositionedDirectional(
         top: -10,
         end: -30,
-        child: _blob(160, context.palette.highlight.withValues(alpha: 0.18)),
+        child: _blob(160, context.palette.highlight.withValues(alpha: 0.12)),
       ),
       PositionedDirectional(
         bottom: -10,
         start: 10,
-        child: _blob(120, context.palette.accentGold.withValues(alpha: 0.10)),
+        child: _blob(120, context.palette.accentGold.withValues(alpha: 0.08)),
       ),
-      // Thin solid ring just behind the photo.
+      // Thin solid ring just behind the photo, and a wider dashed gold ring.
+      // Both fade out towards the bottom, like the design.
       Positioned.fromRect(
         rect: Rect.fromCircle(center: arch.center, radius: arch.height / 2),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: ring.withValues(alpha: 0.35)),
-          ),
+        child: CustomPaint(
+          painter: _RingPainter(color: ring.withValues(alpha: 0.25)),
         ),
       ),
-      // Wider dashed gold ring.
       Positioned.fromRect(
         rect: Rect.fromCircle(center: arch.center, radius: arch.height * 0.585),
         child: CustomPaint(
-          painter: _DashedCirclePainter(
-            color: context.palette.accentGold.withValues(alpha: 0.4),
+          painter: _RingPainter(
+            color: context.palette.accentGold.withValues(alpha: 0.35),
+            dashed: true,
           ),
         ),
       ),
@@ -231,7 +232,7 @@ class OnboardingHero extends StatelessWidget {
       start: left,
       top: top,
       child: Transform.rotate(
-        angle: _mirror(context, badge.tilt),
+        angle: _mirror(context, badge.angle),
         child: Container(
           width: size,
           height: size,
@@ -326,31 +327,44 @@ class OnboardingHero extends StatelessWidget {
   }
 }
 
-/// A thin dashed circle filling its box.
-class _DashedCirclePainter extends CustomPainter {
-  const _DashedCirclePainter({required this.color});
+/// A thin circle (solid or dashed) filling its box, fading out towards the
+/// bottom.
+class _RingPainter extends CustomPainter {
+  const _RingPainter({required this.color, this.dashed = false});
 
   final Color color;
+  final bool dashed;
 
   @override
   void paint(Canvas canvas, Size size) {
     final radius = math.min(size.width, size.height) / 2;
     final center = size.center(Offset.zero);
+    final rect = Rect.fromCircle(center: center, radius: radius);
     final paint = Paint()
-      ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2;
+      ..strokeWidth = dashed ? 1.2 : 1
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [color, color, color.withValues(alpha: 0)],
+        stops: const [0, 0.35, 0.78],
+      ).createShader(rect);
+
+    if (!dashed) {
+      canvas.drawCircle(center, radius, paint);
+      return;
+    }
     const dash = 4.0;
     const gap = 4.0;
     final count = (2 * math.pi * radius / (dash + gap)).floor();
     final step = 2 * math.pi / count;
     final sweep = step * dash / (dash + gap);
-    final rect = Rect.fromCircle(center: center, radius: radius);
     for (var i = 0; i < count; i++) {
       canvas.drawArc(rect, i * step, sweep, false, paint);
     }
   }
 
   @override
-  bool shouldRepaint(_DashedCirclePainter old) => old.color != color;
+  bool shouldRepaint(_RingPainter old) =>
+      old.color != color || old.dashed != dashed;
 }
