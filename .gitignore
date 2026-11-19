@@ -1,0 +1,19 @@
+# Repository-wide ignores. Each part (mobile/, backend/) has its own .gitignore too.
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Secrets: this repository is PUBLIC. Never commit keys or passwords.
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.pem
+key.properties
+google-services.json
+GoogleService-Info.plist
