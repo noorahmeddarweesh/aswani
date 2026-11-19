@@ -19,7 +19,7 @@ aswani/
 
 ## Working on this repository
 
-- `main` is protected. Each sprint has an integration branch: `Sprint-2`, `Sprint-3`, ...
+- `main` is protected. Each sprint has an integration branch: `Sprint-1`, `Sprint-2`, ...
 - Create your branch from the sprint branch: `feature/<name>-<feature>`,
   e.g. `feature/mawada-onboarding`.
 - Open a pull request into the sprint branch; it is reviewed before merging.

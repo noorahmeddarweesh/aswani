@@ -1,0 +1,613 @@
+openapi: 3.1.0
+info:
+  title: Aswani API
+  version: 0.1.2
+  summary: Sprint 1 endpoints (auth, preferences, places, bookmarks).
+  description: |
+    Machine-readable copy of the Sprint 1 API contract. The written contract
+    (shared doc) and this file must say the same thing; a change goes into
+    both, with a new version and a line in the changelog.
+
+    Conventions:
+    - JSON field names in `snake_case`, in requests and responses.
+    - Single item: `{ "data": { ... } }`. List: `{ "data": [ ... ], "meta": { ... } }`.
+    - Actions without a result return `204 No Content`.
+    - Every 4xx/5xx returns the `Error` body. `code` is what the app reads;
+      `message` is never shown to users; `details` maps a request field to an
+      error code shown under that field.
+    - `Authorization: Bearer <access_token>` on every endpoint except register,
+      login, refresh, forgot-password and reset-password. An expired token
+      returns `401 UNAUTHORIZED`; the app refreshes once and retries.
+    - The app sends `Accept-Language: ar` or `en`.
+    - Dates: ISO 8601 in UTC. IDs: strings.
+
+    The mobile app's mock data sources return exactly these shapes:
+    `mobile/lib/features/<feature>/data/datasources/*_mock_datasource.dart`.
+    Demo account to seed on staging: `laila@example.com` / `Aswan2026`,
+    reset code `1234`.
+
+    Changelog:
+    - 0.1.0 (19 Nov 2026): first draft for Sprint 1.
+    - 0.1.1 (19 Nov 2026): register accepts an email only.
+    - 0.1.2 (19 Nov 2026, proposed by mobile): optional `avatar_url` on the
+      user (null when the user has no photo).
+servers:
+  - url: http://localhost:3000/api
+    description: Local development
+  - url: https://{server}/api
+    description: Staging or production
+    variables:
+      server:
+        default: example.com
+tags:
+  - name: Auth
+  - name: Preferences
+  - name: Places
+  - name: Bookmarks
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Create an account (Sign up)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [full_name, identifier, password]
+              properties:
+                full_name:
+                  type: string
+                  minLength: 3
+                  description: At least 3 characters after trimming.
+                  example: Laila Hassan
+                identifier:
+                  type: string
+                  format: email
+                  description: Email only since v0.1.1; a phone number returns 422.
+                  example: laila@example.com
+                password:
+                  $ref: '#/components/schemas/Password'
+      responses:
+        '201':
+          description: Account created; `has_preferences` is false.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResponse' }
+        '409':
+          description: '`EMAIL_ALREADY_EXISTS` (details: identifier)'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example:
+                error:
+                  code: EMAIL_ALREADY_EXISTS
+                  message: Email already registered
+                  details: { identifier: EMAIL_ALREADY_EXISTS }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Sign in with an email or an Egyptian mobile number
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier: { $ref: '#/components/schemas/Identifier' }
+                password: { type: string }
+      responses:
+        '200':
+          description: Signed in.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResponse' }
+        '401':
+          description: '`INVALID_CREDENTIALS`'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example:
+                error: { code: INVALID_CREDENTIALS, message: Wrong identifier or password }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: New access token from the refresh token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token: { type: string }
+      responses:
+        '200':
+          description: New tokens.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data: { $ref: '#/components/schemas/Tokens' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Invalidate the refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token: { type: string }
+      responses:
+        '204': { description: Signed out. }
+
+  /auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Send a 4-digit reset code by email or SMS
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier]
+              properties:
+                identifier: { $ref: '#/components/schemas/Identifier' }
+      responses:
+        '204': { description: Code sent (expires after about 10 minutes). }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Set a new password with the reset code
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, code, new_password]
+              properties:
+                identifier: { $ref: '#/components/schemas/Identifier' }
+                code:
+                  type: string
+                  pattern: '^\d{4}$'
+                  example: '1234'
+                new_password: { $ref: '#/components/schemas/Password' }
+      responses:
+        '204': { description: Password changed. }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+        '422':
+          description: '`INVALID_CODE` (details: code) or `VALIDATION_ERROR`'
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example:
+                error:
+                  code: INVALID_CODE
+                  message: Wrong or expired code
+                  details: { code: INVALID_CODE }
+
+  /users/me:
+    get:
+      tags: [Auth]
+      summary: The signed-in user (checked on app launch)
+      responses:
+        '200':
+          description: Current user.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /users/preferences:
+    put:
+      tags: [Preferences]
+      summary: Save the 8 personalisation steps (every step can be skipped)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Preferences' }
+      responses:
+        '204':
+          description: Saved; from now on `GET /users/me` returns `has_preferences = true`.
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /places:
+    get:
+      tags: [Places]
+      summary: Places for Explore (category chips and search)
+      parameters:
+        - name: category
+          in: query
+          schema: { $ref: '#/components/schemas/Category' }
+        - name: q
+          in: query
+          description: Matches name_en, name_ar and the labels.
+          schema: { type: string }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: One page of places.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PlaceList' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+
+  /places/curated:
+    get:
+      tags: [Places]
+      summary: Home "Curated for you" (up to 10, in the editors' order)
+      responses:
+        '200':
+          description: Curated places.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    maxItems: 10
+                    items: { $ref: '#/components/schemas/Place' }
+
+  /places/{id}:
+    get:
+      tags: [Places]
+      summary: One place (more fields come with the details design)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The place.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data: { $ref: '#/components/schemas/Place' }
+        '404': { $ref: '#/components/responses/PlaceNotFound' }
+
+  /bookmarks:
+    get:
+      tags: [Bookmarks]
+      summary: The user's saved places
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: One page of saved places.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PlaceList' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Bookmarks]
+      summary: Save a place
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [place_id]
+              properties:
+                place_id: { type: string, example: philae }
+      responses:
+        '201':
+          description: Saved; the place comes back with `is_bookmarked = true`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data: { $ref: '#/components/schemas/Place' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/PlaceNotFound' }
+
+  /bookmarks/{place_id}:
+    delete:
+      tags: [Bookmarks]
+      summary: Remove a saved place
+      parameters:
+        - name: place_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Removed; the place comes back with `is_bookmarked = false`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data: { $ref: '#/components/schemas/Place' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/PlaceNotFound' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+
+  responses:
+    ValidationError:
+      description: '`VALIDATION_ERROR`; `details` names the field.'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example:
+            error:
+              code: VALIDATION_ERROR
+              message: password is too short
+              details: { password: VALIDATION_ERROR }
+    Unauthorized:
+      description: '`UNAUTHORIZED`: missing, expired or invalid token.'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example:
+            error: { code: UNAUTHORIZED, message: Token expired }
+    UserNotFound:
+      description: '`USER_NOT_FOUND` (details: identifier)'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example:
+            error:
+              code: USER_NOT_FOUND
+              message: No account for this identifier
+              details: { identifier: USER_NOT_FOUND }
+    PlaceNotFound:
+      description: '`PLACE_NOT_FOUND`'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example:
+            error: { code: PLACE_NOT_FOUND, message: Unknown place }
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum:
+                - VALIDATION_ERROR
+                - INVALID_CREDENTIALS
+                - EMAIL_ALREADY_EXISTS
+                - USER_NOT_FOUND
+                - INVALID_CODE
+                - UNAUTHORIZED
+                - PLACE_NOT_FOUND
+                - SERVER_ERROR
+            message:
+              type: string
+              description: For logs only; never shown to users.
+            details:
+              type: object
+              additionalProperties: { type: string }
+              description: Request field name -> error code.
+
+    Identifier:
+      type: string
+      description: |
+        A valid email, or an Egyptian mobile number: 01 + 0/1/2/5 + 8 digits,
+        optionally starting with +20 or 0020. Emails are case-insensitive;
+        010 1234 5678, 01012345678 and +201012345678 are the same user.
+      example: laila@example.com
+
+    Password:
+      type: string
+      minLength: 8
+      pattern: '^(?=.*[A-Za-z])(?=.*\d).{8,}$'
+      description: At least 8 characters, with at least one letter and one digit.
+      example: Aswan2026
+
+    User:
+      type: object
+      required: [id, full_name, identifier, has_preferences]
+      properties:
+        id: { type: string, example: u_1 }
+        full_name: { type: string, example: Laila Hassan }
+        identifier: { type: string, example: laila@example.com }
+        has_preferences:
+          type: boolean
+          description: False until the personalisation steps are saved.
+        avatar_url:
+          type: [string, 'null']
+          format: uri
+          description: Profile photo URL, or null (proposed in v0.1.2).
+
+    Tokens:
+      type: object
+      required: [access_token, refresh_token]
+      properties:
+        access_token: { type: string }
+        refresh_token: { type: string }
+
+    AuthResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [user, access_token, refresh_token]
+          properties:
+            user: { $ref: '#/components/schemas/User' }
+            access_token: { type: string, example: eyJ... }
+            refresh_token: { type: string, example: eyJ... }
+
+    Preferences:
+      type: object
+      description: Every field may be null or an empty list (skipped step).
+      properties:
+        persona:
+          type: [string, 'null']
+          enum: [visitor, newcomer, resident, null]
+        purpose:
+          type: [string, 'null']
+          enum: [tourism, living, studying, work, family, other, null]
+        stay_length:
+          type: [string, 'null']
+          enum: [few_days, week, month, several_months, long_term, not_sure, null]
+        interests:
+          type: array
+          items:
+            type: string
+            enum: [historical, nubian, nature, local, food, community, traditional_food, photography]
+        travel_styles:
+          type: array
+          items:
+            type: string
+            enum: [calm, adventurous, cultural, social, hidden, mix]
+        companions:
+          type: [string, 'null']
+          enum: [solo, friends, family, partner, group, may_change, null]
+        needs:
+          type: array
+          items:
+            type: string
+            enum: [finding_places, getting_around, local_recommendations, local_guides, activities, local_services]
+        language:
+          type: string
+          enum: [ar, en]
+      example:
+        persona: visitor
+        purpose: tourism
+        stay_length: few_days
+        interests: [historical, nubian, nature, food]
+        travel_styles: [calm, cultural]
+        companions: solo
+        needs: [finding_places]
+        language: en
+
+    Category:
+      type: string
+      enum: [history, nubian, nature, food]
+      description: The Explore chips. New categories go into the contract first.
+
+    Place:
+      type: object
+      required:
+        - id
+        - category
+        - name_en
+        - name_ar
+        - label_en
+        - label_ar
+        - tagline_en
+        - tagline_ar
+        - city_en
+        - city_ar
+        - image
+        - is_curated
+        - is_editors_pick
+        - is_bookmarked
+      properties:
+        id: { type: string, example: philae }
+        category: { $ref: '#/components/schemas/Category' }
+        name_en: { type: string, example: Philae Temple }
+        name_ar: { type: string, example: معبد فيلة }
+        label_en:
+          type: string
+          description: Short line above the name.
+          example: Heritage & history
+        label_ar: { type: string, example: تراث وتاريخ }
+        tagline_en:
+          type: string
+          description: One line under the name.
+          example: History on an island
+        tagline_ar: { type: string, example: تاريخ على جزيرة }
+        city_en: { type: string, example: Aswan }
+        city_ar: { type: string, example: أسوان }
+        image:
+          type: string
+          format: uri
+          description: Full image URL, landscape, at least 1035 x 660 px.
+          example: https://example.com/images/places/philae.jpg
+        is_curated:
+          type: boolean
+          description: Shown in Home "Curated for you".
+        is_editors_pick:
+          type: boolean
+          description: The big card at the top of Explore (one place).
+        is_bookmarked:
+          type: boolean
+          description: For the signed-in user; false when signed out.
+
+    PlaceList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Place' }
+        meta:
+          type: object
+          required: [page, limit, total, total_pages]
+          properties:
+            page: { type: integer, example: 1 }
+            limit: { type: integer, example: 20 }
+            total: { type: integer, example: 4 }
+            total_pages: { type: integer, example: 1 }

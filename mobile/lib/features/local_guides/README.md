@@ -1,7 +1,7 @@
 # Local guides
 
 **Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 4 or later.
+**Planned for:** Sprint 3 or later.
 **Owner:** _(add your name when you take this feature)_
 
 Local guide profiles (tab in the designs; scope to confirm with the team).

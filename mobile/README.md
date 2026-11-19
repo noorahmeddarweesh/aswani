@@ -34,6 +34,12 @@ flutter run --dart-define=USE_MOCKS=true
 flutter run --dart-define=USE_MOCKS=false --dart-define=BASE_URL=https://<backend>/api
 ```
 
+With `USE_MOCKS=false` every feature uses its `*_remote_datasource.dart`, built
+from `docs/api-contract/openapi.yaml`. The shared HTTP code is in
+`lib/core/network/`: the client, the Bearer token with automatic refresh, and
+error mapping to the contract's codes. Debug builds may use plain `http` to a
+local backend (`http://10.0.2.2:3000/api` from the Android emulator).
+
 ## Rules that CI enforces
 
 - Colours come only from the theme (`context.colors`, `context.palette`).

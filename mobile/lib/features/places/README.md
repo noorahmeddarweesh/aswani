@@ -1,7 +1,7 @@
 # Places and Explore
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 3.
+**Status:** Explore screen + mock data implemented (Sprint 1). Place details and map still need designs.
+**Planned for:** Sprint 1.
 **Owner:** _(add your name when you take this feature)_
 
 Explore screen, search and filters, place details, saved places (bookmarks).

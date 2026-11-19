@@ -1,0 +1,95 @@
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/widgets/app_image.dart';
+import '../../../../shared/widgets/bookmark_icon.dart';
+import '../../../../shared/widgets/motion.dart';
+import '../../domain/entities/place.dart';
+
+/// One row of "Popular places": photo, category, name, city, save button.
+class PlaceListTile extends StatelessWidget {
+  const PlaceListTile({
+    super.key,
+    required this.place,
+    required this.onBookmark,
+    this.onTap,
+  });
+
+  final Place place;
+  final VoidCallback onBookmark;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = Localizations.localeOf(context).languageCode;
+    final l10n = context.l10n;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: AppRadii.lgAll,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 90,
+              height: 84,
+              child: AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    place.label(lang),
+                    style: context.text.bodySmall?.copyWith(
+                      fontSize: 11,
+                      color: context.palette.link,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    place.name(lang),
+                    style: context.text.titleLarge?.copyWith(fontSize: 16),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        LucideIcons.mapPin,
+                        size: 13,
+                        color: context.palette.textSecondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          place.city(lang),
+                          overflow: TextOverflow.ellipsis,
+                          style: context.text.bodySmall?.copyWith(fontSize: 11),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              tooltip: place.isBookmarked
+                  ? l10n.bookmarkRemove
+                  : l10n.bookmarkAdd,
+              onPressed: () {
+                Haptics.confirm();
+                onBookmark();
+              },
+              icon: BookmarkIcon(saved: place.isBookmarked),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

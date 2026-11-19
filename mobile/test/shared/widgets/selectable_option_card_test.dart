@@ -1,5 +1,6 @@
 import 'package:aswani/core/theme/app_theme.dart';
 import 'package:aswani/shared/widgets/selectable_option_card.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -21,10 +22,10 @@ void main() {
 
   testWidgets('shows a check mark only when selected', (tester) async {
     await tester.pumpWidget(host(selected: false, onTap: () {}));
-    expect(find.byIcon(Icons.check), findsNothing);
+    expect(find.byIcon(LucideIcons.check), findsNothing);
 
     await tester.pumpWidget(host(selected: true, onTap: () {}));
-    expect(find.byIcon(Icons.check), findsOneWidget);
+    expect(find.byIcon(LucideIcons.check), findsOneWidget);
   });
 
   testWidgets('calls onTap when tapped', (tester) async {

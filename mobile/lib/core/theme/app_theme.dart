@@ -134,7 +134,7 @@ abstract final class AppTheme {
         hintStyle: textTheme.bodyMedium?.copyWith(color: palette.textTertiary),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
-          vertical: AppSpacing.md,
+          vertical: 14,
         ),
         border: fieldBorder(palette.border),
         enabledBorder: fieldBorder(palette.border),
