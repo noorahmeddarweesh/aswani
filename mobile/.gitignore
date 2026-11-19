@@ -58,3 +58,7 @@ lib/core/l10n/generated/
 key.properties
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+
+# JVM crash logs written by Gradle
+hs_err_pid*.log
+replay_pid*.log
