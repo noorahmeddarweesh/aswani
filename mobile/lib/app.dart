@@ -5,6 +5,7 @@ import 'core/config/app_settings.dart';
 import 'core/l10n/generated/app_localizations.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'shared/widgets/offline_banner.dart';
 
 class AswaniApp extends ConsumerWidget {
   const AswaniApp({super.key});
@@ -15,6 +16,8 @@ class AswaniApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       routerConfig: ref.watch(appRouterProvider),
+      builder: (context, child) =>
+          OfflineBanner(child: child ?? const SizedBox.shrink()),
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ref.watch(themeModeProvider),

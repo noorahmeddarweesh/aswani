@@ -283,5 +283,6 @@
     }
   },
   "fieldEmail": "Email",
-  "validationEmail": "Enter a valid email address"
+  "validationEmail": "Enter a valid email address",
+  "offlineBanner": "You're offline. Some content may be out of date."
 }

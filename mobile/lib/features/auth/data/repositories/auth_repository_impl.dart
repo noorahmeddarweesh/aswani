@@ -1,15 +1,25 @@
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/result/result.dart';
+import '../../../../core/storage/key_value_store.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_datasource.dart';
 import '../mappers/user_mapper.dart';
+import '../models/auth_response_dto.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this._dataSource);
+  AuthRepositoryImpl(this._dataSource, this._tokens);
 
   final AuthDataSource _dataSource;
+
+  /// Secure storage for the access and refresh tokens.
+  final KeyValueStore _tokens;
+
+  Future<void> _saveTokens(AuthResponseDto response) async {
+    await _tokens.write(StorageKeys.accessToken, response.accessToken);
+    await _tokens.write(StorageKeys.refreshToken, response.refreshToken);
+  }
 
   Future<Result<T>> _guard<T>(Future<T> Function() call) async {
     try {
@@ -30,7 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
       identifier: identifier,
       password: password,
     );
-    // TODO(sprint-1): save tokens in secure storage when the API is live.
+    await _saveTokens(response);
     return response.user.toEntity();
   });
 
@@ -45,6 +55,7 @@ class AuthRepositoryImpl implements AuthRepository {
       identifier: identifier,
       password: password,
     );
+    await _saveTokens(response);
     return response.user.toEntity();
   });
 
@@ -66,5 +77,9 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<void> signOut() => _dataSource.logout();
+  Future<void> signOut() async {
+    await _dataSource.logout();
+    await _tokens.delete(StorageKeys.accessToken);
+    await _tokens.delete(StorageKeys.refreshToken);
+  }
 }

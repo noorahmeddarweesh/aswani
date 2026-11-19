@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/config/env.dart';
+import '../../core/storage/app_bootstrap.dart';
 import 'data/datasources/auth_datasource.dart';
 import 'data/datasources/auth_mock_datasource.dart';
 import 'data/repositories/auth_repository_impl.dart';
@@ -19,5 +20,8 @@ final authDataSourceProvider = Provider<AuthDataSource>((ref) {
 });
 
 final authRepositoryProvider = Provider<AuthRepository>(
-  (ref) => AuthRepositoryImpl(ref.watch(authDataSourceProvider)),
+  (ref) => AuthRepositoryImpl(
+    ref.watch(authDataSourceProvider),
+    ref.watch(secureStoreProvider),
+  ),
 );

@@ -1,14 +1,20 @@
 import 'package:aswani/core/errors/failure.dart';
 import 'package:aswani/core/result/result.dart';
+import 'package:aswani/core/storage/key_value_store.dart';
 import 'package:aswani/features/auth/data/datasources/auth_mock_datasource.dart';
 import 'package:aswani/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late AuthRepositoryImpl repository;
+  late MemoryKeyValueStore tokens;
 
   setUp(() {
-    repository = AuthRepositoryImpl(AuthMockDataSource(delay: Duration.zero));
+    tokens = MemoryKeyValueStore();
+    repository = AuthRepositoryImpl(
+      AuthMockDataSource(delay: Duration.zero),
+      tokens,
+    );
   });
 
   test('signs in the demo user, who already has preferences', () async {
@@ -19,6 +25,8 @@ void main() {
     final user = (result as Success).value;
     expect(user.firstName, 'Laila');
     expect(user.hasPreferences, isTrue);
+    expect(await tokens.read(StorageKeys.accessToken), isNotNull);
+    expect(await tokens.read(StorageKeys.refreshToken), isNotNull);
   });
 
   test('wrong password returns INVALID_CREDENTIALS', () async {
