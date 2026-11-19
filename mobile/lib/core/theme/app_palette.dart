@@ -25,6 +25,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.brandSurface,
     required this.onBrandSurface,
     required this.success,
+    required this.highlight,
   });
 
   /// Strong body text: card titles, list titles.
@@ -75,23 +76,27 @@ class AppPalette extends ThemeExtension<AppPalette> {
   /// Confirmations (proposed).
   final Color success;
 
+  /// Highlights (Sky Blue in the brand palette).
+  final Color highlight;
+
   static const AppPalette light = AppPalette(
     ink: AppColors.ink,
     textSecondary: AppColors.textSecondary,
     textTertiary: AppColors.textTertiary,
-    link: AppColors.blue,
+    link: AppColors.riverBlue,
     border: AppColors.border,
     divider: AppColors.divider,
-    surfaceMuted: AppColors.surfaceMuted,
+    surfaceMuted: AppColors.softGray,
     inputFill: AppColors.inputFill,
     selectedTint: AppColors.selectedTint,
-    selectedBorder: AppColors.blue,
+    selectedBorder: AppColors.riverBlue,
     successTint: AppColors.successTint,
-    accentGold: AppColors.gold,
+    accentGold: AppColors.heritageGold,
     accentGoldOnDark: AppColors.goldLight,
-    brandSurface: AppColors.navy,
-    onBrandSurface: AppColors.white,
+    brandSurface: AppColors.deepBlue,
+    onBrandSurface: AppColors.pureWhite,
     success: AppColors.success,
+    highlight: AppColors.skyBlue,
   );
 
   /// Proposed until the designer delivers a dark palette.
@@ -107,11 +112,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
     selectedTint: AppColors.darkSurfaceMuted,
     selectedBorder: AppColors.darkPrimary,
     successTint: AppColors.darkSurfaceMuted,
-    accentGold: AppColors.gold,
+    accentGold: AppColors.heritageGold,
     accentGoldOnDark: AppColors.goldLight,
-    brandSurface: AppColors.navy,
-    onBrandSurface: AppColors.white,
+    brandSurface: AppColors.deepBlue,
+    onBrandSurface: AppColors.pureWhite,
     success: AppColors.success,
+    highlight: AppColors.skyBlue,
   );
 
   @override
@@ -132,6 +138,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? brandSurface,
     Color? onBrandSurface,
     Color? success,
+    Color? highlight,
   }) {
     return AppPalette(
       ink: ink ?? this.ink,
@@ -150,6 +157,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       brandSurface: brandSurface ?? this.brandSurface,
       onBrandSurface: onBrandSurface ?? this.onBrandSurface,
       success: success ?? this.success,
+      highlight: highlight ?? this.highlight,
     );
   }
 
@@ -174,6 +182,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       brandSurface: mix(brandSurface, other.brandSurface),
       onBrandSurface: mix(onBrandSurface, other.onBrandSurface),
       success: mix(success, other.success),
+      highlight: mix(highlight, other.highlight),
     );
   }
 }

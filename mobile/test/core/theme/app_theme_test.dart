@@ -8,8 +8,11 @@ void main() {
     test('light theme uses the design palette', () {
       final theme = AppTheme.light;
 
-      expect(theme.colorScheme.primary, AppColors.navy);
-      expect(theme.colorScheme.secondary, AppColors.blue);
+      expect(theme.colorScheme.primary, AppColors.deepBlue);
+      expect(theme.colorScheme.secondary, AppColors.riverBlue);
+      expect(theme.colorScheme.surface, AppColors.pureWhite);
+      expect(AppPalette.light.highlight, AppColors.skyBlue);
+      expect(AppPalette.light.surfaceMuted, AppColors.softGray);
       expect(theme.extension<AppPalette>(), AppPalette.light);
     });
 

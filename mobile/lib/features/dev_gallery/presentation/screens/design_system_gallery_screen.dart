@@ -147,6 +147,7 @@ class _Swatches extends StatelessWidget {
       ('primary', colors.primary),
       ('secondary', colors.secondary),
       ('ink', palette.ink),
+      ('highlight', palette.highlight),
       ('accentGold', palette.accentGold),
       ('accentGoldOnDark', palette.accentGoldOnDark),
       ('surface', colors.surface),

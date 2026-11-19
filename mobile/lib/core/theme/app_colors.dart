@@ -7,20 +7,33 @@ import 'package:material_ui/material_ui.dart';
 /// `tool/check_design_tokens.sh` fails CI if `AppColors` is used outside
 /// `lib/core/theme/`.
 ///
-/// Values were sampled from the exported designs (19 Nov 2026) and must be
-/// confirmed against the Figma file. A palette change is its own pull request,
-/// approved by the UI/UX designer.
+/// Brand palette v1.0 from the UI/UX designer ("White-led · Blue identity ·
+/// Golden accents", 19 Nov 2026). Supporting neutrals were sampled from the
+/// exported screens and are pending the designer's confirmation.
+/// A palette change is its own pull request, approved by the UI/UX designer.
 abstract final class AppColors {
-  // Brand
-  static const Color navy = Color(0xFF183B63);
-  static const Color ink = Color(0xFF0C243C);
-  static const Color blue = Color(0xFF2878A9);
-  static const Color gold = Color(0xFFD6AE55);
-  static const Color goldLight = Color(0xFFF4D680);
+  // Brand palette (official, from the designer)
+  /// Primary: buttons, headings, selected icon tiles, dark brand cards.
+  static const Color deepBlue = Color(0xFF173B63);
 
-  // Neutrals (light)
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color surfaceMuted = Color(0xFFF3F7FA);
+  /// Secondary: links, step labels, progress, check badges, selected borders.
+  static const Color riverBlue = Color(0xFF2878A8);
+
+  /// Background.
+  static const Color pureWhite = Color(0xFFFFFFFF);
+
+  /// Secondary background: back-button circle, icon tiles, search field.
+  static const Color softGray = Color(0xFFF3F6F9);
+
+  /// Highlights.
+  static const Color skyBlue = Color(0xFF8CCDE0);
+
+  /// Accent: feature badges, active page dot, bottom-nav indicator.
+  static const Color heritageGold = Color(0xFFD6AE55);
+
+  // Supporting neutrals (sampled from the screens, to confirm with designer)
+  static const Color ink = Color(0xFF0C243C);
+  static const Color goldLight = Color(0xFFF4D680);
   static const Color inputFill = Color(0xFFFBFCFE);
   static const Color selectedTint = Color(0xFFF3FAFF);
   static const Color successTint = Color(0xFFEFF9FB);
@@ -28,7 +41,6 @@ abstract final class AppColors {
   static const Color divider = Color(0xFFD2DCE2);
   static const Color textSecondary = Color(0xFF647888);
   static const Color textTertiary = Color(0xFF84909C);
-
   // Feedback (proposed: not in the designs yet)
   static const Color error = Color(0xFFC93C3C);
   static const Color success = Color(0xFF2E8B57);
