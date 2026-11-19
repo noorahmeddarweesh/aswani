@@ -4,6 +4,8 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
+import '../../../../shared/widgets/bookmark_icon.dart';
+import '../../../../shared/widgets/motion.dart';
 import '../../domain/entities/place.dart';
 
 /// One row of "Popular places": photo, category, name, city, save button.
@@ -78,10 +80,11 @@ class PlaceListTile extends StatelessWidget {
               tooltip: place.isBookmarked
                   ? l10n.bookmarkRemove
                   : l10n.bookmarkAdd,
-              onPressed: onBookmark,
-              icon: Icon(LucideIcons.bookmark, color: context.colors.primary),
-              isSelected: place.isBookmarked,
-              selectedIcon: Icon(Icons.bookmark, color: context.colors.primary),
+              onPressed: () {
+                Haptics.confirm();
+                onBookmark();
+              },
+              icon: BookmarkIcon(saved: place.isBookmarked),
             ),
           ],
         ),

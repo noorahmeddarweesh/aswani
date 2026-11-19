@@ -15,6 +15,7 @@ import '../../../../shared/widgets/primary_button.dart';
 import '../viewmodels/onboarding_view_model.dart';
 import '../widgets/onboarding_hero.dart';
 import '../widgets/page_dots.dart';
+import '../../../../shared/widgets/motion.dart';
 
 /// "Meet Aswan": three swipeable intro pages.
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -196,7 +197,7 @@ class _OnboardingPage extends StatelessWidget {
           child: Padding(
             padding: AppSpacing.screenPadding,
             child: Column(
-              children: [
+              children: staggered([
                 const SizedBox(height: AppSpacing.md),
                 // Smaller on short screens (small phones, landscape).
                 SizedBox(
@@ -218,7 +219,7 @@ class _OnboardingPage extends StatelessWidget {
                   style: context.text.bodyMedium,
                 ),
                 const SizedBox(height: AppSpacing.md),
-              ],
+              ]),
             ),
           ),
         ),

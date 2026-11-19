@@ -13,6 +13,7 @@ import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../viewmodels/home_view_model.dart';
 import '../widgets/home_cards.dart';
+import '../../../../shared/widgets/motion.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -49,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
             onRefresh: () => ref.refresh(homeViewModelProvider.future),
             child: ListView(
               padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-              children: [
+              children: staggered([
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
                     AppSpacing.screen,
@@ -217,7 +218,7 @@ class HomeScreen extends ConsumerWidget {
                     onReportPlace: () => _comingSoon(context),
                   ),
                 ),
-              ],
+              ]),
             ),
           ),
         ),

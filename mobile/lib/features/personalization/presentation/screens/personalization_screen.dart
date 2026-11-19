@@ -14,6 +14,7 @@ import '../../domain/entities/preferences.dart';
 import '../viewmodels/personalization_view_model.dart';
 import '../widgets/step_options.dart';
 import '../widgets/step_progress.dart';
+import '../../../../shared/widgets/motion.dart';
 
 /// The 8 personalisation steps, one at a time.
 class PersonalizationScreen extends ConsumerWidget {
@@ -96,7 +97,7 @@ class PersonalizationScreen extends ConsumerWidget {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                        children: staggered([
                           Eyebrow(
                             l10n.stepOf(
                               step + 1,
@@ -109,7 +110,7 @@ class PersonalizationScreen extends ConsumerWidget {
                           Text(subtitle, style: context.text.bodyMedium),
                           const SizedBox(height: AppSpacing.xl),
                           _StepAnswers(step: step, state: state, vm: vm),
-                        ],
+                        ]),
                       ),
                     ),
                   ),

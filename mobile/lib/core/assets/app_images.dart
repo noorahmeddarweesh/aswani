@@ -10,6 +10,8 @@ abstract final class AppImages {
 
   // Onboarding
   static const String welcomeHero = '$_onboarding/welcome_hero.jpg';
+  static const String welcomeHero2 = '$_onboarding/welcome_hero_2.jpg';
+  static const String welcomeHero3 = '$_onboarding/welcome_hero_3.jpg';
   static const String onboardingNile = '$_onboarding/onboarding_nile.jpg';
   static const String onboardingNubian = '$_onboarding/onboarding_nubian.jpg';
   static const String onboardingPhilae = '$_onboarding/onboarding_philae.jpg';
@@ -18,6 +20,8 @@ abstract final class AppImages {
 
   // Home
   static const String homeHero = '$_home/home_hero_nile.jpg';
+  static const String homeHero2 = '$_home/home_hero_2.jpg';
+  static const String homeHero3 = '$_home/home_hero_3.jpg';
   static const String homeStory = '$_home/story_nubian_heritage.jpg';
   static const String homeGuide = '$_home/guide_youssef.jpg';
 

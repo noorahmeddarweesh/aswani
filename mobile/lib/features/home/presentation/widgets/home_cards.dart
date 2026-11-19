@@ -5,6 +5,9 @@ import '../../../../core/assets/app_images.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
+import '../../../../shared/widgets/auto_carousel.dart';
+import '../../../../shared/widgets/bookmark_icon.dart';
+import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/eyebrow.dart';
 import '../../../places/domain/entities/place.dart';
 
@@ -22,7 +25,16 @@ class HomeHeroCard extends StatelessWidget {
       borderRadius: AppRadii.xlAll,
       child: Stack(
         children: [
-          const Positioned.fill(child: AppImage(AppImages.homeHero)),
+          const Positioned.fill(
+            child: AutoCarousel(
+              images: [
+                AppImages.homeHero,
+                AppImages.homeHero2,
+                AppImages.homeHero3,
+              ],
+              showDots: true,
+            ),
+          ),
           const Positioned.fill(child: PhotoScrim(strength: 0.85)),
           Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -118,40 +130,42 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 76),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: AppRadii.lgAll,
-        child: Column(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: highlighted
-                    ? context.colors.primary
-                    : context.palette.surfaceMuted,
-                borderRadius: AppRadii.lgAll,
+    return PressableScale(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 76),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadii.lgAll,
+          child: Column(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: highlighted
+                      ? context.colors.primary
+                      : context.palette.surfaceMuted,
+                  borderRadius: AppRadii.lgAll,
+                ),
+                child: Icon(
+                  icon,
+                  size: 22,
+                  color: highlighted
+                      ? context.colors.onPrimary
+                      : context.palette.link,
+                ),
               ),
-              child: Icon(
-                icon,
-                size: 22,
-                color: highlighted
-                    ? context.colors.onPrimary
-                    : context.palette.link,
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                label,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: context.text.bodySmall?.copyWith(
+                  color: context.palette.ink,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              label,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: context.text.bodySmall?.copyWith(
-                color: context.palette.ink,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -173,68 +187,68 @@ class CuratedPlaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = Localizations.localeOf(context).languageCode;
     final l10n = context.l10n;
-    return SizedBox(
-      width: 220,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 1.55,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
-                PositionedDirectional(
-                  top: AppSpacing.xs,
-                  end: AppSpacing.xs,
-                  child: Material(
-                    color: context.colors.surface,
-                    shape: const CircleBorder(),
-                    child: IconButton(
-                      tooltip: place.isBookmarked
-                          ? l10n.bookmarkRemove
-                          : l10n.bookmarkAdd,
-                      iconSize: 18,
-                      onPressed: onBookmark,
-                      icon: Icon(
-                        place.isBookmarked
-                            ? Icons.bookmark
-                            : LucideIcons.bookmark,
-                        color: context.colors.primary,
+    return PressableScale(
+      child: SizedBox(
+        width: 220,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 1.55,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
+                  PositionedDirectional(
+                    top: AppSpacing.xs,
+                    end: AppSpacing.xs,
+                    child: Material(
+                      color: context.colors.surface,
+                      shape: const CircleBorder(),
+                      child: IconButton(
+                        tooltip: place.isBookmarked
+                            ? l10n.bookmarkRemove
+                            : l10n.bookmarkAdd,
+                        iconSize: 18,
+                        onPressed: () {
+                          Haptics.confirm();
+                          onBookmark();
+                        },
+                        icon: BookmarkIcon(saved: place.isBookmarked),
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              place.name(lang),
+              style: context.text.titleLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(
+                  LucideIcons.mapPin,
+                  size: 13,
+                  color: context.palette.textSecondary,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    place.tagline(lang),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.text.bodySmall,
                   ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            place.name(lang),
-            style: context.text.titleLarge,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Icon(
-                LucideIcons.mapPin,
-                size: 13,
-                color: context.palette.textSecondary,
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  place.tagline(lang),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.bodySmall,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

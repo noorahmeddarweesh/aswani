@@ -6,6 +6,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/aswani_logo.dart';
 import '../../../../shared/widgets/circle_icon_button.dart';
+import '../../../../shared/widgets/motion.dart';
 
 /// Common layout of the auth screens: back button, brand or icon tile,
 /// title, subtitle, then the form.
@@ -56,7 +57,7 @@ class AuthScaffold extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+                      children: staggered([
                         const SizedBox(height: AppSpacing.xl),
                         if (icon == null) ...[
                           const Align(
@@ -89,7 +90,7 @@ class AuthScaffold extends StatelessWidget {
                         Text(subtitle, style: context.text.bodyMedium),
                         const SizedBox(height: AppSpacing.xl),
                         ...children,
-                      ],
+                      ]),
                     ),
                   ),
                 ],

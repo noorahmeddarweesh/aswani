@@ -1,11 +1,13 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/theme/app_motion.dart';
 import '../../core/theme/app_spacing.dart';
 import '../extensions/context_x.dart';
 
-/// Grey block standing in for content while it loads (skeleton loading).
-class SkeletonBox extends StatelessWidget {
+/// Block standing in for content while it loads, with a soft moving shine
+/// (shimmer). Static when the system asks to reduce motion.
+class SkeletonBox extends StatefulWidget {
   const SkeletonBox({
     super.key,
     this.width,
@@ -18,14 +20,54 @@ class SkeletonBox extends StatelessWidget {
   final BorderRadius borderRadius;
 
   @override
+  State<SkeletonBox> createState() => _SkeletonBoxState();
+}
+
+class _SkeletonBoxState extends State<SkeletonBox>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AppMotion.reduced(context) ? _controller.stop() : _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: context.palette.surfaceMuted,
-        borderRadius: borderRadius,
-      ),
+    final base = context.palette.surfaceMuted;
+    final shine = context.colors.surface;
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) {
+        final t = _controller.value * 2 - 0.5;
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          decoration: BoxDecoration(
+            borderRadius: widget.borderRadius,
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [base, shine, base],
+              stops: [
+                (t - 0.3).clamp(0.0, 1.0),
+                t.clamp(0.0, 1.0),
+                (t + 0.3).clamp(0.0, 1.0),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

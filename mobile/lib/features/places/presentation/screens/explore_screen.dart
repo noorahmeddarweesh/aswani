@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/responsive/window_size.dart';
+import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
@@ -13,6 +14,7 @@ import '../../../../shared/widgets/state_views.dart';
 import '../../domain/entities/place.dart';
 import '../viewmodels/explore_view_model.dart';
 import '../widgets/place_list_tile.dart';
+import '../../../../shared/widgets/motion.dart';
 
 class ExploreScreen extends ConsumerWidget {
   const ExploreScreen({super.key});
@@ -58,7 +60,7 @@ class ExploreScreen extends ConsumerWidget {
             onRefresh: vm.retry,
             child: ListView(
               padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-              children: [
+              children: staggered([
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
                     AppSpacing.screen,
@@ -127,7 +129,10 @@ class ExploreScreen extends ConsumerWidget {
                       return _FilterChip(
                         label: label,
                         selected: filter.category == category,
-                        onTap: () => vm.selectCategory(category),
+                        onTap: () {
+                          Haptics.selection();
+                          vm.selectCategory(category);
+                        },
                       );
                     },
                   ),
@@ -172,7 +177,7 @@ class ExploreScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-              ],
+              ]),
             ),
           ),
         ),
@@ -203,23 +208,29 @@ class _FilterChip extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      child: Material(
-        color: selected ? colors.primary : colors.surface,
-        shape: StadiumBorder(
-          side: BorderSide(
-            color: selected ? colors.primary : context.palette.border,
+      child: AnimatedContainer(
+        duration: AppMotion.short,
+        decoration: ShapeDecoration(
+          color: selected ? colors.primary : colors.surface,
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: selected ? colors.primary : context.palette.border,
+            ),
           ),
         ),
-        child: InkWell(
-          customBorder: const StadiumBorder(),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-            child: Center(
-              child: Text(
-                label,
-                style: context.text.bodyMedium?.copyWith(
-                  color: selected ? colors.onPrimary : context.palette.ink,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            customBorder: const StadiumBorder(),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              child: Center(
+                child: Text(
+                  label,
+                  style: context.text.bodyMedium?.copyWith(
+                    color: selected ? colors.onPrimary : context.palette.ink,
+                  ),
                 ),
               ),
             ),

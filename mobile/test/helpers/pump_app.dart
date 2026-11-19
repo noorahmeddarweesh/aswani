@@ -29,6 +29,7 @@ Future<ProviderContainer> pumpApp(WidgetTester tester) async {
   tester.view.physicalSize = const Size(390 * 3, 844 * 3);
   tester.view.devicePixelRatio = 3;
   addTearDown(tester.view.reset);
+  reduceMotion(tester);
   final container = ProviderContainer(overrides: fastMocks());
   addTearDown(container.dispose);
   await tester.pumpWidget(
@@ -36,4 +37,12 @@ Future<ProviderContainer> pumpApp(WidgetTester tester) async {
   );
   await tester.pumpAndSettle();
   return container;
+}
+
+/// Looping animations (carousel, shimmer) never settle, so widget tests run
+/// with the system "reduce motion" setting on, exactly as a user could.
+void reduceMotion(WidgetTester tester) {
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      const FakeAccessibilityFeatures(disableAnimations: true);
+  addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
 }

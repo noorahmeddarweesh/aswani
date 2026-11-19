@@ -25,6 +25,7 @@ void main() {
       tester.view.devicePixelRatio = 2;
       tester.platformDispatcher.textScaleFactorTestValue = textScale;
       addTearDown(tester.view.reset);
+      reduceMotion(tester);
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
       final container = ProviderContainer(overrides: fastMocks());

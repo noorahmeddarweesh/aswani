@@ -12,6 +12,8 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/aswani_logo.dart';
+import '../../../../shared/widgets/auto_carousel.dart';
+import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/eyebrow.dart';
 
 /// First screen: full-bleed photo, brand, language switch and the two entry
@@ -29,7 +31,13 @@ class WelcomeScreen extends ConsumerWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          const AppImage(AppImages.welcomeHero),
+          const AutoCarousel(
+            images: [
+              AppImages.welcomeHero,
+              AppImages.welcomeHero2,
+              AppImages.welcomeHero3,
+            ],
+          ),
           const PhotoScrim(strength: 0.9),
           SafeArea(
             child: MaxWidthBox(
@@ -45,7 +53,7 @@ class WelcomeScreen extends ConsumerWidget {
                     child: IntrinsicHeight(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: staggered([
                           const SizedBox(height: AppSpacing.md),
                           Row(
                             children: [
@@ -115,7 +123,7 @@ class WelcomeScreen extends ConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: AppSpacing.md),
-                        ],
+                        ]),
                       ),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/theme/app_spacing.dart';
 import '../extensions/context_x.dart';
+import 'motion.dart';
 import 'check_badge.dart';
 
 /// Option card for two-column grids (purpose, stay, style, companions...).
@@ -86,39 +87,44 @@ class SelectableGridCard extends StatelessWidget {
             ],
           );
 
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: Material(
-        color: selected ? palette.selectedTint : colors.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadii.lgAll,
-          side: BorderSide(
-            color: selected ? palette.selectedBorder : palette.border,
-            width: selected ? 1.5 : 1,
+    return PressableScale(
+      child: Semantics(
+        button: true,
+        selected: selected,
+        child: Material(
+          color: selected ? palette.selectedTint : colors.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: AppRadii.lgAll,
+            side: BorderSide(
+              color: selected ? palette.selectedBorder : palette.border,
+              width: selected ? 1.5 : 1,
+            ),
           ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  AppSpacing.sm,
-                  AppSpacing.sm,
-                  compact ? AppSpacing.sm : AppSpacing.lg,
-                  AppSpacing.sm,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () {
+              Haptics.selection();
+              onTap();
+            },
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    AppSpacing.sm,
+                    AppSpacing.sm,
+                    compact ? AppSpacing.sm : AppSpacing.lg,
+                    AppSpacing.sm,
+                  ),
+                  child: content,
                 ),
-                child: content,
-              ),
-              if (selected)
-                const PositionedDirectional(
-                  top: 8,
-                  end: 8,
-                  child: CheckBadge(),
-                ),
-            ],
+                if (selected)
+                  const PositionedDirectional(
+                    top: 8,
+                    end: 8,
+                    child: CheckBadge(),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

@@ -16,7 +16,9 @@ import '../../features/places/presentation/screens/explore_screen.dart';
 import '../../shared/extensions/context_x.dart';
 import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/coming_soon_screen.dart';
+import '../../shared/widgets/fade_indexed_stack.dart';
 import '../session/session_controller.dart';
+import '../theme/app_motion.dart';
 import 'app_routes.dart';
 
 /// Where a user may be, given their session (pure function, unit-tested).
@@ -39,6 +41,32 @@ String? redirectFor(Session? session, String location) {
   return null;
 }
 
+/// Page transition used by every screen: the new page fades in while moving
+/// slightly from the end side (right in English, left in Arabic).
+CustomTransitionPage<void> _page(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: AppMotion.medium,
+    reverseTransitionDuration: AppMotion.medium,
+    transitionsBuilder: (context, animation, secondary, child) {
+      if (AppMotion.reduced(context)) return child;
+      final curved = CurvedAnimation(parent: animation, curve: AppMotion.enter);
+      final rtl = Directionality.of(context) == TextDirection.rtl;
+      return FadeTransition(
+        opacity: curved,
+        child: SlideTransition(
+          position: Tween(
+            begin: Offset(rtl ? -0.06 : 0.06, 0),
+            end: Offset.zero,
+          ).animate(curved),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 /// The app's single router. It re-checks [redirectFor] whenever the session
 /// changes, so screens never navigate after sign-in themselves.
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -55,30 +83,41 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', redirect: (_, _) => AppRoutes.welcome),
       GoRoute(
         path: AppRoutes.welcome,
-        builder: (_, _) => const WelcomeScreen(),
+        pageBuilder: (_, state) => _page(state, const WelcomeScreen()),
       ),
       GoRoute(
         path: AppRoutes.onboarding,
-        builder: (_, _) => const OnboardingScreen(),
+        pageBuilder: (_, state) => _page(state, const OnboardingScreen()),
       ),
-      GoRoute(path: AppRoutes.signIn, builder: (_, _) => const SignInScreen()),
-      GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpScreen()),
+      GoRoute(
+        path: AppRoutes.signIn,
+        pageBuilder: (_, state) => _page(state, const SignInScreen()),
+      ),
+      GoRoute(
+        path: AppRoutes.signUp,
+        pageBuilder: (_, state) => _page(state, const SignUpScreen()),
+      ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        builder: (_, _) => const ForgotPasswordScreen(),
+        pageBuilder: (_, state) => _page(state, const ForgotPasswordScreen()),
       ),
       GoRoute(
         path: AppRoutes.resetPassword,
-        builder: (_, state) => ResetPasswordScreen(
-          identifier: state.uri.queryParameters['identifier'] ?? '',
+        pageBuilder: (_, state) => _page(
+          state,
+          ResetPasswordScreen(
+            identifier: state.uri.queryParameters['identifier'] ?? '',
+          ),
         ),
       ),
       GoRoute(
         path: AppRoutes.personalization,
-        builder: (_, _) => const PersonalizationScreen(),
+        pageBuilder: (_, state) => _page(state, const PersonalizationScreen()),
       ),
-      StatefulShellRoute.indexedStack(
+      StatefulShellRoute(
         builder: (_, _, shell) => AppShell(navigationShell: shell),
+        navigatorContainerBuilder: (_, shell, children) =>
+            FadeIndexedStack(index: shell.currentIndex, children: children),
         branches: [
           StatefulShellBranch(
             routes: [
@@ -133,7 +172,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.gallery,
-        builder: (_, _) => const DesignSystemGalleryScreen(),
+        pageBuilder: (_, state) =>
+            _page(state, const DesignSystemGalleryScreen()),
       ),
     ],
   );
