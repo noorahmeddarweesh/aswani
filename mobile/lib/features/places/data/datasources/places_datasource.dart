@@ -7,6 +7,7 @@ abstract interface class PlacesDataSource {
   /// GET /api/places/curated
   Future<List<PlaceDto>> getCurated();
 
-  /// POST /api/bookmarks (add) or DELETE /api/bookmarks/{id} (remove).
-  Future<PlaceDto> toggleBookmark(String placeId);
+  /// POST /api/bookmarks when [saved], DELETE /api/bookmarks/{id} when not.
+  /// Returns the place with its new `is_bookmarked`.
+  Future<PlaceDto> setBookmark(String placeId, {required bool saved});
 }

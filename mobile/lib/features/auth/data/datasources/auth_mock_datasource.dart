@@ -1,7 +1,9 @@
 import '../../../../core/assets/app_images.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../core/storage/key_value_store.dart';
 import '../models/auth_response_dto.dart';
+import '../models/user_dto.dart';
 import 'auth_datasource.dart';
 
 /// In-memory stand-in for the backend, following the same contract: same
@@ -9,9 +11,15 @@ import 'auth_datasource.dart';
 ///
 /// Demo account: laila@example.com / Aswan2026. Reset code: 1234.
 class AuthMockDataSource implements AuthDataSource {
-  AuthMockDataSource({this.delay = const Duration(milliseconds: 600)});
+  AuthMockDataSource({
+    this.delay = const Duration(milliseconds: 600),
+    this.tokens,
+  });
 
   final Duration delay;
+
+  /// Saved tokens, so `me()` still knows the user after a restart.
+  final KeyValueStore? tokens;
 
   static const String demoCode = '1234';
 
@@ -25,6 +33,9 @@ class AuthMockDataSource implements AuthDataSource {
     ),
   };
   int _nextId = 2;
+
+  /// Last user who signed in or registered (stands in for the token).
+  UserDto? _current;
 
   String _key(String identifier) => identifier.trim().toLowerCase();
 
@@ -48,6 +59,12 @@ class AuthMockDataSource implements AuthDataSource {
     },
   };
 
+  AuthResponseDto _remember(Map<String, dynamic> json) {
+    final response = AuthResponseDto.fromJson(json);
+    _current = response.user;
+    return response;
+  }
+
   @override
   Future<AuthResponseDto> login({
     required String identifier,
@@ -61,7 +78,7 @@ class AuthMockDataSource implements AuthDataSource {
         statusCode: 401,
       );
     }
-    return AuthResponseDto.fromJson(
+    return _remember(
       _authJson(
         user.id,
         user.fullName,
@@ -89,7 +106,7 @@ class AuthMockDataSource implements AuthDataSource {
     }
     final id = 'u_${_nextId++}';
     _users[key] = _MockUser(id: id, fullName: fullName, password: password);
-    return AuthResponseDto.fromJson(_authJson(id, fullName, key));
+    return _remember(_authJson(id, fullName, key));
   }
 
   @override
@@ -126,7 +143,35 @@ class AuthMockDataSource implements AuthDataSource {
   }
 
   @override
-  Future<void> logout() => Future<void>.delayed(delay);
+  Future<void> logout() async {
+    await Future<void>.delayed(delay);
+    _current = null;
+  }
+
+  @override
+  Future<UserDto> me() async {
+    await Future<void>.delayed(delay);
+    var user = _current;
+    final token = await tokens?.read(StorageKeys.accessToken);
+    if (user == null && token != null && token.startsWith('mock-access-')) {
+      final id = token.substring('mock-access-'.length);
+      for (final entry in _users.entries) {
+        final u = entry.value;
+        if (u.id != id) continue;
+        user = UserDto(
+          id: u.id,
+          fullName: u.fullName,
+          identifier: entry.key,
+          hasPreferences: u.hasPreferences,
+          avatarUrl: u.avatarUrl,
+        );
+      }
+    }
+    if (user == null) {
+      throw const AppException(code: ErrorCodes.unauthorized, statusCode: 401);
+    }
+    return user;
+  }
 }
 
 class _MockUser {

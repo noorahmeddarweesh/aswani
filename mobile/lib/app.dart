@@ -5,6 +5,7 @@ import 'core/config/app_settings.dart';
 import 'core/l10n/generated/app_localizations.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/viewmodels/session_check.dart';
 import 'shared/widgets/offline_banner.dart';
 
 class AswaniApp extends ConsumerWidget {
@@ -12,6 +13,8 @@ class AswaniApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Checks the saved session with the server once, in the background.
+    ref.watch(sessionCheckProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,

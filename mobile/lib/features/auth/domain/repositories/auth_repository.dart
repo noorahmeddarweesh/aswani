@@ -24,5 +24,9 @@ abstract interface class AuthRepository {
     required String newPassword,
   });
 
+  /// The signed-in user from the server (GET /api/users/me); used on launch
+  /// to check that the saved session is still valid.
+  Future<Result<User>> currentUser();
+
   Future<void> signOut();
 }

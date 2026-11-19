@@ -1,5 +1,6 @@
 import '../../../../core/assets/app_images.dart';
 import '../../../../core/errors/app_exception.dart';
+import '../../../../core/errors/failure.dart';
 import '../models/place_dto.dart';
 import 'places_datasource.dart';
 
@@ -94,13 +95,13 @@ class PlacesMockDataSource implements PlacesDataSource {
   }
 
   @override
-  Future<PlaceDto> toggleBookmark(String placeId) async {
+  Future<PlaceDto> setBookmark(String placeId, {required bool saved}) async {
     await Future<void>.delayed(const Duration(milliseconds: 150));
     final json = _seed.where((p) => p['id'] == placeId).firstOrNull;
     if (json == null) {
-      throw const AppException(code: 'PLACE_NOT_FOUND', statusCode: 404);
+      throw const AppException(code: ErrorCodes.placeNotFound, statusCode: 404);
     }
-    if (!_bookmarks.remove(placeId)) _bookmarks.add(placeId);
+    saved ? _bookmarks.add(placeId) : _bookmarks.remove(placeId);
     return _dto(json);
   }
 }

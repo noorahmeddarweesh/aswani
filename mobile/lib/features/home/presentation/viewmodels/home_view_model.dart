@@ -16,9 +16,11 @@ class HomeViewModel extends AsyncNotifier<List<Place>> {
   }
 
   Future<void> toggleBookmark(String placeId) async {
+    final place = state.value?.where((p) => p.id == placeId).firstOrNull;
+    if (place == null) return;
     final result = await ref
         .read(placesRepositoryProvider)
-        .toggleBookmark(placeId);
+        .setBookmark(placeId, saved: !place.isBookmarked);
     if (!ref.mounted) return;
     if (result case Success(:final value)) {
       final list = state.value ?? const <Place>[];

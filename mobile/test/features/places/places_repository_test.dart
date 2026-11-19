@@ -24,14 +24,18 @@ void main() {
   });
 
   test('bookmark toggles on and off and is remembered', () async {
-    final on =
-        (await repository.toggleBookmark('philae') as Success<Place>).value;
+    final on = (await repository.setBookmark(
+      'philae',
+      saved: true,
+    ) as Success<Place>).value;
     expect(on.isBookmarked, isTrue);
     final curated =
         (await repository.getCurated() as Success<List<Place>>).value;
     expect(curated.firstWhere((p) => p.id == 'philae').isBookmarked, isTrue);
-    final off =
-        (await repository.toggleBookmark('philae') as Success<Place>).value;
+    final off = (await repository.setBookmark(
+      'philae',
+      saved: false,
+    ) as Success<Place>).value;
     expect(off.isBookmarked, isFalse);
   });
 

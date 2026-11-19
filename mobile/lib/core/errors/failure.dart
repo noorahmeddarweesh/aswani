@@ -8,6 +8,8 @@ abstract final class ErrorCodes {
   static const String emailAlreadyExists = 'EMAIL_ALREADY_EXISTS';
   static const String userNotFound = 'USER_NOT_FOUND';
   static const String invalidCode = 'INVALID_CODE';
+  static const String unauthorized = 'UNAUTHORIZED';
+  static const String placeNotFound = 'PLACE_NOT_FOUND';
   static const String noConnection = 'NO_CONNECTION';
   static const String timeout = 'TIMEOUT';
   static const String serverError = 'SERVER_ERROR';

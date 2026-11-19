@@ -1,4 +1,5 @@
 import '../models/auth_response_dto.dart';
+import '../models/user_dto.dart';
 
 /// Contract of the auth endpoints. Implemented by the mock now and by the
 /// remote (dio) data source when the backend is ready. Throws AppException.
@@ -28,4 +29,7 @@ abstract interface class AuthDataSource {
 
   /// POST /api/auth/logout
   Future<void> logout();
+
+  /// GET /api/users/me
+  Future<UserDto> me();
 }

@@ -77,9 +77,18 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
+  Future<Result<User>> currentUser() =>
+      _guard(() async => (await _dataSource.me()).toEntity());
+
+  @override
   Future<void> signOut() async {
-    await _dataSource.logout();
-    await _tokens.delete(StorageKeys.accessToken);
-    await _tokens.delete(StorageKeys.refreshToken);
+    try {
+      await _dataSource.logout();
+    } on Object {
+      // Offline or already expired: still sign out on this phone.
+    } finally {
+      await _tokens.delete(StorageKeys.accessToken);
+      await _tokens.delete(StorageKeys.refreshToken);
+    }
   }
 }

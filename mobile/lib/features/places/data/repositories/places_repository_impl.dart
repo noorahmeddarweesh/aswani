@@ -35,7 +35,9 @@ class PlacesRepositoryImpl implements PlacesRepository {
   });
 
   @override
-  Future<Result<Place>> toggleBookmark(String placeId) => _guard(
-    () async => (await _dataSource.toggleBookmark(placeId)).toEntity(),
-  );
+  Future<Result<Place>> setBookmark(String placeId, {required bool saved}) =>
+      _guard(
+        () async =>
+            (await _dataSource.setBookmark(placeId, saved: saved)).toEntity(),
+      );
 }

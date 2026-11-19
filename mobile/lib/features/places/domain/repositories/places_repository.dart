@@ -8,6 +8,6 @@ abstract interface class PlacesRepository {
   /// Places picked for the user (home "Curated for you").
   Future<Result<List<Place>>> getCurated();
 
-  /// Saves or un-saves a place; returns the updated place.
-  Future<Result<Place>> toggleBookmark(String placeId);
+  /// Saves ([saved] true) or un-saves a place; returns the updated place.
+  Future<Result<Place>> setBookmark(String placeId, {required bool saved});
 }
