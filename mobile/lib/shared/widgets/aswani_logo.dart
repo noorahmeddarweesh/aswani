@@ -46,13 +46,17 @@ class AswaniLogo extends StatelessWidget {
             ),
           ),
           SizedBox(width: size * 0.36),
-          Text(
-            context.l10n.brandName,
-            style: context.text.titleMedium?.copyWith(
-              color: word,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.6,
-              fontSize: size * 0.56,
+          Flexible(
+            child: Text(
+              context.l10n.brandName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.text.titleMedium?.copyWith(
+                color: word,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.6,
+                fontSize: size * 0.56,
+              ),
             ),
           ),
         ],

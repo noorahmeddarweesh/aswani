@@ -31,23 +31,30 @@ class AppShell extends StatelessWidget {
         ),
         child: SafeArea(
           top: false,
-          child: SizedBox(
-            height: 64,
-            child: Row(
-              children: [
-                for (var i = 0; i < items.length; i++)
-                  Expanded(
-                    child: _NavItem(
-                      icon: items.elementAt(i).$1,
-                      label: items.elementAt(i).$2,
-                      selected: navigationShell.currentIndex == i,
-                      onTap: () => navigationShell.goBranch(
-                        i,
-                        initialLocation: i == navigationShell.currentIndex,
+          // Labels grow with the system text size, but only up to 1.3x so the
+          // five tabs still fit side by side.
+          child: MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    for (var i = 0; i < items.length; i++)
+                      Expanded(
+                        child: _NavItem(
+                          icon: items.elementAt(i).$1,
+                          label: items.elementAt(i).$2,
+                          selected: navigationShell.currentIndex == i,
+                          onTap: () => navigationShell.goBranch(
+                            i,
+                            initialLocation: i == navigationShell.currentIndex,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         ),

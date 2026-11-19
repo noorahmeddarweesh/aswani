@@ -34,73 +34,91 @@ class WelcomeScreen extends ConsumerWidget {
           SafeArea(
             child: MaxWidthBox(
               maxWidth: 560,
-              child: Padding(
-                padding: AppSpacing.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: AppSpacing.md),
-                    Row(
-                      children: [
-                        const AswaniLogo(onDark: true),
-                        const Spacer(),
-                        _LanguageChip(
-                          label: l10n.switchLanguage,
-                          onTap: () =>
-                              ref.read(localeProvider.notifier).toggle(),
-                        ),
-                      ],
+              // Scrolls only when it does not fit (landscape, large text).
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  padding: AppSpacing.screenPadding,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
                     ),
-                    const Spacer(),
-                    Eyebrow(
-                      l10n.welcomeEyebrow,
-                      color: context.palette.accentGoldOnDark,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.welcomeTitle,
-                      style: context.text.displayLarge?.copyWith(
-                        color: onPhoto,
-                        fontFamily: context.isRtl
-                            ? AppTypography.arabicFamily
-                            : null,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      l10n.welcomeBody,
-                      style: context.text.bodyLarge?.copyWith(
-                        color: onPhoto.withValues(alpha: 0.88),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: onPhoto,
-                        foregroundColor: context.colors.primary,
-                      ),
-                      onPressed: () => context.push(AppRoutes.onboarding),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(l10n.startExploring),
-                          const SizedBox(width: AppSpacing.xs),
-                          const Icon(LucideIcons.arrowRightDir, size: 18),
+                          const SizedBox(height: AppSpacing.md),
+                          Row(
+                            children: [
+                              const Flexible(child: AswaniLogo(onDark: true)),
+                              const SizedBox(width: AppSpacing.sm),
+                              const Spacer(),
+                              _LanguageChip(
+                                label: l10n.switchLanguage,
+                                onTap: () =>
+                                    ref.read(localeProvider.notifier).toggle(),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Eyebrow(
+                            l10n.welcomeEyebrow,
+                            color: context.palette.accentGoldOnDark,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            l10n.welcomeTitle,
+                            style: context.text.displayLarge?.copyWith(
+                              color: onPhoto,
+                              fontFamily: context.isRtl
+                                  ? AppTypography.arabicFamily
+                                  : null,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            l10n.welcomeBody,
+                            style: context.text.bodyLarge?.copyWith(
+                              color: onPhoto.withValues(alpha: 0.88),
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xl),
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: onPhoto,
+                              foregroundColor: context.colors.primary,
+                            ),
+                            onPressed: () => context.push(AppRoutes.onboarding),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    l10n.startExploring,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(width: AppSpacing.xs),
+                                const Icon(LucideIcons.arrowRightDir, size: 18),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          Center(
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: onPhoto,
+                              ),
+                              onPressed: () => context.push(AppRoutes.signIn),
+                              child: Text(
+                                '${l10n.welcomeHaveAccount} ${l10n.welcomeSignIn}',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.md),
                         ],
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Center(
-                      child: TextButton(
-                        style: TextButton.styleFrom(foregroundColor: onPhoto),
-                        onPressed: () => context.push(AppRoutes.signIn),
-                        child: Text(
-                          '${l10n.welcomeHaveAccount} ${l10n.welcomeSignIn}',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                  ],
+                  ),
                 ),
               ),
             ),

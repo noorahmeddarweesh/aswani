@@ -17,6 +17,12 @@ void main() {
     });
   });
 
+  test('sign-up email accepts emails only', () {
+    expect(AuthValidators.email('omar@example.com'), isNull);
+    expect(AuthValidators.email('01012345678'), ValidationError.email);
+    expect(AuthValidators.email(''), ValidationError.required);
+  });
+
   test('password needs 8+ characters with letters and numbers', () {
     expect(AuthValidators.password(''), ValidationError.required);
     expect(AuthValidators.password('short1'), ValidationError.password);

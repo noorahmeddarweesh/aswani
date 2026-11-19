@@ -281,5 +281,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "fieldEmail": "Email",
+  "validationEmail": "Enter a valid email address"
 }

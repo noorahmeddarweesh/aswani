@@ -256,7 +256,13 @@ class _OptionGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final columns = context.windowSize == WindowSize.compact ? 2 : 3;
+    // One column on phones with a large system font, so words never break
+    // mid-word; two on phones; three on wider screens.
+    final largeText = MediaQuery.textScalerOf(context).scale(1) > 1.3;
+    final columns = switch (context.windowSize) {
+      WindowSize.compact => largeText ? 1 : 2,
+      _ => largeText ? 2 : 3,
+    };
     final rows = <Widget>[];
     for (var i = 0; i < children.length; i += columns) {
       final rowChildren = children.skip(i).take(columns).toList();

@@ -62,7 +62,13 @@ class PlaceListTile extends StatelessWidget {
                         color: context.palette.textSecondary,
                       ),
                       const SizedBox(width: 4),
-                      Text(place.city(lang), style: context.text.bodySmall),
+                      Flexible(
+                        child: Text(
+                          place.city(lang),
+                          overflow: TextOverflow.ellipsis,
+                          style: context.text.bodySmall,
+                        ),
+                      ),
                     ],
                   ),
                 ],

@@ -250,24 +250,24 @@ class StoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final onPhoto = context.colors.onPrimary;
-    return AspectRatio(
-      aspectRatio: 1.65,
+    // Grows with the text (large system font sizes), never shorter than 200.
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 200),
       child: ClipRRect(
         borderRadius: AppRadii.xlAll,
         child: Material(
           child: InkWell(
             onTap: onTap,
             child: Stack(
-              fit: StackFit.expand,
               children: [
-                const AppImage(AppImages.homeStory),
-                const PhotoScrim(strength: 0.8),
+                const Positioned.fill(child: AppImage(AppImages.homeStory)),
+                const Positioned.fill(child: PhotoScrim(strength: 0.8)),
                 Padding(
                   padding: const EdgeInsets.all(AppSpacing.lg),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      const SizedBox(height: 70),
                       Eyebrow(
                         l10n.homeStoryEyebrow,
                         color: context.palette.accentGoldOnDark,
@@ -282,10 +282,13 @@ class StoryCard extends StatelessWidget {
                       const SizedBox(height: AppSpacing.xs),
                       Row(
                         children: [
-                          Text(
-                            l10n.homeStoryAction,
-                            style: context.text.bodyMedium?.copyWith(
-                              color: onPhoto,
+                          Flexible(
+                            child: Text(
+                              l10n.homeStoryAction,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.text.bodyMedium?.copyWith(
+                                color: onPhoto,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 6),

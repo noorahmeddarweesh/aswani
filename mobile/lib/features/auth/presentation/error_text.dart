@@ -20,6 +20,7 @@ extension AuthErrorText on AppLocalizations {
     null => null,
     ValidationError.required => validationRequired,
     ValidationError.identifier => validationIdentifier,
+    ValidationError.email => validationEmail,
     ValidationError.password => validationPassword,
     ValidationError.passwordsMismatch => validationPasswordsMismatch,
     ValidationError.name => validationName,

@@ -3,6 +3,7 @@
 enum ValidationError {
   required,
   identifier,
+  email,
   password,
   passwordsMismatch,
   name,
@@ -25,6 +26,13 @@ abstract final class AuthValidators {
     final digits = v.replaceAll(RegExp(r'[\s-]'), '');
     if (_email.hasMatch(v) || _egyptPhone.hasMatch(digits)) return null;
     return ValidationError.identifier;
+  }
+
+  /// Sign up uses email only (design v2, 19 Nov 2026).
+  static ValidationError? email(String? value) {
+    final v = (value ?? '').trim();
+    if (v.isEmpty) return ValidationError.required;
+    return _email.hasMatch(v) ? null : ValidationError.email;
   }
 
   static ValidationError? password(String? value) {

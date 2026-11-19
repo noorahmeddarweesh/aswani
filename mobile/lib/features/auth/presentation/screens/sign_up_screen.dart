@@ -80,7 +80,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               const SizedBox(height: AppSpacing.md),
               AppTextField(
                 fieldKey: const Key('signUp.identifier'),
-                label: l10n.fieldIdentifier,
+                label: l10n.fieldEmail,
                 hint: l10n.fieldIdentifierHint,
                 controller: _identifier,
                 keyboardType: TextInputType.emailAddress,
@@ -88,7 +88,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 serverError: identifierError == null
                     ? null
                     : l10n.errorFor(identifierError),
-                validator: (v) => l10n.validation(AuthValidators.identifier(v)),
+                validator: (v) => l10n.validation(AuthValidators.email(v)),
               ),
               const SizedBox(height: AppSpacing.md),
               AppTextField(

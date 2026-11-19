@@ -78,9 +78,12 @@ class HomeScreen extends ConsumerWidget {
                                   color: context.palette.textSecondary,
                                 ),
                                 const SizedBox(width: 4),
-                                Text(
-                                  l10n.homeLocation,
-                                  style: context.text.bodyMedium,
+                                Flexible(
+                                  child: Text(
+                                    l10n.homeLocation,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: context.text.bodyMedium,
+                                  ),
                                 ),
                               ],
                             ),

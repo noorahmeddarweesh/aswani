@@ -239,21 +239,21 @@ class _EditorsPickCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = Localizations.localeOf(context).languageCode;
     final onPhoto = context.colors.onPrimary;
-    return AspectRatio(
-      aspectRatio: 16 / 10,
+    // Grows with the text (large system font sizes), never shorter than 210.
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 210),
       child: ClipRRect(
         borderRadius: AppRadii.xlAll,
         child: Stack(
-          fit: StackFit.expand,
           children: [
-            AppImage(place.imagePath),
-            const PhotoScrim(strength: 0.8),
+            Positioned.fill(child: AppImage(place.imagePath)),
+            const Positioned.fill(child: PhotoScrim(strength: 0.8)),
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  const SizedBox(height: 90),
                   Eyebrow(
                     context.l10n.exploreEditorsPick,
                     color: context.palette.accentGoldOnDark,

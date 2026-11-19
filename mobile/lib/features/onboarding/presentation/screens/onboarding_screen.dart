@@ -198,7 +198,11 @@ class _OnboardingPage extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: AppSpacing.md),
-                SizedBox(height: 360, child: hero),
+                // Smaller on short screens (small phones, landscape).
+                SizedBox(
+                  height: (constraints.maxHeight * 0.55).clamp(220, 360),
+                  child: hero,
+                ),
                 const SizedBox(height: AppSpacing.xl),
                 Eyebrow(context.l10n.onboardingEyebrow(number)),
                 const SizedBox(height: AppSpacing.xs),
