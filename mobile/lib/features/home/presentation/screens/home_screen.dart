@@ -5,6 +5,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/responsive/window_size.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../contributions/contributions_routes.dart';
+import '../../../profile/profile_routes.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
@@ -100,17 +102,24 @@ class HomeScreen extends ConsumerWidget {
                         onPressed: () => _comingSoon(context),
                       ),
                       const SizedBox(width: AppSpacing.xxs),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: context.colors.primary,
-                        child: avatar != null
-                            ? ClipOval(child: AppImage(avatar))
-                            : Text(
-                                name.isEmpty ? '?' : name.characters.first,
-                                style: context.text.titleMedium?.copyWith(
-                                  color: context.colors.onPrimary,
-                                ),
-                              ),
+                      Tooltip(
+                        message: l10n.profileTitle,
+                        child: InkWell(
+                          customBorder: const CircleBorder(),
+                          onTap: () => context.push(ProfileRoutes.profile),
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: context.colors.primary,
+                            child: avatar != null
+                                ? ClipOval(child: AppImage(avatar))
+                                : Text(
+                                    name.isEmpty ? '?' : name.characters.first,
+                                    style: context.text.titleMedium?.copyWith(
+                                      color: context.colors.onPrimary,
+                                    ),
+                                  ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -219,7 +228,7 @@ class HomeScreen extends ConsumerWidget {
                 Padding(
                   padding: AppSpacing.screenPadding,
                   child: ContributeCard(
-                    onAddActivity: () => _comingSoon(context),
+                    onAddActivity: () => context.push(ContributeRoutes.start),
                     onReportPlace: () => _comingSoon(context),
                   ),
                 ),

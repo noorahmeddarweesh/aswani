@@ -80,9 +80,12 @@ class AuthInterceptor extends QueuedInterceptor {
 
     try {
       final token = await tokens.read(StorageKeys.accessToken);
+      final data = request.data;
       final retry = request.copyWith(
         headers: {...request.headers, 'Authorization': 'Bearer $token'},
         extra: {...request.extra, _retried: true},
+        // A multipart body can be sent only once: send a fresh copy.
+        data: data is FormData ? data.clone() : data,
       );
       handler.resolve(await retryClient.fetch<dynamic>(retry));
     } on DioException catch (e) {

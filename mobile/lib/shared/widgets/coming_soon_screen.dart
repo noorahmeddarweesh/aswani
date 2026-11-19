@@ -3,8 +3,10 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/theme/app_spacing.dart';
 import '../extensions/context_x.dart';
+import 'app_top_bar.dart';
 
-/// Placeholder for tabs whose design is not ready yet.
+/// Placeholder for tabs and pages whose design is not ready yet. Shows a
+/// back button when it was opened on top of another page.
 class ComingSoonScreen extends StatelessWidget {
   const ComingSoonScreen({super.key, required this.title, this.icon});
 
@@ -13,7 +15,9 @@ class ComingSoonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final canPop = ModalRoute.of(context)?.canPop ?? false;
     return Scaffold(
+      appBar: canPop ? const AppTopBar() : null,
       body: SafeArea(
         child: Center(
           child: Padding(

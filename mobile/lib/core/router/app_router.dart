@@ -1,25 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/sign_in_screen.dart';
 import '../../features/auth/presentation/screens/sign_up_screen.dart';
+import '../../features/community/community_routes.dart';
+import '../../features/contributions/contributions_routes.dart';
+import '../../features/culture/culture_routes.dart';
 import '../../features/dev_gallery/presentation/screens/design_system_gallery_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/local_guides/guides_routes.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/onboarding/presentation/screens/welcome_screen.dart';
 import '../../features/personalization/presentation/screens/personalization_screen.dart';
-import '../../features/places/presentation/screens/explore_screen.dart';
-import '../../shared/extensions/context_x.dart';
+import '../../features/places/places_routes.dart';
+import '../../features/profile/profile_routes.dart';
 import '../../shared/widgets/app_shell.dart';
-import '../../shared/widgets/coming_soon_screen.dart';
 import '../../shared/widgets/fade_indexed_stack.dart';
 import '../session/session_controller.dart';
-import '../theme/app_motion.dart';
+import 'app_page.dart';
 import 'app_routes.dart';
+
+// Each feature registers its own routes in `<feature>_routes.dart`; this file
+// only puts them together, so two people never edit the same route list.
+// `*TabRoutes` open inside a tab (the tab bar stays); `*RootRoutes` open full
+// screen above the tabs.
 
 /// Where a user may be, given their session (pure function, unit-tested).
 ///
@@ -41,32 +48,6 @@ String? redirectFor(Session? session, String location) {
   return null;
 }
 
-/// Page transition used by every screen: the new page fades in while moving
-/// slightly from the end side (right in English, left in Arabic).
-CustomTransitionPage<void> _page(GoRouterState state, Widget child) {
-  return CustomTransitionPage<void>(
-    key: state.pageKey,
-    child: child,
-    transitionDuration: AppMotion.medium,
-    reverseTransitionDuration: AppMotion.medium,
-    transitionsBuilder: (context, animation, secondary, child) {
-      if (AppMotion.reduced(context)) return child;
-      final curved = CurvedAnimation(parent: animation, curve: AppMotion.enter);
-      final rtl = Directionality.of(context) == TextDirection.rtl;
-      return FadeTransition(
-        opacity: curved,
-        child: SlideTransition(
-          position: Tween(
-            begin: Offset(rtl ? -0.06 : 0.06, 0),
-            end: Offset.zero,
-          ).animate(curved),
-          child: child,
-        ),
-      );
-    },
-  );
-}
-
 /// The app's single router. It re-checks [redirectFor] whenever the session
 /// changes, so screens never navigate after sign-in themselves.
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -83,27 +64,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', redirect: (_, _) => AppRoutes.welcome),
       GoRoute(
         path: AppRoutes.welcome,
-        pageBuilder: (_, state) => _page(state, const WelcomeScreen()),
+        pageBuilder: (_, state) => appPage(state, const WelcomeScreen()),
       ),
       GoRoute(
         path: AppRoutes.onboarding,
-        pageBuilder: (_, state) => _page(state, const OnboardingScreen()),
+        pageBuilder: (_, state) => appPage(state, const OnboardingScreen()),
       ),
       GoRoute(
         path: AppRoutes.signIn,
-        pageBuilder: (_, state) => _page(state, const SignInScreen()),
+        pageBuilder: (_, state) => appPage(state, const SignInScreen()),
       ),
       GoRoute(
         path: AppRoutes.signUp,
-        pageBuilder: (_, state) => _page(state, const SignUpScreen()),
+        pageBuilder: (_, state) => appPage(state, const SignUpScreen()),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        pageBuilder: (_, state) => _page(state, const ForgotPasswordScreen()),
+        pageBuilder: (_, state) => appPage(state, const ForgotPasswordScreen()),
       ),
       GoRoute(
         path: AppRoutes.resetPassword,
-        pageBuilder: (_, state) => _page(
+        pageBuilder: (_, state) => appPage(
           state,
           ResetPasswordScreen(
             identifier: state.uri.queryParameters['identifier'] ?? '',
@@ -112,7 +93,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.personalization,
-        pageBuilder: (_, state) => _page(state, const PersonalizationScreen()),
+        pageBuilder: (_, state) =>
+            appPage(state, const PersonalizationScreen()),
       ),
       StatefulShellRoute(
         builder: (_, _, shell) => AppShell(navigationShell: shell),
@@ -127,53 +109,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.explore,
-                builder: (_, _) => const ExploreScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.culture,
-                builder: (context, _) => ComingSoonScreen(
-                  title: context.l10n.navCulture,
-                  icon: LucideIcons.landmark,
-                ),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.community,
-                builder: (context, _) => ComingSoonScreen(
-                  title: context.l10n.navCommunity,
-                  icon: LucideIcons.users,
-                ),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.guides,
-                builder: (context, _) => ComingSoonScreen(
-                  title: context.l10n.navGuides,
-                  icon: LucideIcons.map,
-                ),
-              ),
-            ],
-          ),
+          StatefulShellBranch(routes: exploreTabRoutes),
+          StatefulShellBranch(routes: cultureTabRoutes),
+          StatefulShellBranch(routes: communityTabRoutes),
+          StatefulShellBranch(routes: guidesTabRoutes),
         ],
       ),
+      ...communityRootRoutes,
+      ...contributeRootRoutes,
+      ...profileRootRoutes,
+      ...guidesRootRoutes,
       GoRoute(
         path: AppRoutes.gallery,
         pageBuilder: (_, state) =>
-            _page(state, const DesignSystemGalleryScreen()),
+            appPage(state, const DesignSystemGalleryScreen()),
       ),
     ],
   );

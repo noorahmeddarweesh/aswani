@@ -10,6 +10,20 @@ abstract final class ErrorCodes {
   static const String invalidCode = 'INVALID_CODE';
   static const String unauthorized = 'UNAUTHORIZED';
   static const String placeNotFound = 'PLACE_NOT_FOUND';
+
+  // Sprint 2 (contract v0.2)
+  static const String guideNotFound = 'GUIDE_NOT_FOUND';
+  static const String dateInPast = 'DATE_IN_PAST';
+  static const String alreadyApplied = 'ALREADY_APPLIED';
+  static const String postNotFound = 'POST_NOT_FOUND';
+  static const String commentNotFound = 'COMMENT_NOT_FOUND';
+  static const String storyNotFound = 'STORY_NOT_FOUND';
+  static const String forbidden = 'FORBIDDEN';
+  static const String tooManyPhotos = 'TOO_MANY_PHOTOS';
+  static const String fileTooLarge = 'FILE_TOO_LARGE';
+  static const String unsupportedFileType = 'UNSUPPORTED_FILE_TYPE';
+  static const String invalidCurrentPassword = 'INVALID_CURRENT_PASSWORD';
+  static const String deletionAlreadyRequested = 'DELETION_ALREADY_REQUESTED';
   static const String noConnection = 'NO_CONNECTION';
   static const String timeout = 'TIMEOUT';
   static const String serverError = 'SERVER_ERROR';
