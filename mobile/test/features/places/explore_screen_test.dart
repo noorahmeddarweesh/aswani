@@ -35,4 +35,36 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('No places match this filter yet.'), findsOneWidget);
   });
+
+  testWidgets('Explore bookmark and pull-to-refresh work', (tester) async {
+    final container = await pumpApp(tester);
+    container
+        .read(sessionProvider.notifier)
+        .signedIn(
+          const Session(
+            userId: 'u',
+            displayName: 'Laila',
+            hasPreferences: true,
+          ),
+        );
+    await tester.pumpAndSettle();
+    GoRouter.of(tester.element(find.byType(Scaffold).first)).go('/explore');
+    await tester.pumpAndSettle();
+
+    final saveButtons = find.byTooltip('Save place');
+    final before = saveButtons.evaluate().length;
+    await tester.tap(saveButtons.first);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.byTooltip('Save place').evaluate().length, before - 1);
+
+    await tester.fling(
+      find.byType(RefreshIndicator),
+      const Offset(0, 400),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Nubian Museum'), findsOneWidget);
+  });
 }

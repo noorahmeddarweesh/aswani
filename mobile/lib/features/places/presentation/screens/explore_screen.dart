@@ -32,6 +32,7 @@ class ExploreScreen extends ConsumerWidget {
     final filter = ref.watch(exploreViewModelProvider);
     final vm = ref.read(exploreViewModelProvider.notifier);
     final placesAsync = ref.watch(explorePlacesProvider);
+    final placesVm = ref.read(explorePlacesProvider.notifier);
     final places = applySearch(
       placesAsync.value ?? const <Place>[],
       filter.query,
@@ -57,7 +58,7 @@ class ExploreScreen extends ConsumerWidget {
       body: SafeArea(
         child: MaxWidthBox(
           child: RefreshIndicator(
-            onRefresh: vm.retry,
+            onRefresh: placesVm.retry,
             child: ListView(
               padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
               children: staggered([
@@ -164,7 +165,7 @@ class ExploreScreen extends ConsumerWidget {
                       else if (errorCode != null)
                         ErrorState(
                           message: _errorMessage(context, errorCode),
-                          onRetry: vm.retry,
+                          onRetry: placesVm.retry,
                         )
                       else if (places.isEmpty)
                         EmptyState(message: l10n.exploreEmpty)
@@ -172,7 +173,7 @@ class ExploreScreen extends ConsumerWidget {
                         for (final place in places)
                           PlaceListTile(
                             place: place,
-                            onBookmark: () => vm.toggleBookmark(place.id),
+                            onBookmark: () => placesVm.toggleBookmark(place.id),
                           ),
                     ],
                   ),

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -20,8 +21,28 @@ class AppImage extends StatelessWidget {
   final BorderRadius? borderRadius;
   final String? semanticLabel;
 
+  /// Images bundled with the app, read once at startup by [preload].
+  /// Null (tests) means "unknown": try to load and fall back on error.
+  static Set<String>? _bundled;
+
+  /// Reads the asset list so missing photos show the placeholder directly,
+  /// instead of failing to load (which floods the web console with 404s).
+  static Future<void> preload() async {
+    try {
+      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      _bundled = manifest.listAssets().toSet();
+    } on Object {
+      _bundled = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_bundled != null && !_bundled!.contains(path)) {
+      const placeholder = _ImagePlaceholder();
+      if (borderRadius == null) return placeholder;
+      return ClipRRect(borderRadius: borderRadius!, child: placeholder);
+    }
     final image = Image.asset(
       path,
       fit: fit,
