@@ -1,23 +1,24 @@
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../core/theme/app_spacing.dart';
 import '../extensions/context_x.dart';
 
-/// The option card used across personalisation (persona, purpose, stay,
-/// interests...). One widget, so every step looks identical.
-///
-/// Selected: tinted background, blue border and a check mark.
+/// Full-width option row (persona, language): icon tile, title, subtitle and
+/// a check mark when selected. [leading] replaces the icon when given.
 class SelectableOptionCard extends StatelessWidget {
   const SelectableOptionCard({
     super.key,
-    required this.icon,
     required this.title,
     required this.selected,
     required this.onTap,
+    this.icon,
+    this.leading,
     this.subtitle,
   });
 
-  final IconData icon;
+  final IconData? icon;
+  final Widget? leading;
   final String title;
   final String? subtitle;
   final bool selected;
@@ -44,21 +45,24 @@ class SelectableOptionCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minHeight: AppSpacing.minTouchTarget,
-            ),
+            constraints: const BoxConstraints(minHeight: 68),
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Container(
                     width: 40,
                     height: 40,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: palette.surfaceMuted,
                       borderRadius: AppRadii.mdAll,
                     ),
-                    child: Icon(icon, size: 20, color: colors.primary),
+                    child:
+                        leading ?? Icon(icon, size: 20, color: colors.primary),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -74,7 +78,7 @@ class SelectableOptionCard extends StatelessWidget {
                     ),
                   ),
                   if (selected)
-                    Icon(Icons.check, color: palette.selectedBorder),
+                    Icon(LucideIcons.check, color: palette.selectedBorder),
                 ],
               ),
             ),

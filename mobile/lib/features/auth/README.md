@@ -1,7 +1,7 @@
 # Authentication
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 2.
+**Status:** UI + mock data implemented (Sprint 1). Remote data source waits for the backend endpoints.
+**Planned for:** Sprint 1.
 **Owner:** _(add your name when you take this feature)_
 
 Sign in, sign up, forgot password, reset password, keeping the user signed in (JWT access + refresh tokens).

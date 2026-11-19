@@ -1,7 +1,7 @@
 # Welcome and onboarding
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 2.
+**Status:** UI implemented (Sprint 1). Static content, so no data or domain layer yet.
+**Planned for:** Sprint 1.
 **Owner:** _(add your name when you take this feature)_
 
 Welcome screen and the three "Meet Aswan" intro screens.

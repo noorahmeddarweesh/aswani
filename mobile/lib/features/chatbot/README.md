@@ -1,7 +1,7 @@
 # AI guide
 
 **Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 4 or later.
+**Planned for:** Sprint 3 or later.
 **Owner:** _(add your name when you take this feature)_
 
 Conversational AI guide and custom itinerary generation (Gemini, called through the backend).

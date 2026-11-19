@@ -1,0 +1,39 @@
+import 'dart:ui';
+
+import 'package:aswani/app.dart';
+import 'package:aswani/features/auth/auth_providers.dart';
+import 'package:aswani/features/auth/data/datasources/auth_mock_datasource.dart';
+import 'package:aswani/features/personalization/data/datasources/preferences_mock_datasource.dart';
+import 'package:aswani/features/personalization/personalization_providers.dart';
+import 'package:aswani/features/places/data/datasources/places_mock_datasource.dart';
+import 'package:aswani/features/places/places_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:flutter_test/flutter_test.dart';
+
+/// Mock data sources without network delay, so tests run fast.
+List<Override> fastMocks() => [
+  authDataSourceProvider.overrideWithValue(
+    AuthMockDataSource(delay: Duration.zero),
+  ),
+  preferencesDataSourceProvider.overrideWithValue(
+    PreferencesMockDataSource(delay: Duration.zero),
+  ),
+  placesDataSourceProvider.overrideWithValue(
+    PlacesMockDataSource(delay: Duration.zero),
+  ),
+];
+
+/// Pumps the whole app on a phone-sized screen and returns its container.
+Future<ProviderContainer> pumpApp(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(390 * 3, 844 * 3);
+  tester.view.devicePixelRatio = 3;
+  addTearDown(tester.view.reset);
+  final container = ProviderContainer(overrides: fastMocks());
+  addTearDown(container.dispose);
+  await tester.pumpWidget(
+    UncontrolledProviderScope(container: container, child: const AswaniApp()),
+  );
+  await tester.pumpAndSettle();
+  return container;
+}

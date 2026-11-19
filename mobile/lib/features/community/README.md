@@ -1,7 +1,7 @@
 # Community hub
 
 **Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 4 or later.
+**Planned for:** Sprint 3 or later.
 **Owner:** _(add your name when you take this feature)_
 
 Questions and answers, replies, upvotes, local advice.

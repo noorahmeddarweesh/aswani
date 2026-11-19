@@ -53,25 +53,31 @@ abstract final class AppTypography {
         family: displayFamily,
       ),
       // Hero titles on photos: "Let the Nile lead your story".
-      displayMedium: style(28, FontWeight.w300, primary, height: 1.2),
+      displayMedium: style(
+        28,
+        FontWeight.w400,
+        primary,
+        height: 1.2,
+        letterSpacing: -0.6,
+      ),
       // Screen titles: "Welcome back", "Explore Aswan".
       headlineLarge: style(
         28,
-        FontWeight.w300,
+        FontWeight.w400,
         primary,
         height: 1.2,
-        letterSpacing: -0.5,
+        letterSpacing: -0.8,
       ),
       // Onboarding titles: "Discover the Beauty of Aswan".
       headlineMedium: style(
         24,
-        FontWeight.w300,
+        FontWeight.w400,
         primary,
         height: 1.25,
-        letterSpacing: -0.4,
+        letterSpacing: -0.6,
       ),
       // Section titles: "Curated for you", "Popular places".
-      headlineSmall: style(20, FontWeight.w400, primary, letterSpacing: -0.3),
+      headlineSmall: style(20, FontWeight.w400, primary, letterSpacing: -0.5),
       // Card and list titles.
       titleLarge: style(18, FontWeight.w500, ink),
       titleMedium: style(15, FontWeight.w600, ink),
