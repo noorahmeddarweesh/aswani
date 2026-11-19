@@ -25,6 +25,9 @@ abstract final class AppImages {
   static const String homeStory = '$_home/story_nubian_heritage.jpg';
   static const String homeGuide = '$_home/guide_youssef.jpg';
 
+  /// Demo profile photo of the mock user (Laila).
+  static const String avatarLaila = '$_home/avatar_laila.jpg';
+
   // Places
   static const String philaeTemple = '$_places/philae_temple.jpg';
   static const String elephantineIsland = '$_places/elephantine_island.jpg';

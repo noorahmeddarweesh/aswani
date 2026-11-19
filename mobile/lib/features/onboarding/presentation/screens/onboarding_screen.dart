@@ -201,7 +201,7 @@ class _OnboardingPage extends StatelessWidget {
                 const SizedBox(height: AppSpacing.md),
                 // Smaller on short screens (small phones, landscape).
                 SizedBox(
-                  height: (constraints.maxHeight * 0.55).clamp(220, 360),
+                  height: (constraints.maxHeight * 0.6).clamp(220, 390),
                   child: hero,
                 ),
                 const SizedBox(height: AppSpacing.xl),

@@ -17,28 +17,35 @@ class Session {
     required this.userId,
     required this.displayName,
     this.hasPreferences = false,
+    this.avatarUrl,
   });
 
   factory Session.fromJson(Map<String, dynamic> json) => Session(
     userId: json['user_id'] as String,
     displayName: json['display_name'] as String,
     hasPreferences: json['has_preferences'] as bool? ?? false,
+    avatarUrl: json['avatar_url'] as String?,
   );
 
   final String userId;
   final String displayName;
   final bool hasPreferences;
 
+  /// Profile photo (asset path in mocks, URL from the API), or null.
+  final String? avatarUrl;
+
   Map<String, dynamic> toJson() => {
     'user_id': userId,
     'display_name': displayName,
     'has_preferences': hasPreferences,
+    if (avatarUrl != null) 'avatar_url': avatarUrl,
   };
 
   Session copyWith({bool? hasPreferences}) => Session(
     userId: userId,
     displayName: displayName,
     hasPreferences: hasPreferences ?? this.hasPreferences,
+    avatarUrl: avatarUrl,
   );
 }
 

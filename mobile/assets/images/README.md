@@ -1,8 +1,8 @@
 # Images
 
-Export each photo from the design file at **3x** (JPG, quality 80) and save it
-with the exact name below. The app picks it up automatically; until then it
-shows a branded placeholder.
+Photos from the designer (Sprint 1), cropped to each slot's shape and saved as
+JPG quality 80. To replace one, keep the same name and shape. A missing file
+shows a branded placeholder instead.
 
 | File | Where it appears | Shape |
 | --- | --- | --- |
@@ -19,9 +19,10 @@ shows a branded placeholder.
 | `home/home_hero_3.jpg` | Home "Near you" slideshow, image 3 | Landscape (1030 x 810) |
 | `home/story_nubian_heritage.jpg` | Home "Nubian heritage" card | Landscape (1030 x 630) |
 | `home/guide_youssef.jpg` | Home local guide card | Portrait (250 x 330) |
-| `places/philae_temple.jpg` | Place cards and lists | Landscape (650 x 420) |
-| `places/elephantine_island.jpg` | Place cards and lists | Landscape (650 x 420) |
-| `places/nubian_village.jpg` | Place cards and lists | Landscape (650 x 420) |
-| `places/nubian_museum.jpg` | Place cards and lists | Landscape (650 x 420) |
+| `home/avatar_laila.jpg` | Demo profile photo of the mock user | Square (160 x 160) |
+| `places/philae_temple.jpg` | Place cards and lists | Landscape (1035 x 660) |
+| `places/elephantine_island.jpg` | Place cards and lists | Landscape (1035 x 660) |
+| `places/nubian_village.jpg` | Place cards and lists | Landscape (1035 x 660) |
+| `places/nubian_museum.jpg` | Place cards and lists | Landscape (1035 x 660) |
 
 Add new images to `lib/core/assets/app_images.dart` and to this table.

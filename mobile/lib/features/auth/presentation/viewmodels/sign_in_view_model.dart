@@ -40,5 +40,6 @@ extension UserSession on User {
     userId: id,
     displayName: firstName,
     hasPreferences: hasPreferences,
+    avatarUrl: avatarUrl,
   );
 }

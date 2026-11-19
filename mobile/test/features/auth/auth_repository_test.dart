@@ -25,6 +25,7 @@ void main() {
     final user = (result as Success).value;
     expect(user.firstName, 'Laila');
     expect(user.hasPreferences, isTrue);
+    expect(user.avatarUrl, isNotNull);
     expect(await tokens.read(StorageKeys.accessToken), isNotNull);
     expect(await tokens.read(StorageKeys.refreshToken), isNotNull);
   });

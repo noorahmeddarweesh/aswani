@@ -27,20 +27,6 @@ class PlacesMockDataSource implements PlacesDataSource {
       'is_editors_pick': true,
     },
     {
-      'id': 'elephantine',
-      'category': 'nature',
-      'name_en': 'Elephantine Island',
-      'name_ar': 'جزيرة إلفنتين',
-      'label_en': 'Nature & local life',
-      'label_ar': 'طبيعة وحياة محلية',
-      'tagline_en': 'Nile & local life',
-      'tagline_ar': 'النيل والحياة المحلية',
-      'city_en': 'Aswan',
-      'city_ar': 'أسوان',
-      'image': AppImages.elephantineIsland,
-      'is_curated': true,
-    },
-    {
       'id': 'nubian-village',
       'category': 'nubian',
       'name_en': 'Nubian Village',
@@ -52,6 +38,20 @@ class PlacesMockDataSource implements PlacesDataSource {
       'city_en': 'Aswan',
       'city_ar': 'أسوان',
       'image': AppImages.nubianVillage,
+      'is_curated': true,
+    },
+    {
+      'id': 'elephantine',
+      'category': 'nature',
+      'name_en': 'Elephantine Island',
+      'name_ar': 'جزيرة إلفنتين',
+      'label_en': 'Nature & local life',
+      'label_ar': 'طبيعة وحياة محلية',
+      'tagline_en': 'Nile & local life',
+      'tagline_ar': 'النيل والحياة المحلية',
+      'city_en': 'Aswan',
+      'city_ar': 'أسوان',
+      'image': AppImages.elephantineIsland,
       'is_curated': true,
     },
     {
@@ -86,7 +86,11 @@ class PlacesMockDataSource implements PlacesDataSource {
   @override
   Future<List<PlaceDto>> getCurated() async {
     await Future<void>.delayed(delay);
-    return _seed.where((p) => p['is_curated'] == true).map(_dto).toList();
+    // Home shows the curated places in the editors' order.
+    const order = ['philae', 'elephantine', 'nubian-village'];
+    return [
+      for (final id in order) _dto(_seed.firstWhere((p) => p['id'] == id)),
+    ];
   }
 
   @override

@@ -33,8 +33,8 @@ class PlaceListTile extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 76,
-              height: 72,
+              width: 90,
+              height: 84,
               child: AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -45,13 +45,14 @@ class PlaceListTile extends StatelessWidget {
                   Text(
                     place.label(lang),
                     style: context.text.bodySmall?.copyWith(
+                      fontSize: 11,
                       color: context.palette.link,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     place.name(lang),
-                    style: context.text.titleLarge,
+                    style: context.text.titleLarge?.copyWith(fontSize: 16),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -68,7 +69,7 @@ class PlaceListTile extends StatelessWidget {
                         child: Text(
                           place.city(lang),
                           overflow: TextOverflow.ellipsis,
-                          style: context.text.bodySmall,
+                          style: context.text.bodySmall?.copyWith(fontSize: 11),
                         ),
                       ),
                     ],

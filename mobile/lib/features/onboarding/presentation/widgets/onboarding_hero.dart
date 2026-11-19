@@ -68,7 +68,7 @@ class OnboardingHero extends StatelessWidget {
         final archHeight = math.min(constraints.maxHeight * 0.86, 320.0);
         final archWidth = math.min(
           archHeight * 0.8,
-          constraints.maxWidth * 0.66,
+          constraints.maxWidth * 0.75,
         );
         final archRect = Rect.fromCenter(
           center: Offset(constraints.maxWidth / 2, constraints.maxHeight / 2),

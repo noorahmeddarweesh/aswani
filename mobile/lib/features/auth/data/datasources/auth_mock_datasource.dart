@@ -1,3 +1,4 @@
+import '../../../../core/assets/app_images.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../models/auth_response_dto.dart';
@@ -20,6 +21,7 @@ class AuthMockDataSource implements AuthDataSource {
       fullName: 'Laila Hassan',
       password: 'Aswan2026',
       hasPreferences: true,
+      avatarUrl: AppImages.avatarLaila,
     ),
   };
   int _nextId = 2;
@@ -31,6 +33,7 @@ class AuthMockDataSource implements AuthDataSource {
     String name,
     String identifier, {
     bool hasPreferences = false,
+    String? avatarUrl,
   }) => {
     'data': {
       'user': {
@@ -38,6 +41,7 @@ class AuthMockDataSource implements AuthDataSource {
         'full_name': name,
         'identifier': identifier,
         'has_preferences': hasPreferences,
+        'avatar_url': avatarUrl,
       },
       'access_token': 'mock-access-$id',
       'refresh_token': 'mock-refresh-$id',
@@ -63,6 +67,7 @@ class AuthMockDataSource implements AuthDataSource {
         user.fullName,
         _key(identifier),
         hasPreferences: user.hasPreferences,
+        avatarUrl: user.avatarUrl,
       ),
     );
   }
@@ -130,10 +135,12 @@ class _MockUser {
     required this.fullName,
     required this.password,
     this.hasPreferences = false,
+    this.avatarUrl,
   });
 
   final String id;
   final String fullName;
   final bool hasPreferences;
+  final String? avatarUrl;
   String password;
 }

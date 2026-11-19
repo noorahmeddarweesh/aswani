@@ -170,7 +170,8 @@ class ExploreScreen extends ConsumerWidget {
                       else if (places.isEmpty)
                         EmptyState(message: l10n.exploreEmpty)
                       else
-                        for (final place in places)
+                        // The editor's pick is already shown above.
+                        for (final place in places.where((p) => p != pick))
                           PlaceListTile(
                             place: place,
                             onBookmark: () => placesVm.toggleBookmark(place.id),
@@ -206,31 +207,42 @@ class _FilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: AnimatedContainer(
-        duration: AppMotion.short,
-        decoration: ShapeDecoration(
-          color: selected ? colors.primary : colors.surface,
-          shape: StadiumBorder(
-            side: BorderSide(
-              color: selected ? colors.primary : context.palette.border,
+    // Looks 34 pt tall like the design, but the whole 44 pt row is tappable.
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Semantics(
+          button: true,
+          selected: selected,
+          child: AnimatedContainer(
+            duration: AppMotion.short,
+            decoration: ShapeDecoration(
+              color: selected ? colors.primary : colors.surface,
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color: selected ? colors.primary : context.palette.border,
+                ),
+              ),
             ),
-          ),
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            customBorder: const StadiumBorder(),
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              child: Center(
-                child: Text(
-                  label,
-                  style: context.text.bodyMedium?.copyWith(
-                    color: selected ? colors.onPrimary : context.palette.ink,
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                customBorder: const StadiumBorder(),
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Center(
+                    child: Text(
+                      label,
+                      style: context.text.bodyMedium?.copyWith(
+                        fontSize: 13,
+                        color: selected
+                            ? colors.onPrimary
+                            : context.palette.ink,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -279,6 +291,7 @@ class _EditorsPickCard extends StatelessWidget {
                   Text(
                     place.tagline(lang),
                     style: context.text.bodyMedium?.copyWith(
+                      fontSize: 12,
                       color: onPhoto.withValues(alpha: 0.85),
                     ),
                   ),

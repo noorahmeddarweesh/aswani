@@ -8,5 +8,6 @@ extension UserMapper on UserDto {
     fullName: fullName,
     identifier: identifier,
     hasPreferences: hasPreferences,
+    avatarUrl: avatarUrl,
   );
 }

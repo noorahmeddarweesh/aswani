@@ -5,6 +5,7 @@ class User {
     required this.fullName,
     required this.identifier,
     this.hasPreferences = false,
+    this.avatarUrl,
   });
 
   final String id;
@@ -15,6 +16,9 @@ class User {
 
   /// True once the user finished the personalisation steps.
   final bool hasPreferences;
+
+  /// Profile photo, or null to show the initial.
+  final String? avatarUrl;
 
   String get firstName => fullName.trim().split(' ').first;
 }

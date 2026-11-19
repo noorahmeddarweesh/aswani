@@ -38,20 +38,33 @@ class AppImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_bundled != null && !_bundled!.contains(path)) {
+    final network = path.startsWith('http');
+    if (!network && _bundled != null && !_bundled!.contains(path)) {
       const placeholder = _ImagePlaceholder();
       if (borderRadius == null) return placeholder;
       return ClipRRect(borderRadius: borderRadius!, child: placeholder);
     }
-    final image = Image.asset(
-      path,
-      fit: fit,
-      width: double.infinity,
-      height: double.infinity,
-      semanticLabel: semanticLabel,
-      excludeFromSemantics: semanticLabel == null,
-      errorBuilder: (context, error, stackTrace) => const _ImagePlaceholder(),
-    );
+    final image = network
+        ? Image.network(
+            path,
+            fit: fit,
+            width: double.infinity,
+            height: double.infinity,
+            semanticLabel: semanticLabel,
+            excludeFromSemantics: semanticLabel == null,
+            errorBuilder: (context, error, stackTrace) =>
+                const _ImagePlaceholder(),
+          )
+        : Image.asset(
+            path,
+            fit: fit,
+            width: double.infinity,
+            height: double.infinity,
+            semanticLabel: semanticLabel,
+            excludeFromSemantics: semanticLabel == null,
+            errorBuilder: (context, error, stackTrace) =>
+                const _ImagePlaceholder(),
+          );
     if (borderRadius == null) return image;
     return ClipRRect(borderRadius: borderRadius!, child: image);
   }

@@ -8,6 +8,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/circle_icon_button.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/state_views.dart';
@@ -27,7 +28,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final name = ref.watch(sessionProvider)?.displayName ?? '';
+    final session = ref.watch(sessionProvider);
+    final name = session?.displayName ?? '';
+    final avatar = session?.avatarUrl;
     final curated = ref.watch(homeViewModelProvider);
     final greeting = switch (dayPartOf(DateTime.now())) {
       DayPart.morning => l10n.homeGreetingMorning(name),
@@ -100,12 +103,14 @@ class HomeScreen extends ConsumerWidget {
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: context.colors.primary,
-                        child: Text(
-                          name.isEmpty ? '?' : name.characters.first,
-                          style: context.text.titleMedium?.copyWith(
-                            color: context.colors.onPrimary,
-                          ),
-                        ),
+                        child: avatar != null
+                            ? ClipOval(child: AppImage(avatar))
+                            : Text(
+                                name.isEmpty ? '?' : name.characters.first,
+                                style: context.text.titleMedium?.copyWith(
+                                  color: context.colors.onPrimary,
+                                ),
+                              ),
                       ),
                     ],
                   ),

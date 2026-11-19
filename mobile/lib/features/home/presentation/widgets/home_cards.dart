@@ -224,7 +224,7 @@ class CuratedPlaceCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               place.name(lang),
-              style: context.text.titleLarge,
+              style: context.text.titleLarge?.copyWith(fontSize: 16),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
