@@ -8,6 +8,8 @@ import '../../../../core/responsive/window_size.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../core/theme/app_motion.dart';
+import '../../../../shared/widgets/app_shell.dart';
 import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../../community_routes.dart';
@@ -22,9 +24,31 @@ import '../widgets/post_widgets.dart';
 
 /// Community tab, Instagram-style: the header hides as the feed scrolls
 /// down and comes back on a small scroll up; the story circles scroll with
-/// the posts. Pull to refresh; the next page loads near the end.
-class CommunityScreen extends ConsumerWidget {
+/// the posts. Tap the header, or the Community tab again, to go back to
+/// the top. Pull to refresh; the next page loads near the end.
+class CommunityScreen extends ConsumerStatefulWidget {
   const CommunityScreen({super.key});
+
+  @override
+  ConsumerState<CommunityScreen> createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends ConsumerState<CommunityScreen> {
+  final _scroll = ScrollController();
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  /// Back to the stories, however far down the feed is.
+  void _toTop() {
+    if (!_scroll.hasClients || _scroll.offset == 0) return;
+    // Long feeds jump close first, so the ride up stays short.
+    if (_scroll.offset > 3000) _scroll.jumpTo(1500);
+    _scroll.animateTo(0, duration: AppMotion.medium, curve: AppMotion.standard);
+  }
 
   Future<void> _newMoment(BuildContext context) async {
     final l10n = context.l10n;
@@ -60,7 +84,10 @@ class CommunityScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    ref.listen(tabReselectProvider, (_, next) {
+      if (next.$1 == AppTabs.community) _toTop();
+    });
     final l10n = context.l10n;
     final feed = ref.watch(communityFeedProvider);
     final vm = ref.read(communityFeedProvider.notifier);
@@ -157,9 +184,13 @@ class CommunityScreen extends ConsumerWidget {
                 return false;
               },
               child: CustomScrollView(
+                controller: _scroll,
                 slivers: [
                   SliverFloatingHeader(
-                    child: CommunityHeader(onNewPost: newPost),
+                    child: CommunityHeader(
+                      onNewPost: newPost,
+                      onTitleTap: _toTop,
+                    ),
                   ),
                   SliverToBoxAdapter(child: stories),
                   SliverList.list(children: posts),

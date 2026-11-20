@@ -9,9 +9,16 @@ import '../../../../shared/widgets/eyebrow.dart';
 /// "From people, for people / Aswani community" with the New post button.
 /// It hides as the feed scrolls down and comes back on a small scroll up.
 class CommunityHeader extends StatelessWidget {
-  const CommunityHeader({super.key, required this.onNewPost});
+  const CommunityHeader({
+    super.key,
+    required this.onNewPost,
+    required this.onTitleTap,
+  });
 
   final VoidCallback onNewPost;
+
+  /// Tapping the title scrolls the feed back to the top.
+  final VoidCallback onTitleTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +44,27 @@ class CommunityHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Eyebrow(l10n.communityEyebrow, color: context.palette.link),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(l10n.communityTitle, style: context.text.headlineLarge),
-                ],
+              child: Semantics(
+                button: true,
+                hint: l10n.communityBackToTop,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: onTitleTap,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Eyebrow(
+                        l10n.communityEyebrow,
+                        color: context.palette.link,
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        l10n.communityTitle,
+                        style: context.text.headlineLarge,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             Tooltip(

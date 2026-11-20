@@ -99,6 +99,37 @@ void main() {
     expect(feedPost.commentCount, 4);
   });
 
+  testWidgets('tap the header or the tab again: back to the stories', (
+    tester,
+  ) async {
+    final container = await _signedIn(tester);
+    container.read(appRouterProvider).go('/community');
+    await tester.pumpAndSettle();
+    final feed = find.byType(CustomScrollView);
+    double offset() => tester
+        .state<ScrollableState>(find.byType(Scrollable).first)
+        .position
+        .pixels;
+
+    await tester.drag(feed, const Offset(0, -2500));
+    await tester.pumpAndSettle();
+    expect(find.text('Your moment'), findsNothing);
+    // A small scroll up shows the header again.
+    await tester.drag(feed, const Offset(0, 80));
+    await tester.pumpAndSettle();
+    expect(find.text('Aswani community'), findsOneWidget);
+    await tester.tap(find.text('Aswani community'));
+    await tester.pumpAndSettle();
+    expect(offset(), 0);
+    expect(find.text('Your moment'), findsOneWidget);
+
+    await tester.drag(feed, const Offset(0, -2500));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Community'));
+    await tester.pumpAndSettle();
+    expect(offset(), 0);
+  });
+
   testWidgets('a story circle opens its moments full screen', (tester) async {
     final container = await _signedIn(tester);
     final router = container.read(appRouterProvider)..go('/community');

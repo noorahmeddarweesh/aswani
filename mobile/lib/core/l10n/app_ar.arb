@@ -20,6 +20,7 @@
   "communityAddPhotosSubtitle": "اختر حتى 6 صور",
   "communityAddPhotosTitle": "أضف صور رحلتك",
   "communityAppreciations": "{count, plural, =0{لا تقديرات بعد} =1{تقدير واحد} =2{تقديران} few{{count} تقديرات} many{{count} تقديرًا} other{{count} تقدير}}",
+  "communityBackToTop": "العودة إلى الأعلى",
   "communityCaptionHint": "ما القصة وراء هذه اللحظة؟",
   "communityCaptionLabel": "اكتب وصفًا",
   "communityCatFood": "الطعام",
