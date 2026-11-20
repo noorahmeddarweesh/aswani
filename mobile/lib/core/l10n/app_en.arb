@@ -84,6 +84,65 @@
   "communityUnsave": "Remove from saved",
   "communityYourMoment": "Your moment",
   "continueLabel": "Continue",
+  "contributeAddActivity": "Add an activity",
+  "contributeAddress": "Address or location",
+  "contributeAddressHint": "Area or nearest landmark",
+  "contributeBody": "Share your business or a local activity and help people discover more of Aswan.",
+  "contributeCatCafe": "Café",
+  "contributeCatClinic": "Clinic",
+  "contributeCategory": "Category",
+  "contributeCatEntertainment": "Entertainment",
+  "contributeCatMaintenance": "Maintenance",
+  "contributeCatOther": "Other",
+  "contributeCatRestaurant": "Restaurant",
+  "contributeChooseCategory": "Choose a category",
+  "contributeContact": "Contact number (optional)",
+  "contributeContactNote": "Contact details or hours will not be shown as verified before review.",
+  "contributeDescription": "Short description",
+  "contributeDescriptionHint": "What makes this place special?",
+  "contributeDetailsTitle": "Activity details",
+  "contributeEdit": "Edit details",
+  "contributeErrorName": "Enter the name (at least 2 letters).",
+  "contributeErrorPhone": "Enter an Egyptian mobile number, e.g. 01012345678.",
+  "contributeErrorRequired": "This field is required.",
+  "contributeEyebrow": "A COMMUNITY-BUILT GUIDE",
+  "contributeMine": "Added activities",
+  "contributeMineEmpty": "Places you add will appear here.",
+  "contributeName": "Activity name",
+  "contributeNameHint": "Name people know it by",
+  "contributeNoPhotos": "No photos",
+  "contributePhotosSubtitle": "Optional • up to 6 photos",
+  "contributePhotosTitle": "Add clear photos",
+  "contributePoints": "+{points} points",
+  "@contributePoints": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "contributePreviewBody": "Check the details before you send them for review.",
+  "contributePreviewSubmit": "Preview & submit",
+  "contributePreviewTitle": "Preview",
+  "contributeReceivedBody": "Thank you for helping people discover more of Aswan. We'll review the information before it appears in the directory.",
+  "contributeReceivedTitle": "Contribution received",
+  "contributeReviewedNote": "Every contribution is reviewed before publication.",
+  "contributeStatusAccepted": "Published",
+  "contributeStatusPending": "Under review",
+  "contributeStatusRejected": "Not accepted",
+  "contributeStep": "Step {current} of {total}",
+  "@contributeStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "contributeSubmit": "Submit contribution",
+  "contributeTitle": "Make your place part of ASWANI",
   "createAccountButton": "Create account",
   "createAccountLink": "Create an account",
   "cultureAllStories": "All stories",

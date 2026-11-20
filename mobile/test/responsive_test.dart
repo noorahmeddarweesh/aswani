@@ -21,6 +21,11 @@ const sprint2Routes = [
   '/culture/stories/s_homes',
   '/culture/stories?theme=traditions',
   '/culture/saved',
+  '/contribute',
+  '/contribute/details',
+  '/contribute/preview',
+  '/contribute/done',
+  '/contribute/mine',
 ];
 
 void main() {
