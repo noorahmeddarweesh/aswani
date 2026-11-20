@@ -6,4 +6,4 @@
 
 **Screens:** Choose a category, Activity details with photos, Preview, Contribution received, Added activities.
 
-**Routes:** /contribute, /contribute/details, /contribute/mine (registered in this folder's `*_routes.dart`).
+**Routes:** /contribute, /contribute/details, /contribute/preview, /contribute/done, /contribute/mine (registered in this folder's `*_routes.dart`).

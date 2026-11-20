@@ -23,7 +23,8 @@ void main() {
 
     await tester.tap(find.byTooltip('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('Profile'), findsWidgets);
+    expect(find.text('Laila Hassan'), findsOneWidget);
+    expect(find.byTooltip('Settings'), findsOneWidget);
     expect(find.byTooltip('Back'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Back'));

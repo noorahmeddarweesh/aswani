@@ -6,6 +6,8 @@ import 'package:aswani/features/community/data/datasources/community_mock_dataso
 import 'package:aswani/features/contributions/contributions_providers.dart';
 import 'package:aswani/features/contributions/data/datasources/contributions_mock_datasource.dart';
 import 'package:aswani/features/culture/culture_providers.dart';
+import 'package:aswani/features/profile/data/datasources/profile_mock_datasource.dart';
+import 'package:aswani/features/profile/profile_providers.dart';
 import 'package:aswani/features/culture/data/datasources/culture_mock_datasource.dart';
 import 'package:aswani/core/network/connectivity.dart';
 import 'package:aswani/features/auth/auth_providers.dart';
@@ -39,6 +41,9 @@ List<Override> fastMocks({Stream<bool>? network}) => [
   ),
   contributionsDataSourceProvider.overrideWithValue(
     ContributionsMockDataSource(delay: Duration.zero),
+  ),
+  profileDataSourceProvider.overrideWithValue(
+    ProfileMockDataSource(delay: Duration.zero),
   ),
 ];
 

@@ -338,6 +338,8 @@
   },
   "optional": "Optional",
   "passwordUpdated": "Password updated. Sign in with your new password.",
+  "personalizationSave": "Save changes",
+  "personalizationSaved": "Your preferences were saved.",
   "personaNewcomerSubtitle": "Newcomer",
   "personaNewcomerTitle": "I'm new to Aswan",
   "personaResidentSubtitle": "Local resident",
@@ -355,7 +357,47 @@
     }
   },
   "photosRemove": "Remove photo",
+  "profileChangePhoto": "Change profile photo",
+  "profileContributions": "My contributions",
+  "profileDetails": "Details",
+  "profileEditProfile": "Edit profile",
+  "profileFilterAll": "All",
+  "profileFilterPlaces": "Places",
+  "profileFilterStories": "Stories",
+  "profileGuideRequests": "Guide requests",
+  "profileGuideRequestsPending": "{count} pending",
+  "@profileGuideRequestsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profilePhotoUpdated": "Profile photo updated.",
+  "profilePointsEarned": "{count, plural, =1{1 point earned} other{{count} points earned}}",
+  "@profilePointsEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileReportsUnderReview": "{count, plural, =0{No reports under review} =1{1 report under review} other{{count} reports under review}}",
+  "@profileReportsUnderReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileSavedContent": "My saved content",
+  "profileSavedEmpty": "Nothing saved yet. Save a place or a story and it will appear here.",
+  "profileStatPoints": "Points",
+  "profileStatPosts": "Posts",
+  "profileStatSavedPlaces": "Saved places",
+  "profileStatSavedStories": "Saved stories",
   "profileTitle": "Profile",
+  "profileViewAll": "View all",
   "purposeFamilySubtitle": "Spending time with loved ones",
   "purposeFamilyTitle": "Visiting family",
   "purposeLivingSubtitle": "I moved or plan to stay",
@@ -389,6 +431,39 @@
   "savePassword": "Save password",
   "seeAll": "See all",
   "sendCode": "Send verification code",
+  "settingsAbout": "About ASWANI",
+  "settingsAccount": "ACCOUNT",
+  "settingsAppPreferences": "APP PREFERENCES",
+  "settingsChangePassword": "Change password",
+  "settingsDeleteAccount": "Delete account",
+  "settingsDeleteConfirm": "Request deletion",
+  "settingsDeleteMessage": "This will request deletion of your data. It cannot be undone once completed.",
+  "settingsDeleteTitle": "Delete account?",
+  "settingsEmailContact": "Email & contact",
+  "settingsHelp": "Help center",
+  "settingsInterests": "Interests & personalization",
+  "settingsLanguage": "App language",
+  "settingsLanguageHint": "Layout direction updates instantly",
+  "settingsLocation": "Location permissions",
+  "settingsLocationInfo": "Aswani asks for your location only when a feature needs it. You can change this any time in your phone's settings.",
+  "settingsLogOut": "Log out",
+  "settingsLogOutMessage": "You can sign in again any time with the same account.",
+  "settingsLogOutTitle": "Log out?",
+  "settingsNotifications": "Notifications",
+  "settingsPrivacy": "Privacy settings",
+  "settingsPrivacySecurity": "PRIVACY & SECURITY",
+  "settingsSecurity": "Account security",
+  "settingsSupport": "SUPPORT",
+  "settingsTerms": "Terms & privacy",
+  "settingsTitle": "Settings",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "share": "Share",
   "showPassword": "Show password",
   "signInButton": "Sign in",
