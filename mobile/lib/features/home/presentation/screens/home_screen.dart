@@ -6,6 +6,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/responsive/window_size.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../contributions/contributions_routes.dart';
+import '../../../culture/culture_routes.dart';
 import '../../../profile/profile_routes.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -208,7 +209,9 @@ class HomeScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Padding(
                   padding: AppSpacing.screenPadding,
-                  child: StoryCard(onTap: () => context.go(AppRoutes.culture)),
+                  child: StoryCard(
+                    onTap: () => context.go(CultureRoutes.story('s_homes')),
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 Padding(

@@ -86,6 +86,40 @@
   "continueLabel": "Continue",
   "createAccountButton": "Create account",
   "createAccountLink": "Create an account",
+  "cultureAllStories": "All stories",
+  "cultureBrowseByTheme": "Browse by theme",
+  "cultureEmpty": "No stories in this theme yet.",
+  "cultureMinRead": "{minutes} min read",
+  "@cultureMinRead": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "cultureReadStory": "Read story",
+  "cultureSample": "Sample",
+  "cultureSampleContent": "Sample content",
+  "cultureSampleEditorial": "Sample editorial",
+  "cultureSave": "Save story",
+  "cultureSaved": "Saved",
+  "cultureSavedEmpty": "Stories you save will appear here.",
+  "cultureSavedReads": "Saved reads",
+  "cultureSelectedReads": "Selected reads",
+  "cultureShareText": "{title}\n\nRead it on Aswani",
+  "@cultureShareText": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cultureStoryTitle": "Cultural story",
+  "cultureThemeAncientHistory": "Ancient history",
+  "cultureThemeArtsCrafts": "Arts & crafts",
+  "cultureThemeNubianHeritage": "Nubian heritage",
+  "cultureThemeTraditions": "Traditions",
+  "cultureUnsave": "Remove from saved",
   "delete": "Delete",
   "done": "Done",
   "errorAlreadyApplied": "You have already applied to be a guide.",

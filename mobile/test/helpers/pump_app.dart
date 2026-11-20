@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:aswani/app.dart';
 import 'package:aswani/features/community/community_providers.dart';
 import 'package:aswani/features/community/data/datasources/community_mock_datasource.dart';
+import 'package:aswani/features/culture/culture_providers.dart';
+import 'package:aswani/features/culture/data/datasources/culture_mock_datasource.dart';
 import 'package:aswani/core/network/connectivity.dart';
 import 'package:aswani/features/auth/auth_providers.dart';
 import 'package:aswani/features/auth/data/datasources/auth_mock_datasource.dart';
@@ -29,6 +31,9 @@ List<Override> fastMocks({Stream<bool>? network}) => [
   ),
   communityDataSourceProvider.overrideWithValue(
     CommunityMockDataSource(delay: Duration.zero),
+  ),
+  cultureDataSourceProvider.overrideWithValue(
+    CultureMockDataSource(delay: Duration.zero),
   ),
 ];
 

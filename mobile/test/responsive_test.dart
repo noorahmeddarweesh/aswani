@@ -17,6 +17,10 @@ const sprint2Routes = [
   '/community/new',
   '/community/posts/p_sunset',
   '/community/mine',
+  '/culture',
+  '/culture/stories/s_homes',
+  '/culture/stories?theme=traditions',
+  '/culture/saved',
 ];
 
 void main() {
