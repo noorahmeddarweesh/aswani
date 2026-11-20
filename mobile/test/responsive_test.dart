@@ -11,6 +11,28 @@ import 'helpers/pump_app.dart';
 
 /// Every main screen must lay out without overflow on a small phone, with
 /// the largest common system font, on a tablet and in landscape.
+/// Sprint 2 screens checked at every size (each feature adds its routes).
+const sprint2Routes = [
+  '/community',
+  '/community/new',
+  '/community/posts/p_sunset',
+  '/community/mine',
+  '/culture',
+  '/culture/stories/s_homes',
+  '/culture/stories?theme=traditions',
+  '/culture/saved',
+  '/contribute',
+  '/contribute/details',
+  '/contribute/preview',
+  '/contribute/done',
+  '/contribute/mine',
+  '/contribute/edit/k_1',
+  '/profile',
+  '/profile/saved',
+  '/profile/settings',
+  '/profile/settings/interests',
+];
+
 void main() {
   const configs = <(String, Size, double)>[
     ('small phone', Size(360, 640), 1),
@@ -57,7 +79,7 @@ void main() {
         await visit(route);
       }
 
-      session.signedIn(const Session(userId: 'u', displayName: 'Laila'));
+      session.signedIn(const Session(userId: 'u_1', displayName: 'Laila'));
       await tester.pumpAndSettle();
       await visit(AppRoutes.personalization);
 
@@ -65,6 +87,11 @@ void main() {
       await tester.pumpAndSettle();
       await visit(AppRoutes.home);
       await visit(AppRoutes.explore);
+
+      // Sprint 2 (Person B)
+      for (final route in sprint2Routes) {
+        await visit(route);
+      }
     });
   }
 }

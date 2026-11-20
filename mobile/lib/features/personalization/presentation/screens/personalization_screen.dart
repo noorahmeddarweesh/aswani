@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/responsive/window_size.dart';
@@ -20,12 +21,28 @@ import '../../../../shared/widgets/motion.dart';
 class PersonalizationScreen extends ConsumerWidget {
   const PersonalizationScreen({super.key});
 
+  /// Pops this page (Settings > Interests): first step's back, and Save.
+  void _leave(BuildContext context) {
+    if (context.canPop()) context.pop();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final state = ref.watch(personalizationViewModelProvider);
     final vm = ref.read(personalizationViewModelProvider.notifier);
     final step = state.step;
+    final editing = state.editing;
+    ref.listen(personalizationViewModelProvider.select((s) => s.saved), (
+      _,
+      saved,
+    ) {
+      if (!saved) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(l10n.personalizationSaved)));
+      _leave(context);
+    });
 
     final titles = [
       (l10n.step1Title, l10n.step1Subtitle),
@@ -61,7 +78,11 @@ class PersonalizationScreen extends ConsumerWidget {
                     children: [
                       CircleIconButton.back(
                         tooltip: l10n.back,
-                        onPressed: step == 0 ? null : vm.back,
+                        onPressed: step > 0
+                            ? vm.back
+                            : editing
+                            ? () => _leave(context)
+                            : null,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Expanded(
@@ -118,9 +139,11 @@ class PersonalizationScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(AppSpacing.screen),
                   child: PrimaryButton(
-                    label: state.isLast
-                        ? l10n.startExploring
-                        : l10n.continueLabel,
+                    label: !state.isLast
+                        ? l10n.continueLabel
+                        : editing
+                        ? l10n.personalizationSave
+                        : l10n.startExploring,
                     showArrow: true,
                     loading: state.submitting,
                     onPressed: state.hasAnswer ? vm.next : null,

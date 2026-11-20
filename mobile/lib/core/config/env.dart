@@ -20,4 +20,8 @@ abstract final class Env {
   );
 
   static const String mapboxToken = String.fromEnvironment('MAPBOX_TOKEN');
+
+  /// Shown in Settings > About. Keep in step with `version:` in pubspec.yaml
+  /// (test/core/config/env_test.dart checks it).
+  static const String appVersion = '0.1.0';
 }

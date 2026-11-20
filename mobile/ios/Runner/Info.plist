@@ -66,6 +66,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aswani uses your photos only when you add them to a post, a contribution or your profile.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aswani uses the camera only when you take a photo for a post, a contribution or your profile.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>

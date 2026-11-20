@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Strings sorted (fewer merge conflicts)
+        run: dart run tool/sort_arb.dart --check
+
       - name: Generate localisations
         run: flutter gen-l10n
 

@@ -1,6 +1,14 @@
 import 'dart:ui';
 
 import 'package:aswani/app.dart';
+import 'package:aswani/features/community/community_providers.dart';
+import 'package:aswani/features/community/data/datasources/community_mock_datasource.dart';
+import 'package:aswani/features/contributions/contributions_providers.dart';
+import 'package:aswani/features/contributions/data/datasources/contributions_mock_datasource.dart';
+import 'package:aswani/features/culture/culture_providers.dart';
+import 'package:aswani/features/profile/data/datasources/profile_mock_datasource.dart';
+import 'package:aswani/features/profile/profile_providers.dart';
+import 'package:aswani/features/culture/data/datasources/culture_mock_datasource.dart';
 import 'package:aswani/core/network/connectivity.dart';
 import 'package:aswani/features/auth/auth_providers.dart';
 import 'package:aswani/features/auth/data/datasources/auth_mock_datasource.dart';
@@ -25,15 +33,32 @@ List<Override> fastMocks({Stream<bool>? network}) => [
   placesDataSourceProvider.overrideWithValue(
     PlacesMockDataSource(delay: Duration.zero),
   ),
+  communityDataSourceProvider.overrideWithValue(
+    CommunityMockDataSource(delay: Duration.zero),
+  ),
+  cultureDataSourceProvider.overrideWithValue(
+    CultureMockDataSource(delay: Duration.zero),
+  ),
+  contributionsDataSourceProvider.overrideWithValue(
+    ContributionsMockDataSource(delay: Duration.zero),
+  ),
+  profileDataSourceProvider.overrideWithValue(
+    ProfileMockDataSource(delay: Duration.zero),
+  ),
 ];
 
 /// Pumps the whole app on a phone-sized screen and returns its container.
-Future<ProviderContainer> pumpApp(WidgetTester tester) async {
+Future<ProviderContainer> pumpApp(
+  WidgetTester tester, {
+  List<Override> overrides = const [],
+}) async {
   tester.view.physicalSize = const Size(390 * 3, 844 * 3);
   tester.view.devicePixelRatio = 3;
   addTearDown(tester.view.reset);
   reduceMotion(tester);
-  final container = ProviderContainer(overrides: fastMocks());
+  final container = ProviderContainer(
+    overrides: [...fastMocks(), ...overrides],
+  );
   addTearDown(container.dispose);
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const AswaniApp()),

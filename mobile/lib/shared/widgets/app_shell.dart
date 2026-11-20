@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
@@ -8,26 +9,48 @@ import '../../core/theme/app_spacing.dart';
 import '../extensions/context_x.dart';
 import 'motion.dart';
 
+/// Positions of the five tabs, in bar order.
+abstract final class AppTabs {
+  static const int home = 0;
+  static const int explore = 1;
+  static const int culture = 2;
+  static const int community = 3;
+  static const int guides = 4;
+}
+
+/// Tapping the tab you are already on: the tab's screen scrolls back to
+/// the top, as in Instagram. Holds the tab and a counter so every tap is
+/// a new event.
+class TabReselect extends Notifier<(int, int)> {
+  @override
+  (int, int) build() => (-1, 0);
+
+  void tap(int index) => state = (index, state.$2 + 1);
+}
+
+final tabReselectProvider = NotifierProvider<TabReselect, (int, int)>(
+  TabReselect.new,
+);
+
 /// Navigation around the five main tabs.
 ///
 /// Phones: bottom bar, the active tab marked by a gold bar above its icon.
 /// Tablets and landscape (600 px and wider): a side rail, marked the same way
 /// on its start edge.
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
-  void _select(int index) {
-    if (index != navigationShell.currentIndex) Haptics.selection();
-    navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void select(int index) {
+      final again = index == navigationShell.currentIndex;
+      if (!again) Haptics.selection();
+      navigationShell.goBranch(index, initialLocation: again);
+      if (again) ref.read(tabReselectProvider.notifier).tap(index);
+    }
+
     final l10n = context.l10n;
     final items = [
       (LucideIcons.house, l10n.navHome),
@@ -44,7 +67,7 @@ class AppShell extends StatelessWidget {
           label: items.elementAt(i).$2,
           selected: navigationShell.currentIndex == i,
           vertical: vertical,
-          onTap: () => _select(i),
+          onTap: () => select(i),
         ),
     ];
 
