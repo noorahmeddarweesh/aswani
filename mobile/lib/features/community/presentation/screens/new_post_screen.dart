@@ -11,6 +11,8 @@ import '../../../../shared/widgets/app_top_bar.dart';
 import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/photo_picker_field.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../../../core/network/upload.dart';
+import '../../community_routes.dart';
 import '../../domain/entities/post.dart';
 import '../viewmodels/new_post_view_model.dart';
 import '../widgets/community_labels.dart';
@@ -18,7 +20,10 @@ import '../widgets/community_labels.dart';
 /// "New post": up to 6 photos, a caption, an optional location and the
 /// category. Publish is enabled once there is a photo and a caption.
 class NewPostScreen extends ConsumerStatefulWidget {
-  const NewPostScreen({super.key});
+  const NewPostScreen({super.key, this.source});
+
+  /// "Share your moment": open the camera or the gallery at once.
+  final MomentSource? source;
 
   @override
   ConsumerState<NewPostScreen> createState() => _NewPostScreenState();
@@ -26,6 +31,35 @@ class NewPostScreen extends ConsumerStatefulWidget {
 
 class _NewPostScreenState extends ConsumerState<NewPostScreen> {
   final _caption = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.source != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _pickFirst());
+    }
+  }
+
+  Future<void> _pickFirst() async {
+    final photos = switch (widget.source!) {
+      MomentSource.camera => [?await ref.read(takePhotoProvider)()],
+      MomentSource.gallery => await ref.read(pickPhotosProvider)(
+        UploadRules.maxPhotos,
+      ),
+    };
+    if (!mounted || photos.isEmpty) return;
+    final accepted = [
+      for (final p in photos)
+        if (checkUpload(p) == null) p,
+    ];
+    if (accepted.length < photos.length) {
+      final problem = photos.map(checkUpload).nonNulls.first;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.errorFor(problem))));
+    }
+    ref.read(newPostProvider.notifier).setPhotos(accepted);
+  }
 
   @override
   void dispose() {

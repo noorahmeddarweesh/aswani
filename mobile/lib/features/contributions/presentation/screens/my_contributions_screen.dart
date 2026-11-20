@@ -86,6 +86,7 @@ class _ContributionTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.sm),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconBadge(icon: item.category.icon, size: 44),
               const SizedBox(width: AppSpacing.sm),
@@ -99,38 +100,48 @@ class _ContributionTile extends StatelessWidget {
                       '${relativeTime(l10n, item.createdAt)}',
                       style: context.text.bodySmall,
                     ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    // Status and points wrap under the name on narrow
+                    // screens and large text.
+                    Wrap(
+                      spacing: AppSpacing.xs,
+                      runSpacing: 2,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xs,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: accepted
+                                ? palette.successTint
+                                : palette.accentGold.withValues(alpha: 0.15),
+                            borderRadius: AppRadii.pillAll,
+                          ),
+                          child: Text(
+                            item.status.label(l10n),
+                            style: context.text.labelSmall?.copyWith(
+                              color: accepted ? palette.success : palette.ink,
+                            ),
+                          ),
+                        ),
+                        if (item.pointsAwarded > 0)
+                          Text(
+                            l10n.contributePoints(item.pointsAwarded),
+                            style: context.text.bodySmall?.copyWith(
+                              color: palette.accentGold,
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xs,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: accepted
-                          ? palette.successTint
-                          : palette.accentGold.withValues(alpha: 0.15),
-                      borderRadius: AppRadii.pillAll,
-                    ),
-                    child: Text(
-                      item.status.label(l10n),
-                      style: context.text.labelSmall?.copyWith(
-                        color: accepted ? palette.success : palette.ink,
-                      ),
-                    ),
-                  ),
-                  if (item.pointsAwarded > 0)
-                    Text(
-                      l10n.contributePoints(item.pointsAwarded),
-                      style: context.text.bodySmall?.copyWith(
-                        color: palette.accentGold,
-                      ),
-                    ),
-                ],
+              IconButton(
+                tooltip: l10n.contributeEdit,
+                icon: Icon(LucideIcons.penLine, size: 20, color: palette.link),
+                onPressed: () => context.push(ContributeRoutes.edit(item.id)),
               ),
             ],
           ),

@@ -43,10 +43,38 @@ void main() {
       expect(first.items.map((p) => p.id), ['p_sunset', 'p_mariam']);
       expect(first.hasMore, isTrue);
       final second = ok(await repo.getPosts(page: 2));
-      expect(second.items.map((p) => p.id), ['p_souq', 'p_philae']);
-      expect(second.hasMore, isFalse);
-      final nubian = ok(await repo.getPosts(category: PostCategory.nubian));
-      expect(nubian.items.single.id, 'p_mariam');
+      expect(second.items.map((p) => p.id), ['p_hill', 'p_souq']);
+      final nubian = ok(
+        await repo.getPosts(category: PostCategory.nubian, limit: 10),
+      );
+      expect(nubian.items.map((p) => p.id), [
+        'p_mariam',
+        'p_museum',
+        'p_doors',
+      ]);
+    });
+
+    test('sort=top: most appreciated of the last 7 days first', () async {
+      final nile = ok(
+        await repo.getPosts(
+          category: PostCategory.nile,
+          sort: PostSort.top,
+          limit: 10,
+        ),
+      );
+      expect(nile.items.map((p) => p.id), [
+        'p_sunset',
+        'p_hill',
+        'p_elephantine',
+      ]);
+      expect(nile.hasMore, isFalse);
+    });
+
+    test('likes list starts with the user when they appreciated it', () async {
+      final likes = ok(await repo.getLikes('p_mariam'));
+      expect(likes.items.first.id, 'u_1');
+      expect(likes.items.map((a) => a.id), isNot(contains('u_2')));
+      expect(code(await repo.getLikes('nope')), 'POST_NOT_FOUND');
     });
 
     test('like, bookmark, comment and delete follow the contract', () async {
@@ -102,7 +130,7 @@ void main() {
   });
 
   group('remote data source', () {
-    test('paths, query, body and parsing match contract v0.2', () async {
+    test('paths, query, body and parsing match contract v0.3', () async {
       final api = FakeApi(
         (r) => switch ((r.method, r.path)) {
           ('GET', '/community/posts') => reply(200, {
@@ -110,6 +138,10 @@ void main() {
             'meta': {'page': 1, 'limit': 20, 'total': 1, 'total_pages': 1},
           }),
           ('POST', '/community/posts') => reply(201, {'data': _postJson}),
+          ('GET', '/community/posts/p1/likes') => reply(200, {
+            'data': [_postJson['author']],
+            'meta': {'page': 1, 'limit': 20, 'total': 1, 'total_pages': 1},
+          }),
           ('POST', '/community/posts/p1/like') => reply(200, {
             'data': {'like_count': 4, 'is_liked': true},
           }),
@@ -133,6 +165,18 @@ void main() {
         'limit': 20,
       });
       expect(page.items.single.isBookmarked, isTrue);
+
+      await remote.getPosts(category: 'nile', sort: 'top', limit: 10);
+      expect(api.requests.last.queryParameters, {
+        'category': 'nile',
+        'sort': 'top',
+        'page': 1,
+        'limit': 10,
+      });
+
+      final likes = await remote.getLikes('p1');
+      expect(api.requests.last.path, '/community/posts/p1/likes');
+      expect(likes.items.single.fullName, 'Laila Hassan');
 
       await remote.createPost(
         caption: 'Sunset',

@@ -96,7 +96,7 @@ class CultureScreen extends ConsumerWidget {
                 AppSpacing.md,
                 AppSpacing.xxl,
               ),
-              children: children,
+              children: [const CultureHeader(), ...children],
             ),
           ),
         ),

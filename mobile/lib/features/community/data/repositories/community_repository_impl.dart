@@ -20,13 +20,27 @@ class CommunityRepositoryImpl implements CommunityRepository {
   @override
   Future<Result<Paged<Post>>> getPosts({
     PostCategory? category,
+    PostSort sort = PostSort.latest,
     int page = 1,
+    int? limit,
   }) => guard(
     () async => (await _source.getPosts(
       category: category?.wire,
+      // The API's default is newest first; send `sort` only when needed.
+      sort: sort == PostSort.latest ? null : sort.wire,
       page: page,
+      limit: limit,
     )).map((p) => p.toEntity()),
   );
+
+  @override
+  Future<Result<Paged<Author>>> getLikes(String postId, {int page = 1}) =>
+      guard(
+        () async => (await _source.getLikes(
+          postId,
+          page: page,
+        )).map((a) => a.toEntity()),
+      );
 
   @override
   Future<Result<Paged<Post>>> getMyPosts({int page = 1}) => guard(

@@ -44,6 +44,24 @@ class Contribution {
 }
 
 /// What the user typed, sent with the photos.
+/// One contribution with everything the form needs (GET /contributions/{id},
+/// contract v0.3), so it can be edited.
+class ContributionDetails {
+  const ContributionDetails({
+    required this.id,
+    required this.draft,
+    required this.photos,
+    required this.status,
+  });
+
+  final String id;
+  final ContributionDraft draft;
+
+  /// URLs of the photos already sent.
+  final List<String> photos;
+  final ContributionStatus status;
+}
+
 class ContributionDraft {
   const ContributionDraft({
     required this.category,

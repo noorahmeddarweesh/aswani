@@ -11,8 +11,8 @@ import '../../../profile/profile_routes.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
-import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/circle_icon_button.dart';
+import '../../../../shared/widgets/user_avatar.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../viewmodels/home_view_model.dart';
@@ -108,17 +108,11 @@ class HomeScreen extends ConsumerWidget {
                         child: InkWell(
                           customBorder: const CircleBorder(),
                           onTap: () => context.push(ProfileRoutes.profile),
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor: context.colors.primary,
-                            child: avatar != null
-                                ? ClipOval(child: AppImage(avatar))
-                                : Text(
-                                    name.isEmpty ? '?' : name.characters.first,
-                                    style: context.text.titleMedium?.copyWith(
-                                      color: context.colors.onPrimary,
-                                    ),
-                                  ),
+                          child: UserAvatar(
+                            name: name,
+                            imageUrl: avatar,
+                            size: 44,
+                            ring: true,
                           ),
                         ),
                       ),

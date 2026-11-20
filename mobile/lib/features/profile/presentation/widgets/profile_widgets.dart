@@ -37,7 +37,12 @@ class EditableAvatar extends StatelessWidget {
           dimension: size + 4,
           child: Stack(
             children: [
-              UserAvatar(name: name, imageUrl: imageUrl, size: size),
+              UserAvatar(
+                name: name,
+                imageUrl: imageUrl,
+                size: size,
+                ring: true,
+              ),
               if (busy)
                 const Positioned.fill(
                   child: Center(child: CircularProgressIndicator()),

@@ -10,18 +10,18 @@ import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
-import '../../../../shared/utils/relative_time.dart';
 import '../../../../shared/widgets/app_top_bar.dart';
 import '../../../../shared/widgets/bookmark_icon.dart';
 import '../../../../shared/widgets/state_views.dart';
-import '../../../../shared/widgets/user_avatar.dart';
 import '../../domain/entities/post.dart';
 import '../viewmodels/post_details_view_model.dart';
+import '../widgets/comment_widgets.dart';
+import '../widgets/likes_sheet.dart';
 import '../widgets/post_actions.dart';
 import '../widgets/post_widgets.dart';
 
-/// "Community post": the photos, the caption, appreciations and comments,
-/// with the comment box at the bottom.
+/// "From the community": the photos, the caption, appreciations, the
+/// comment box and the comments.
 class PostDetailsScreen extends ConsumerStatefulWidget {
   const PostDetailsScreen({super.key, required this.postId});
 
@@ -32,10 +32,12 @@ class PostDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _PostDetailsScreenState extends ConsumerState<PostDetailsScreen> {
+  final _comment = FocusNode();
   final _scroll = ScrollController();
 
   @override
   void dispose() {
+    _comment.dispose();
     _scroll.dispose();
     super.dispose();
   }
@@ -76,7 +78,9 @@ class _PostDetailsScreenState extends ConsumerState<PostDetailsScreen> {
     return Scaffold(
       appBar: AppTopBar(
         title: l10n.communityPostTitle,
-        trailing: mine ? PostMenu(onDelete: delete) : null,
+        trailing: details.hasValue
+            ? PostMenu(onDelete: mine ? delete : null, filled: true)
+            : null,
       ),
       body: details.when(
         skipLoadingOnReload: true,
@@ -92,118 +96,104 @@ class _PostDetailsScreenState extends ConsumerState<PostDetailsScreen> {
         ),
         data: (state) => MaxWidthBox(
           maxWidth: 640,
-          child: Column(
-            children: [
-              Expanded(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (n) {
-                    if (n.metrics.extentAfter < 300) vm.loadMoreComments();
-                    return false;
-                  },
-                  child: ListView(
-                    controller: _scroll,
-                    padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-                    children: [
-                      PostImages(images: state.post.images, aspectRatio: 1),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                          AppSpacing.screen,
-                          AppSpacing.md,
-                          AppSpacing.sm,
-                          AppSpacing.xs,
-                        ),
-                        child: PostAuthorRow(
-                          post: state.post,
-                          avatarSize: 40,
-                          trailing: PostAction(
-                            icon: Icon(
-                              LucideIcons.share2,
-                              size: 22,
-                              color: context.colors.primary,
-                            ),
-                            tooltip: l10n.share,
-                            onPressed: () => PostUi.share(context, state.post),
-                          ),
-                        ),
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (n) {
+              if (n.metrics.extentAfter < 300) vm.loadMoreComments();
+              return false;
+            },
+            // As in the design: the comment box sits under the post, and
+            // the comments follow it, newest last.
+            child: ListView(
+              controller: _scroll,
+              padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+              children: [
+                LikeOnDoubleTap(
+                  liked: state.post.isLiked,
+                  onLike: () => PostUi.report(context, vm.toggleLike()),
+                  child: PostImages(images: state.post.images, aspectRatio: 1),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                    AppSpacing.screen,
+                    AppSpacing.md,
+                    AppSpacing.sm,
+                    AppSpacing.xs,
+                  ),
+                  child: PostAuthorRow(
+                    post: state.post,
+                    avatarSize: 40,
+                    trailing: PostAction(
+                      icon: Icon(
+                        LucideIcons.share2,
+                        size: 22,
+                        color: context.colors.primary,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.screen,
-                        ),
-                        child: CaptionText(state.post.caption),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.md,
-                        ),
-                        child: _Counts(
-                          post: state.post,
-                          onLike: () => PostUi.report(context, vm.toggleLike()),
-                          onBookmark: () =>
-                              PostUi.report(context, vm.toggleBookmark()),
-                        ),
-                      ),
-                      const Divider(
-                        indent: AppSpacing.screen,
-                        endIndent: AppSpacing.screen,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.screen,
-                          AppSpacing.sm,
-                          AppSpacing.screen,
-                          AppSpacing.xs,
-                        ),
-                        child: Text(
-                          l10n.communityComments,
-                          style: context.text.titleSmall,
-                        ),
-                      ),
-                      if (state.comments.isEmpty)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.screen,
-                          ),
-                          child: Text(
-                            l10n.communityNoComments,
-                            style: context.text.bodySmall,
-                          ),
-                        ),
-                      for (final comment in state.comments)
-                        _CommentTile(
-                          comment: comment,
-                          onDelete: comment.author.id == session?.userId
-                              ? () async {
-                                  if (!await PostUi.confirmDeleteComment(
-                                    context,
-                                  )) {
-                                    return;
-                                  }
-                                  if (!context.mounted) return;
-                                  await PostUi.report(
-                                    context,
-                                    vm.deleteComment(comment.id),
-                                  );
-                                }
-                              : null,
-                        ),
-                    ],
+                      tooltip: l10n.share,
+                      onPressed: () => PostUi.share(context, state.post),
+                    ),
                   ),
                 ),
-              ),
-              _CommentComposer(
-                name: session?.displayName ?? '',
-                avatarUrl: session?.avatarUrl,
-                sending: state.sending,
-                onSend: (text) async {
-                  final error = await vm.addComment(text);
-                  if (!context.mounted) return false;
-                  PostUi.showError(context, error);
-                  if (error == null) _scrollToEnd();
-                  return error == null;
-                },
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.screen,
+                  ),
+                  child: CaptionText(state.post.caption),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                  ),
+                  child: _Counts(
+                    post: state.post,
+                    onLike: () => PostUi.report(context, vm.toggleLike()),
+                    onLikes: () => showLikesSheet(context, state.post.id),
+                    onComment: _comment.requestFocus,
+                    onBookmark: () =>
+                        PostUi.report(context, vm.toggleBookmark()),
+                  ),
+                ),
+                CommentComposer(
+                  name: session?.displayName ?? '',
+                  avatarUrl: session?.avatarUrl,
+                  sending: state.sending,
+                  focusNode: _comment,
+                  onSend: (text) async {
+                    final error = await vm.addComment(text);
+                    if (!context.mounted) return false;
+                    PostUi.showError(context, error);
+                    if (error == null) _scrollToEnd();
+                    return error == null;
+                  },
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                if (state.comments.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.screen,
+                    ),
+                    child: Text(
+                      l10n.communityNoComments,
+                      style: context.text.bodySmall,
+                    ),
+                  ),
+                for (final comment in state.comments)
+                  CommentTile(
+                    comment: comment,
+                    onDelete: comment.author.id == session?.userId
+                        ? () async {
+                            if (!await PostUi.confirmDeleteComment(context)) {
+                              return;
+                            }
+                            if (!context.mounted) return;
+                            await PostUi.report(
+                              context,
+                              vm.deleteComment(comment.id),
+                            );
+                          }
+                        : null,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -215,11 +205,17 @@ class _Counts extends StatelessWidget {
   const _Counts({
     required this.post,
     required this.onLike,
+    required this.onLikes,
+    required this.onComment,
     required this.onBookmark,
   });
 
   final Post post;
   final VoidCallback onLike;
+
+  /// Opens who liked the post.
+  final VoidCallback onLikes;
+  final VoidCallback onComment;
   final VoidCallback onBookmark;
 
   @override
@@ -230,18 +226,42 @@ class _Counts extends StatelessWidget {
         PostAction(
           icon: LikeIcon(liked: post.isLiked, size: 20),
           tooltip: post.isLiked ? l10n.communityUnlike : l10n.communityLike,
-          label: '${post.likeCount}',
           onPressed: onLike,
         ),
+        // The number opens who liked it, as in Instagram.
+        Semantics(
+          button: true,
+          label: l10n.communityAppreciations(post.likeCount),
+          excludeSemantics: true,
+          child: InkWell(
+            borderRadius: AppRadii.smAll,
+            onTap: onLikes,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: AppSpacing.minTouchTarget,
+                minWidth: 32,
+              ),
+              child: Center(
+                child: Text(
+                  '${post.likeCount}',
+                  style: context.text.bodySmall?.copyWith(
+                    color: context.palette.ink,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.xxs),
         PostAction(
           icon: Icon(
             LucideIcons.messageCircle,
             size: 20,
             color: context.palette.ink,
           ),
-          tooltip: l10n.communityComments,
+          tooltip: l10n.communityComment,
           label: '${post.commentCount}',
-          onPressed: () {},
+          onPressed: onComment,
         ),
         const Spacer(),
         PostAction(
@@ -252,178 +272,6 @@ class _Counts extends StatelessWidget {
           onPressed: onBookmark,
         ),
       ],
-    );
-  }
-}
-
-class _CommentTile extends StatelessWidget {
-  const _CommentTile({required this.comment, this.onDelete});
-
-  final Comment comment;
-  final VoidCallback? onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onLongPress: onDelete,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.screen,
-          vertical: AppSpacing.xs,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UserAvatar(
-              name: comment.author.fullName,
-              imageUrl: comment.author.avatarUrl,
-              size: 32,
-            ),
-            const SizedBox(width: AppSpacing.xs),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    comment.author.fullName,
-                    style: context.text.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: context.palette.ink,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    comment.text,
-                    style: context.text.bodyMedium?.copyWith(fontSize: 13),
-                  ),
-                  Text(
-                    relativeTime(context.l10n, comment.createdAt),
-                    style: context.text.labelSmall?.copyWith(
-                      color: context.palette.textTertiary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (onDelete != null)
-              IconButton(
-                tooltip: context.l10n.communityDeleteComment,
-                icon: Icon(
-                  LucideIcons.trash2,
-                  size: 16,
-                  color: context.palette.textTertiary,
-                ),
-                onPressed: onDelete,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CommentComposer extends StatefulWidget {
-  const _CommentComposer({
-    required this.name,
-    required this.avatarUrl,
-    required this.sending,
-    required this.onSend,
-  });
-
-  final String name;
-  final String? avatarUrl;
-  final bool sending;
-
-  /// Returns true when the comment was posted (the box is then cleared).
-  final Future<bool> Function(String text) onSend;
-
-  @override
-  State<_CommentComposer> createState() => _CommentComposerState();
-}
-
-class _CommentComposerState extends State<_CommentComposer> {
-  final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Future<void> _send() async {
-    final text = _controller.text;
-    if (text.trim().isEmpty || widget.sending) return;
-    if (await widget.onSend(text)) _controller.clear();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.palette;
-    return MediaQuery.withClampedTextScaling(
-      maxScaleFactor: 1.5,
-      child: Material(
-        color: context.colors.surface,
-        child: SafeArea(
-          top: false,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: palette.border)),
-            ),
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.xs,
-              AppSpacing.md,
-              AppSpacing.xs,
-            ),
-            child: Row(
-              children: [
-                UserAvatar(
-                  name: widget.name,
-                  imageUrl: widget.avatarUrl,
-                  size: 36,
-                ),
-                const SizedBox(width: AppSpacing.xs),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    minLines: 1,
-                    maxLines: 4,
-                    maxLength: 1000,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: (_) => _send(),
-                    decoration: InputDecoration(
-                      hintText: context.l10n.communityCommentHint,
-                      counterText: '',
-                      isDense: true,
-                      border: const OutlineInputBorder(
-                        borderRadius: AppRadii.pillAll,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.xs),
-                ListenableBuilder(
-                  listenable: _controller,
-                  builder: (context, _) {
-                    final ready =
-                        _controller.text.trim().isNotEmpty && !widget.sending;
-                    return IconButton.filled(
-                      tooltip: context.l10n.communitySendComment,
-                      onPressed: ready ? _send : null,
-                      icon: widget.sending
-                          ? const SizedBox.square(
-                              dimension: 18,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(LucideIcons.sendHorizontal, size: 18),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

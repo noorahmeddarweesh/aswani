@@ -5,6 +5,7 @@ import 'presentation/screens/contribute_details_screen.dart';
 import 'presentation/screens/contribute_done_screen.dart';
 import 'presentation/screens/contribute_preview_screen.dart';
 import 'presentation/screens/contribute_start_screen.dart';
+import 'presentation/screens/edit_contribution_screen.dart';
 import 'presentation/screens/my_contributions_screen.dart';
 
 // Owner: Person B (Culture & Community). Only this file registers
@@ -19,6 +20,9 @@ abstract final class ContributeRoutes {
 
   /// "Added activities" (Profile).
   static const String mine = '/contribute/mine';
+
+  /// Added activities > Edit (contract v0.3).
+  static String edit(String id) => '/contribute/edit/$id';
 }
 
 /// Full-screen contribution routes.
@@ -42,5 +46,10 @@ final List<RouteBase> contributeRootRoutes = [
   GoRoute(
     path: ContributeRoutes.mine,
     pageBuilder: (_, state) => appPage(state, const MyContributionsScreen()),
+  ),
+  GoRoute(
+    path: '/contribute/edit/:id',
+    pageBuilder: (_, state) =>
+        appPage(state, EditContributionScreen(id: state.pathParameters['id']!)),
   ),
 ];

@@ -17,6 +17,18 @@ enum PostCategory {
   );
 }
 
+/// Order of GET /community/posts (contract v0.3).
+enum PostSort {
+  /// Newest first (the feed).
+  latest('new'),
+
+  /// Most liked in the last 7 days (the story viewer).
+  top('top');
+
+  const PostSort(this.wire);
+  final String wire;
+}
+
 /// Who wrote a post or a comment.
 class Author {
   const Author({required this.id, required this.fullName, this.avatarUrl});

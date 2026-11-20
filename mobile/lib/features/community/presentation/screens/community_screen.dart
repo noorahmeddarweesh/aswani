@@ -13,14 +13,51 @@ import '../../../../shared/widgets/state_views.dart';
 import '../../community_routes.dart';
 import '../../domain/entities/post.dart';
 import '../viewmodels/community_feed_view_model.dart';
+import '../widgets/comments_sheet.dart';
+import '../widgets/community_header.dart';
 import '../widgets/highlights_row.dart';
+import '../widgets/likes_sheet.dart';
 import '../widgets/post_actions.dart';
 import '../widgets/post_widgets.dart';
 
-/// Community tab: highlights on top, then the posts, newest first. Pull to
-/// refresh; the next page loads near the end of the list.
+/// Community tab, Instagram-style: the header hides as the feed scrolls
+/// down and comes back on a small scroll up; the story circles scroll with
+/// the posts. Pull to refresh; the next page loads near the end.
 class CommunityScreen extends ConsumerWidget {
   const CommunityScreen({super.key});
+
+  Future<void> _newMoment(BuildContext context) async {
+    final l10n = context.l10n;
+    final source = await showModalBottomSheet<MomentSource>(
+      context: context,
+      useSafeArea: true,
+      useRootNavigator: true,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(l10n.communityYourMoment, style: context.text.titleMedium),
+            const SizedBox(height: AppSpacing.xs),
+            ListTile(
+              leading: Icon(LucideIcons.camera, color: context.palette.link),
+              title: Text(l10n.communityMomentCamera),
+              onTap: () => Navigator.pop(context, MomentSource.camera),
+            ),
+            ListTile(
+              leading: Icon(LucideIcons.images, color: context.palette.link),
+              title: Text(l10n.communityMomentGallery),
+              onTap: () => Navigator.pop(context, MomentSource.gallery),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+        ),
+      ),
+    );
+    if (source != null && context.mounted) {
+      await context.push(CommunityRoutes.newMoment(source));
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,6 +75,8 @@ class CommunityScreen extends ConsumerWidget {
       onLike: () => PostUi.report(context, vm.toggleLike(post.id)),
       onBookmark: () => PostUi.report(context, vm.toggleBookmark(post.id)),
       onShare: () => PostUi.share(context, post),
+      onComments: () => showCommentsSheet(context, post.id),
+      onLikes: () => showLikesSheet(context, post.id),
       onDelete: post.author.id == me
           ? () async {
               if (!await PostUi.confirmDeletePost(context)) return;
@@ -50,73 +89,51 @@ class CommunityScreen extends ConsumerWidget {
           : null,
     );
 
-    final List<Widget> body;
+    Widget padded(Widget child) => Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.screen,
+        AppSpacing.sm,
+        AppSpacing.screen,
+        0,
+      ),
+      child: child,
+    );
+
+    final stories = state == null
+        ? const SizedBox(height: HighlightsRow.circle + 40)
+        : HighlightsRow(
+            highlights: state.highlights,
+            onOpen: (h) => context.push(CommunityRoutes.highlight(h.id)),
+            onNewMoment: () => _newMoment(context),
+          );
+
+    final List<Widget> posts;
     if (state == null && feed.hasError) {
-      body = [
-        const SizedBox(height: AppSpacing.xxxl),
+      posts = [
+        const SizedBox(height: AppSpacing.xxl),
         ErrorState(
           message: l10n.errorFor(feedErrorCode(feed.error!)),
           onRetry: vm.refresh,
         ),
       ];
     } else if (state == null || state.loadingPosts) {
-      body = [
-        if (state != null)
-          HighlightsRow(
-            highlights: state.highlights,
-            selected: state.category,
-            onSelect: vm.selectCategory,
-            onNewPost: newPost,
-          )
-        else
-          const SizedBox(height: 94),
-        for (var i = 0; i < 2; i++)
-          const Padding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.screen,
-              AppSpacing.md,
-              AppSpacing.screen,
-              0,
-            ),
-            child: PostCardSkeleton(),
-          ),
+      posts = [for (var i = 0; i < 2; i++) padded(const PostCardSkeleton())];
+    } else if (state.errorCode != null) {
+      posts = [
+        const SizedBox(height: AppSpacing.xxl),
+        ErrorState(
+          message: l10n.errorFor(state.errorCode!),
+          onRetry: vm.refresh,
+        ),
+      ];
+    } else if (state.posts.isEmpty) {
+      posts = [
+        const SizedBox(height: AppSpacing.xxl),
+        EmptyState(message: l10n.communityEmpty, icon: LucideIcons.images),
       ];
     } else {
-      body = [
-        HighlightsRow(
-          highlights: state.highlights,
-          selected: state.category,
-          onSelect: vm.selectCategory,
-          onNewPost: newPost,
-        ),
-        if (state.errorCode != null)
-          Padding(
-            padding: const EdgeInsets.only(top: AppSpacing.xxl),
-            child: ErrorState(
-              message: l10n.errorFor(state.errorCode!),
-              onRetry: vm.refresh,
-            ),
-          )
-        else if (state.posts.isEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: AppSpacing.xxl),
-            child: EmptyState(
-              message: l10n.communityEmpty,
-              icon: LucideIcons.images,
-            ),
-          ),
-        ...staggered([
-          for (final post in state.posts)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.screen,
-                AppSpacing.sm,
-                AppSpacing.screen,
-                0,
-              ),
-              child: postCard(post),
-            ),
-        ]),
+      posts = [
+        ...staggered([for (final post in state.posts) padded(postCard(post))]),
         if (state.loadingMore)
           const Padding(
             padding: EdgeInsets.all(AppSpacing.md),
@@ -126,33 +143,30 @@ class CommunityScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton.small(
-        heroTag: 'community-new-post',
-        tooltip: l10n.communityNewPost,
-        backgroundColor: context.palette.surfaceMuted,
-        foregroundColor: context.colors.primary,
-        elevation: 0,
-        shape: const CircleBorder(),
-        onPressed: newPost,
-        child: const Icon(LucideIcons.plus),
-      ),
       body: SafeArea(
+        bottom: false,
         child: MaxWidthBox(
           maxWidth: 640,
           child: RefreshIndicator(
             onRefresh: vm.refresh,
+            // Below the header, so the spinner is not hidden by it.
+            edgeOffset: 88,
             child: NotificationListener<ScrollNotification>(
               onNotification: (n) {
                 if (n.metrics.extentAfter < 600) vm.loadMore();
                 return false;
               },
-              child: ListView(
-                padding: const EdgeInsets.only(
-                  top: AppSpacing.md,
-                  bottom: AppSpacing.xxxl * 2,
-                ),
-                children: body,
+              child: CustomScrollView(
+                slivers: [
+                  SliverFloatingHeader(
+                    child: CommunityHeader(onNewPost: newPost),
+                  ),
+                  SliverToBoxAdapter(child: stories),
+                  SliverList.list(children: posts),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: AppSpacing.xxxl),
+                  ),
+                ],
               ),
             ),
           ),

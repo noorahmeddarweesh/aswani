@@ -44,6 +44,28 @@ Future<List<UploadFile>> _pickWithImagePicker(int max) async {
   ];
 }
 
+/// Opens the camera for one photo (null when the user cancels), scaled
+/// down like the picker's photos.
+typedef TakePhoto = Future<UploadFile?> Function();
+
+/// Replaced in tests (no camera there).
+final takePhotoProvider = Provider<TakePhoto>((ref) => _takeWithCamera);
+
+Future<UploadFile?> _takeWithCamera() async {
+  final file = await ImagePicker().pickImage(
+    source: ImageSource.camera,
+    maxWidth: 2048,
+    maxHeight: 2048,
+    imageQuality: 85,
+  );
+  if (file == null) return null;
+  return UploadFile(
+    name: file.name,
+    bytes: await file.readAsBytes(),
+    path: file.path,
+  );
+}
+
 /// Photo field of the forms in the designs: a dashed box ("Add your travel
 /// photos", "Add clear photos") that becomes a row of thumbnails with an
 /// add tile. Rejected photos (too big, wrong type) show a message.

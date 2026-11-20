@@ -9,7 +9,6 @@ class FeedState {
   const FeedState({
     this.highlights = const [],
     this.posts = const [],
-    this.category,
     this.page = 1,
     this.hasMore = false,
     this.loadingPosts = false,
@@ -19,13 +18,10 @@ class FeedState {
 
   final List<Highlight> highlights;
   final List<Post> posts;
-
-  /// The highlight the user tapped; null = all posts.
-  final PostCategory? category;
   final int page;
   final bool hasMore;
 
-  /// The list is reloading for a new category (highlights stay).
+  /// The list is reloading (highlights stay).
   final bool loadingPosts;
   final bool loadingMore;
 
@@ -35,7 +31,6 @@ class FeedState {
   FeedState copyWith({
     List<Highlight>? highlights,
     List<Post>? posts,
-    PostCategory? Function()? category,
     int? page,
     bool? hasMore,
     bool? loadingPosts,
@@ -44,7 +39,6 @@ class FeedState {
   }) => FeedState(
     highlights: highlights ?? this.highlights,
     posts: posts ?? this.posts,
-    category: category != null ? category() : this.category,
     page: page ?? this.page,
     hasMore: hasMore ?? this.hasMore,
     loadingPosts: loadingPosts ?? this.loadingPosts,
@@ -53,7 +47,7 @@ class FeedState {
   );
 }
 
-/// The Community feed: highlights, posts of the chosen category, paging,
+/// The Community feed: highlights, all posts newest first, paging,
 /// and likes / bookmarks that change on screen at once (rolled back if the
 /// call fails). Kept alive so Post details and New post can update it.
 class CommunityFeedViewModel extends AsyncNotifier<FeedState> {
@@ -83,25 +77,9 @@ class CommunityFeedViewModel extends AsyncNotifier<FeedState> {
 
   void _set(FeedState next) => state = AsyncData(next);
 
-  /// Tapping the selected highlight again shows all posts.
-  Future<void> selectCategory(PostCategory? category) async {
-    final next = _current.category == category ? null : category;
-    _set(
-      _current.copyWith(
-        category: () => next,
-        posts: const [],
-        loadingPosts: true,
-        errorCode: () => null,
-      ),
-    );
-    await _loadFirstPage(next);
-  }
-
-  Future<void> _loadFirstPage(PostCategory? category) async {
-    final result = await ref
-        .read(communityRepositoryProvider)
-        .getPosts(category: category);
-    if (!ref.mounted || _current.category != category) return;
+  Future<void> _loadFirstPage() async {
+    final result = await ref.read(communityRepositoryProvider).getPosts();
+    if (!ref.mounted) return;
     switch (result) {
       case Success(:final value):
         _set(
@@ -134,7 +112,7 @@ class CommunityFeedViewModel extends AsyncNotifier<FeedState> {
       _set(_current.copyWith(highlights: value));
     }
     _set(_current.copyWith(errorCode: () => null));
-    await _loadFirstPage(_current.category);
+    await _loadFirstPage();
   }
 
   Future<void> loadMore() async {
@@ -143,7 +121,7 @@ class CommunityFeedViewModel extends AsyncNotifier<FeedState> {
     _set(s.copyWith(loadingMore: true));
     final result = await ref
         .read(communityRepositoryProvider)
-        .getPosts(category: s.category, page: s.page + 1);
+        .getPosts(page: s.page + 1);
     if (!ref.mounted) return;
     switch (result) {
       case Success(:final value):
@@ -176,10 +154,8 @@ class CommunityFeedViewModel extends AsyncNotifier<FeedState> {
     _current.copyWith(posts: _current.posts.where((p) => p.id != id).toList()),
   );
 
-  /// A new post goes on top when it fits the chosen category.
+  /// A new post goes on top.
   void insertFirst(Post post) {
-    final c = _current.category;
-    if (c != null && c != post.category) return;
     _set(_current.copyWith(posts: [post, ..._current.posts]));
   }
 

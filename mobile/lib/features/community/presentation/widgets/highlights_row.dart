@@ -1,29 +1,28 @@
+import 'dart:math' as math;
+
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
 import '../../domain/entities/post.dart';
 
-/// The row of circles at the top of the feed: "Your moment" (new post) and
-/// one circle per highlight, which filters the feed by its category.
+/// The story circles at the top of Community: "Share your moment" first,
+/// then one circle per highlight, which opens its stories full screen.
 class HighlightsRow extends StatelessWidget {
   const HighlightsRow({
     super.key,
     required this.highlights,
-    required this.selected,
-    required this.onSelect,
-    required this.onNewPost,
+    required this.onOpen,
+    required this.onNewMoment,
   });
 
   final List<Highlight> highlights;
-  final PostCategory? selected;
-  final ValueChanged<PostCategory> onSelect;
-  final VoidCallback onNewPost;
+  final ValueChanged<Highlight> onOpen;
+  final VoidCallback onNewMoment;
 
-  static const double _circle = 56;
+  static const double circle = 64;
 
   @override
   Widget build(BuildContext context) {
@@ -32,29 +31,26 @@ class HighlightsRow extends StatelessWidget {
     return MediaQuery.withClampedTextScaling(
       maxScaleFactor: 1.3,
       child: SizedBox(
-        height: _circle + 40,
+        height: circle + 40,
         child: ListView(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
           children: [
             _Bubble(
               label: context.l10n.communityYourMoment,
-              selected: false,
-              onTap: onNewPost,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.palette.selectedTint,
-                  border: Border.all(color: context.palette.link, width: 1.5),
-                ),
-                child: Icon(LucideIcons.plus, color: context.palette.link),
+              onTap: onNewMoment,
+              ring: _DashedRing(color: context.palette.link),
+              child: Icon(
+                LucideIcons.plus,
+                size: 26,
+                color: context.palette.link,
               ),
             ),
             for (final h in highlights)
               _Bubble(
                 label: h.title(lang),
-                selected: h.category == selected,
-                onTap: () => onSelect(h.category),
+                onTap: () => onOpen(h),
+                ring: _SolidRing(color: context.palette.accentGold),
                 child: ClipOval(child: AppImage(h.coverImage)),
               ),
           ],
@@ -67,43 +63,41 @@ class HighlightsRow extends StatelessWidget {
 class _Bubble extends StatelessWidget {
   const _Bubble({
     required this.label,
-    required this.selected,
     required this.onTap,
+    required this.ring,
     required this.child,
   });
 
   final String label;
-  final bool selected;
   final VoidCallback onTap;
+  final CustomPainter ring;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final ring = selected ? context.colors.primary : context.palette.accentGold;
     return Semantics(
       button: true,
-      selected: selected,
       label: label,
       excludeSemantics: true,
       child: InkWell(
         borderRadius: AppRadii.mdAll,
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
           child: SizedBox(
-            width: HighlightsRow._circle + 8,
+            width: HighlightsRow.circle + 16,
             child: Column(
               children: [
-                AnimatedContainer(
-                  duration: AppMotion.short,
-                  width: HighlightsRow._circle,
-                  height: HighlightsRow._circle,
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: ring, width: selected ? 2.5 : 2),
+                CustomPaint(
+                  painter: ring,
+                  child: SizedBox.square(
+                    dimension: HighlightsRow.circle,
+                    // White gap between the ring and the photo.
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Center(child: child),
+                    ),
                   ),
-                  child: child,
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -115,7 +109,6 @@ class _Bubble extends StatelessWidget {
                     fontSize: 11,
                     letterSpacing: 0,
                     color: context.palette.ink,
-                    fontWeight: selected ? FontWeight.w700 : null,
                   ),
                 ),
               ],
@@ -125,4 +118,55 @@ class _Bubble extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Thin gold ring of a story circle.
+class _SolidRing extends CustomPainter {
+  const _SolidRing({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawCircle(
+      size.center(Offset.zero),
+      size.shortestSide / 2 - 1,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_SolidRing old) => old.color != color;
+}
+
+/// Dashed ring of "Share your moment".
+class _DashedRing extends CustomPainter {
+  const _DashedRing({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final radius = size.shortestSide / 2 - 1;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.4
+      ..strokeCap = StrokeCap.round;
+    const dashes = 30;
+    const sweep = 2 * math.pi / dashes;
+    final rect = Rect.fromCircle(
+      center: size.center(Offset.zero),
+      radius: radius,
+    );
+    for (var i = 0; i < dashes; i++) {
+      canvas.drawArc(rect, i * sweep, sweep * 0.5, false, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashedRing old) => old.color != color;
 }

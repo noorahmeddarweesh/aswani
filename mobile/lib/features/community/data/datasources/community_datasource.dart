@@ -8,8 +8,16 @@ abstract interface class CommunityDataSource {
   /// GET /api/community/stories
   Future<List<HighlightDto>> getHighlights();
 
-  /// GET /api/community/posts?category=&page=&limit=
-  Future<Paged<PostDto>> getPosts({String? category, int page = 1});
+  /// GET /api/community/posts?category=&sort=&page=&limit=
+  Future<Paged<PostDto>> getPosts({
+    String? category,
+    String? sort,
+    int page = 1,
+    int? limit,
+  });
+
+  /// GET /api/community/posts/{id}/likes?page=&limit= (v0.3)
+  Future<Paged<AuthorDto>> getLikes(String postId, {int page = 1});
 
   /// GET /api/community/posts/mine?page=&limit=
   Future<Paged<PostDto>> getMyPosts({int page = 1});

@@ -26,6 +26,7 @@ const sprint2Routes = [
   '/contribute/preview',
   '/contribute/done',
   '/contribute/mine',
+  '/contribute/edit/k_1',
   '/profile',
   '/profile/saved',
   '/profile/settings',

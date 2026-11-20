@@ -251,6 +251,8 @@ class PostCard extends StatelessWidget {
     required this.onLike,
     required this.onBookmark,
     required this.onShare,
+    required this.onComments,
+    required this.onLikes,
     this.onDelete,
   });
 
@@ -259,6 +261,12 @@ class PostCard extends StatelessWidget {
   final VoidCallback onLike;
   final VoidCallback onBookmark;
   final VoidCallback onShare;
+
+  /// Opens the comments sheet.
+  final VoidCallback onComments;
+
+  /// Opens who appreciated the post.
+  final VoidCallback onLikes;
 
   /// Shown in the "…" menu only for the user's own posts.
   final VoidCallback? onDelete;
@@ -286,10 +294,12 @@ class PostCard extends StatelessWidget {
             ),
             child: PostAuthorRow(
               post: post,
-              trailing: PostMenu(onDelete: onDelete),
+              trailing: PostMenu(onDelete: onDelete, onShare: onShare),
             ),
           ),
-          GestureDetector(
+          LikeOnDoubleTap(
+            liked: post.isLiked,
+            onLike: onLike,
             onTap: onOpen,
             child: PostImages(images: post.images),
           ),
@@ -311,7 +321,7 @@ class PostCard extends StatelessWidget {
                     color: palette.ink,
                   ),
                   tooltip: l10n.communityComment,
-                  onPressed: onOpen,
+                  onPressed: onComments,
                 ),
                 PostAction(
                   icon: Icon(LucideIcons.share2, size: 22, color: palette.ink),
@@ -336,23 +346,40 @@ class PostCard extends StatelessWidget {
               AppSpacing.sm,
               AppSpacing.sm,
             ),
-            child: GestureDetector(
-              onTap: onOpen,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.communityAppreciations(post.likeCount),
-                    style: context.text.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: context.palette.ink,
-                      fontWeight: FontWeight.w700,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: onLikes,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Text(
+                      l10n.communityAppreciations(post.likeCount),
+                      style: context.text.bodySmall?.copyWith(
+                        fontSize: 12,
+                        color: context.palette.ink,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  CaptionText(post.caption, maxLines: 4),
-                ],
-              ),
+                ),
+                const SizedBox(height: 2),
+                GestureDetector(
+                  onTap: onOpen,
+                  child: CaptionText(post.caption, maxLines: 4),
+                ),
+                if (post.commentCount > 0)
+                  InkWell(
+                    onTap: onComments,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: AppSpacing.xxs),
+                      child: Text(
+                        l10n.communityViewComments(post.commentCount),
+                        style: context.text.bodySmall,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
@@ -361,19 +388,35 @@ class PostCard extends StatelessWidget {
   }
 }
 
-/// The "…" button; lists Delete only for the user's own post.
+/// The "…" button: Share for every post, Delete for the user's own.
 class PostMenu extends StatelessWidget {
-  const PostMenu({super.key, this.onDelete});
+  const PostMenu({super.key, this.onDelete, this.onShare, this.filled = false});
 
   final VoidCallback? onDelete;
+  final VoidCallback? onShare;
+
+  /// Round grey button, as in the post page's top bar.
+  final bool filled;
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<String>(
-      tooltip: context.l10n.communityMore,
+    final l10n = context.l10n;
+    final menu = PopupMenuButton<String>(
+      tooltip: l10n.communityMore,
       icon: Icon(LucideIcons.ellipsis, color: context.palette.ink),
-      enabled: onDelete != null,
+      enabled: onDelete != null || onShare != null,
       itemBuilder: (context) => [
+        if (onShare != null)
+          PopupMenuItem(
+            value: 'share',
+            child: Row(
+              children: [
+                Icon(LucideIcons.share2, size: 18, color: context.palette.ink),
+                const SizedBox(width: AppSpacing.xs),
+                Text(l10n.share),
+              ],
+            ),
+          ),
         if (onDelete != null)
           PopupMenuItem(
             value: 'delete',
@@ -381,14 +424,123 @@ class PostMenu extends StatelessWidget {
               children: [
                 Icon(LucideIcons.trash2, size: 18, color: context.colors.error),
                 const SizedBox(width: AppSpacing.xs),
-                Text(context.l10n.communityDeletePost),
+                Text(l10n.communityDeletePost),
               ],
             ),
           ),
       ],
-      onSelected: (value) {
-        if (value == 'delete') onDelete?.call();
+      onSelected: (value) => switch (value) {
+        'share' => onShare?.call(),
+        'delete' => onDelete?.call(),
+        _ => null,
       },
+    );
+    if (!filled) return menu;
+    return SizedBox.square(
+      dimension: AppSpacing.minTouchTarget,
+      child: Center(
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: context.palette.surfaceMuted,
+            shape: BoxShape.circle,
+          ),
+          child: Center(child: menu),
+        ),
+      ),
+    );
+  }
+}
+
+/// Double-tap to appreciate, as in Instagram: a big heart pops over the
+/// photo. A second double tap never takes the appreciation back.
+class LikeOnDoubleTap extends StatefulWidget {
+  const LikeOnDoubleTap({
+    super.key,
+    required this.liked,
+    required this.onLike,
+    required this.child,
+    this.onTap,
+  });
+
+  final bool liked;
+  final VoidCallback onLike;
+  final VoidCallback? onTap;
+  final Widget child;
+
+  @override
+  State<LikeOnDoubleTap> createState() => _LikeOnDoubleTapState();
+}
+
+class _LikeOnDoubleTapState extends State<LikeOnDoubleTap>
+    with SingleTickerProviderStateMixin {
+  late final _heart = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 800),
+  );
+
+  @override
+  void dispose() {
+    _heart.dispose();
+    super.dispose();
+  }
+
+  void _doubleTap() {
+    if (!widget.liked) widget.onLike();
+    _heart.forward(from: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scale = TweenSequence([
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 0.2,
+          end: 1.15,
+        ).chain(CurveTween(curve: Curves.easeOutBack)),
+        weight: 35,
+      ),
+      TweenSequenceItem(tween: Tween(begin: 1.15, end: 1.0), weight: 15),
+      TweenSequenceItem(tween: ConstantTween(1.0), weight: 30),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.6), weight: 20),
+    ]).animate(_heart);
+    final opacity = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 20),
+      TweenSequenceItem(tween: ConstantTween(1.0), weight: 60),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 20),
+    ]).animate(_heart);
+    return GestureDetector(
+      onTap: widget.onTap,
+      onDoubleTap: _doubleTap,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          widget.child,
+          IgnorePointer(
+            child: AnimatedBuilder(
+              animation: _heart,
+              builder: (context, child) => _heart.isAnimating
+                  ? Opacity(
+                      opacity: opacity.value,
+                      child: Transform.scale(scale: scale.value, child: child),
+                    )
+                  : const SizedBox.shrink(),
+              child: Icon(
+                Icons.favorite,
+                size: 96,
+                color: context.palette.onBrandSurface,
+                shadows: [
+                  Shadow(
+                    blurRadius: 24,
+                    color: context.colors.scrim.withValues(alpha: 0.33),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

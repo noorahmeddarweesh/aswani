@@ -27,17 +27,32 @@ class CommunityRemoteDataSource implements CommunityDataSource {
   });
 
   @override
-  Future<Paged<PostDto>> getPosts({String? category, int page = 1}) =>
+  Future<Paged<PostDto>> getPosts({
+    String? category,
+    String? sort,
+    int page = 1,
+    int? limit,
+  }) => apiCall(() async {
+    final r = await _client.get<Map<String, dynamic>>(
+      '$_base/posts',
+      queryParameters: {
+        'category': ?category,
+        'sort': ?sort,
+        'page': page,
+        'limit': limit ?? kPageSize,
+      },
+    );
+    return Paged.fromJson(r.data!, PostDto.fromJson);
+  });
+
+  @override
+  Future<Paged<AuthorDto>> getLikes(String postId, {int page = 1}) =>
       apiCall(() async {
         final r = await _client.get<Map<String, dynamic>>(
-          '$_base/posts',
-          queryParameters: {
-            'category': ?category,
-            'page': page,
-            'limit': kPageSize,
-          },
+          '$_base/posts/$postId/likes',
+          queryParameters: {'page': page, 'limit': kPageSize},
         );
-        return Paged.fromJson(r.data!, PostDto.fromJson);
+        return Paged.fromJson(r.data!, AuthorDto.fromJson);
       });
 
   @override

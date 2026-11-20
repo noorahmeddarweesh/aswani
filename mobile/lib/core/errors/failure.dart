@@ -24,6 +24,7 @@ abstract final class ErrorCodes {
   static const String unsupportedFileType = 'UNSUPPORTED_FILE_TYPE';
   static const String invalidCurrentPassword = 'INVALID_CURRENT_PASSWORD';
   static const String deletionAlreadyRequested = 'DELETION_ALREADY_REQUESTED';
+  static const String contributionNotFound = 'CONTRIBUTION_NOT_FOUND';
   static const String noConnection = 'NO_CONNECTION';
   static const String timeout = 'TIMEOUT';
   static const String serverError = 'SERVER_ERROR';

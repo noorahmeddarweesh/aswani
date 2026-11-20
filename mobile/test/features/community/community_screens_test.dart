@@ -6,6 +6,7 @@ import 'package:aswani/core/network/upload.dart';
 import 'package:aswani/core/router/app_router.dart';
 import 'package:aswani/core/session/session_controller.dart';
 import 'package:aswani/features/community/presentation/viewmodels/community_feed_view_model.dart';
+import 'package:aswani/features/community/presentation/widgets/post_widgets.dart';
 import 'package:aswani/shared/widgets/photo_picker_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -33,38 +34,172 @@ Future<ProviderContainer> _signedIn(
   return container;
 }
 
+/// Moves time on in small steps (the story viewer never settles).
+Future<void> _play(WidgetTester tester, int ms) async {
+  for (var t = 0; t < ms; t += 50) {
+    await tester.pump(const Duration(milliseconds: 50));
+  }
+}
+
 void main() {
-  testWidgets('feed: appreciate a post, filter by a highlight', (tester) async {
+  testWidgets('feed: header, appreciate, double tap, likes and comments', (
+    tester,
+  ) async {
     final container = await _signedIn(tester);
     container.read(appRouterProvider).go('/community');
     await tester.pumpAndSettle();
+
+    expect(find.text('Aswani community'), findsOneWidget);
+    expect(find.text('FROM PEOPLE, FOR PEOPLE'), findsOneWidget);
+    expect(find.byType(FloatingActionButton), findsNothing);
 
     expect(find.text('124 appreciations'), findsOneWidget);
     await tester.tap(find.byTooltip('Appreciate').first);
     await tester.pumpAndSettle();
     expect(find.text('125 appreciations'), findsOneWidget);
 
-    await tester.tap(find.text('Nubia'));
+    // Double tap on the photo appreciates; a second one never takes it back.
+    final photo = find.byType(PostImages).first;
+    await tester.tap(find.byTooltip('Remove appreciation').first);
     await tester.pumpAndSettle();
-    expect(
-      container.read(communityFeedProvider).value!.posts.single.id,
-      'p_mariam',
-    );
-    await tester.tap(find.text('Nubia'));
+    expect(find.text('124 appreciations'), findsOneWidget);
+    for (var i = 0; i < 2; i++) {
+      await tester.tap(photo);
+      await tester.pump(const Duration(milliseconds: 80));
+      await tester.tap(photo);
+      await tester.pumpAndSettle();
+    }
+    expect(find.text('125 appreciations'), findsOneWidget);
+
+    // Who appreciated it.
+    await tester.tap(find.text('125 appreciations'));
     await tester.pumpAndSettle();
-    expect(container.read(communityFeedProvider).value!.posts, hasLength(4));
+    expect(find.text('Appreciations'), findsOneWidget);
+    expect(find.text('Laila Hassan'), findsWidgets);
+    expect(find.text('Mariam Ahmed'), findsOneWidget);
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    // Comments open over the feed; an emoji and a comment go in.
+    await tester.tap(find.byTooltip('Comment').first);
+    await tester.pumpAndSettle();
+    expect(find.text('Comments'), findsOneWidget);
+    expect(find.text('Adding this walk to my list!'), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'So beautiful ');
+    await tester.tap(find.text('🔥'));
+    await tester.pump();
+    await tester.tap(find.byTooltip('Send comment'));
+    await tester.pumpAndSettle();
+    expect(find.text('So beautiful 🔥'), findsOneWidget);
+    final feedPost = container
+        .read(communityFeedProvider)
+        .value!
+        .posts
+        .firstWhere((p) => p.id == 'p_sunset');
+    expect(feedPost.commentCount, 4);
   });
 
-  testWidgets('post details: comment, then the feed shows the new count', (
+  testWidgets('a story circle opens its moments full screen', (tester) async {
+    final container = await _signedIn(tester);
+    final router = container.read(appRouterProvider)..go('/community');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Nubian colors'));
+    // The viewer keeps playing, so pump by time, never "settle".
+    await _play(tester, 400);
+    expect(router.state.matchedLocation, '/community/highlights/h_nubia');
+    // Most appreciated first: Mariam (87), then the museum (74).
+    expect(
+      find.textContaining('Mariam Ahmed', findRichText: true),
+      findsOneWidget,
+    );
+
+    await _play(tester, 5100);
+    expect(
+      find.textContaining('Youssef El Nuby', findRichText: true),
+      findsOneWidget,
+    );
+
+    // Tap the start side to go back.
+    await tester.tapAt(const Offset(20, 400));
+    await _play(tester, 100);
+    expect(
+      find.textContaining('Mariam Ahmed', findRichText: true),
+      findsOneWidget,
+    );
+
+    // Appreciate from the story: the feed has the same number.
+    await tester.tap(find.byTooltip('Remove appreciation'));
+    await _play(tester, 100);
+    expect(find.text('86'), findsOneWidget);
+    expect(
+      container
+          .read(communityFeedProvider)
+          .value!
+          .posts
+          .firstWhere((p) => p.id == 'p_mariam')
+          .likeCount,
+      86,
+    );
+
+    await tester.tap(find.text('View post'));
+    await _play(tester, 500);
+    expect(router.state.matchedLocation, '/community/posts/p_mariam');
+    router.pop();
+    await _play(tester, 500);
+
+    await tester.tap(find.byTooltip('Close'));
+    await tester.pumpAndSettle();
+    expect(router.state.matchedLocation, '/community');
+  });
+
+  testWidgets('drag a story down to close it', (tester) async {
+    final container = await _signedIn(tester);
+    final router = container.read(appRouterProvider)..go('/community');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('On the Nile'));
+    await _play(tester, 400);
+    await tester.drag(find.byType(PageView), const Offset(0, 300));
+    await tester.pumpAndSettle();
+    expect(router.state.matchedLocation, '/community');
+  });
+
+  testWidgets('Your moment: camera first, then New post with the photo', (
     tester,
   ) async {
+    final container = await _signedIn(
+      tester,
+      overrides: [
+        takePhotoProvider.overrideWithValue(
+          () async => UploadFile(
+            name: 'cam.jpg',
+            bytes: _png,
+            path: AppImages.homeHero,
+          ),
+        ),
+      ],
+    );
+    final router = container.read(appRouterProvider)..go('/community');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Your moment'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Take a photo'));
+    await tester.pumpAndSettle();
+    expect(router.state.uri.toString(), '/community/new?source=camera');
+    await tester.enterText(find.byType(TextField), 'Right now');
+    await tester.pump();
+    final publish = find.widgetWithText(FilledButton, 'Publish to community');
+    expect(tester.widget<FilledButton>(publish).onPressed, isNotNull);
+  });
+
+  testWidgets('post details: comment box under the post', (tester) async {
     final container = await _signedIn(tester);
     final router = container.read(appRouterProvider)..go('/community');
     await tester.pumpAndSettle();
     unawaited(router.push('/community/posts/p_sunset'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Comments'), findsOneWidget);
+    expect(find.text('From the community'), findsOneWidget);
     expect(find.text('Adding this walk to my list!'), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'So beautiful');
     await tester.pump();

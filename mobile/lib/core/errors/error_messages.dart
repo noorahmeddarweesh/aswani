@@ -28,6 +28,7 @@ extension ErrorMessages on AppLocalizations {
     ErrorCodes.unsupportedFileType => errorUnsupportedFile,
     ErrorCodes.invalidCurrentPassword => errorInvalidCurrentPassword,
     ErrorCodes.deletionAlreadyRequested => errorDeletionRequested,
+    ErrorCodes.contributionNotFound => errorContributionNotFound,
     _ => errorUnknown,
   };
 }

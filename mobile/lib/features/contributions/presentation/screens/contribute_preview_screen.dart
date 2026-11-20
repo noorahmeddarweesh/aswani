@@ -7,6 +7,7 @@ import '../../../../core/errors/error_messages.dart';
 import '../../../../core/responsive/window_size.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/app_top_bar.dart';
 import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -37,7 +38,11 @@ class ContributePreviewScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppTopBar(title: l10n.contributePreviewTitle),
+      appBar: AppTopBar(
+        title: state.editing
+            ? l10n.contributeEditTitle
+            : l10n.contributePreviewTitle,
+      ),
       body: MaxWidthBox(
         maxWidth: 640,
         child: ListView(
@@ -60,20 +65,32 @@ class ContributePreviewScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (state.photos.isNotEmpty)
+                  if (state.photos.isNotEmpty || state.keepPhotos.isNotEmpty)
                     SizedBox(
                       height: 160,
-                      child: ListView.separated(
+                      child: ListView(
                         scrollDirection: Axis.horizontal,
-                        itemCount: state.photos.length,
-                        separatorBuilder: (_, _) => const SizedBox(width: 2),
-                        itemBuilder: (_, i) => AspectRatio(
-                          aspectRatio: 1,
-                          child: Image.memory(
-                            state.photos[i].bytes,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        children: [
+                          for (final url in state.keepPhotos)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(end: 2),
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: AppImage(url),
+                              ),
+                            ),
+                          for (final photo in state.photos)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(end: 2),
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Image.memory(
+                                  photo.bytes,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                   Padding(
@@ -108,7 +125,7 @@ class ContributePreviewScreen extends ConsumerWidget {
                         line(LucideIcons.mapPin, state.address.trim()),
                         if (state.contact.trim().isNotEmpty)
                           line(LucideIcons.phone, state.contact.trim()),
-                        if (state.photos.isEmpty)
+                        if (state.photos.isEmpty && state.keepPhotos.isEmpty)
                           line(LucideIcons.imageOff, l10n.contributeNoPhotos),
                       ],
                     ),
@@ -118,7 +135,9 @@ class ContributePreviewScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              l10n.contributeReviewedNote,
+              state.editing
+                  ? l10n.contributeEditNote
+                  : l10n.contributeReviewedNote,
               textAlign: TextAlign.center,
               style: context.text.bodySmall,
             ),
@@ -134,11 +153,18 @@ class ContributePreviewScreen extends ConsumerWidget {
             ],
             const SizedBox(height: AppSpacing.md),
             PrimaryButton(
-              label: l10n.contributeSubmit,
+              label: state.editing
+                  ? l10n.contributeEditSubmit
+                  : l10n.contributeSubmit,
               loading: state.submitting,
               onPressed: () async {
                 final ok = await ref.read(contributeProvider.notifier).submit();
-                if (ok && context.mounted) context.go(ContributeRoutes.done);
+                if (!ok || !context.mounted) return;
+                // Editing goes back to Added activities (the edit page
+                // closes itself); a new one shows "Contribution received".
+                state.editing
+                    ? context.pop()
+                    : context.go(ContributeRoutes.done);
               },
             ),
             TextButton(

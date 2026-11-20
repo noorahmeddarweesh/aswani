@@ -13,6 +13,8 @@ import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../../community_routes.dart';
 import '../viewmodels/my_posts_view_model.dart';
+import '../widgets/comments_sheet.dart';
+import '../widgets/likes_sheet.dart';
 import '../widgets/post_actions.dart';
 import '../widgets/post_widgets.dart';
 
@@ -83,6 +85,9 @@ class MyPostsScreen extends ConsumerWidget {
                                 vm.toggleBookmark(post.id),
                               ),
                               onShare: () => PostUi.share(context, post),
+                              onComments: () =>
+                                  showCommentsSheet(context, post.id),
+                              onLikes: () => showLikesSheet(context, post.id),
                               onDelete: () async {
                                 if (!await PostUi.confirmDeletePost(context)) {
                                   return;

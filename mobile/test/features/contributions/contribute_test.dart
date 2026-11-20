@@ -134,4 +134,100 @@ void main() {
     await tester.pumpAndSettle();
     expect(router.state.matchedLocation, '/home');
   });
+
+  test(
+    'edit: get one, send changes, back to pending (contract v0.3)',
+    () async {
+      final api = FakeApi(
+        (r) => switch ((r.method, r.path)) {
+          ('GET', '/contributions/k1') => reply(200, {
+            'data': {
+              'id': 'k1',
+              'category': 'cafe',
+              'name': 'Nile View',
+              'description': 'Tea',
+              'address': 'Corniche',
+              'contact_number': null,
+              'photos': ['https://x/1.jpg', 'https://x/2.jpg'],
+              'status': 'accepted',
+              'points_awarded': 25,
+              'created_at': '2026-11-01T10:00:00Z',
+              'updated_at': '2026-11-01T10:00:00Z',
+            },
+          }),
+          ('PATCH', '/contributions/k1') => reply(200, {
+            'data': {'id': 'k1', 'status': 'pending'},
+          }),
+          _ => reply(404, apiError('CONTRIBUTION_NOT_FOUND')),
+        },
+      );
+      final repo = ContributionsRepositoryImpl(
+        ContributionsRemoteDataSource(api.client()),
+      );
+      final one =
+          (await repo.getOne('k1') as Success<ContributionDetails>).value;
+      expect(one.photos, hasLength(2));
+      expect(one.status, ContributionStatus.accepted);
+
+      await repo.update(
+        'k1',
+        one.draft,
+        keepPhotos: [one.photos.first],
+        photos: [
+          UploadFile(name: 'n.png', bytes: Uint8List(3), path: '/n.png'),
+        ],
+      );
+      final form = api.requests.last.data as FormData;
+      expect(api.requests.last.method, 'PATCH');
+      expect(
+        form.fields.where((f) => f.key == 'keep_photos').map((f) => f.value),
+        ['https://x/1.jpg'],
+      );
+      expect(form.files.single.key, 'photos');
+
+      final missing = await repo.getOne('nope');
+      expect((missing as Error).failure.code, 'CONTRIBUTION_NOT_FOUND');
+    },
+  );
+
+  testWidgets('Added activities > Edit: filled form, changes go to review', (
+    tester,
+  ) async {
+    final container = await pumpApp(tester);
+    container
+        .read(sessionProvider.notifier)
+        .signedIn(
+          const Session(userId: 'u_1', displayName: 'L', hasPreferences: true),
+        );
+    await tester.pumpAndSettle();
+    final router = container.read(appRouterProvider);
+    unawaited(router.push('/contribute/mine'));
+    await tester.pumpAndSettle();
+    expect(find.text('Published'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Edit'));
+    await tester.pumpAndSettle();
+    expect(find.text('Edit activity'), findsOneWidget);
+    expect(find.text('Nile View Café'), findsOneWidget);
+    expect(find.text('Current photos'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField).first, 'Nile View Terrace');
+    await tester.tap(find.byTooltip('Remove photo'));
+    await tester.pump();
+    await tester.ensureVisible(find.text('Preview & submit'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Preview & submit'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Send changes'));
+    await tester.pumpAndSettle();
+
+    expect(router.state.matchedLocation, '/contribute/mine');
+    expect(
+      find.text('Changes sent. Your activity is under review again.'),
+      findsOneWidget,
+    );
+    expect(find.text('Nile View Terrace'), findsOneWidget);
+    expect(find.text('Published'), findsNothing);
+    expect(find.text('Under review'), findsOneWidget);
+  });
 }

@@ -39,8 +39,8 @@ class CommunityMockDataSource implements CommunityDataSource {
   static const List<HighlightDto> _highlights = [
     HighlightDto(
       id: 'h_nubia',
-      titleEn: 'Nubia',
-      titleAr: 'النوبة',
+      titleEn: 'Nubian colors',
+      titleAr: 'ألوان النوبة',
       coverImage: AppImages.onboardingNubian,
       category: 'nubian',
     ),
@@ -55,9 +55,32 @@ class CommunityMockDataSource implements CommunityDataSource {
       id: 'h_local',
       titleEn: 'Local life',
       titleAr: 'حياة محلية',
-      coverImage: AppImages.onboardingMarket,
+      coverImage: AppImages.philaeTemple,
       category: 'local_experience',
     ),
+    HighlightDto(
+      id: 'h_souq',
+      titleEn: 'From the souq',
+      titleAr: 'من السوق',
+      coverImage: AppImages.onboardingMarket,
+      category: 'food',
+    ),
+  ];
+
+  /// People who like posts (GET .../likes).
+  static const List<AuthorDto> _likers = [
+    AuthorDto(id: 'u_2', fullName: 'Mariam Ahmed'),
+    AuthorDto(id: 'u_3', fullName: 'عمر علي'),
+    AuthorDto(id: 'u_4', fullName: 'Maya'),
+    AuthorDto(id: 'u_5', fullName: 'Youssef El Nuby'),
+    AuthorDto(id: 'u_6', fullName: 'سارة محمود'),
+    AuthorDto(id: 'u_7', fullName: 'Karim Fathy'),
+    AuthorDto(id: 'u_8', fullName: 'نور الدين'),
+    AuthorDto(id: 'u_9', fullName: 'Hana Saleh'),
+    AuthorDto(id: 'u_10', fullName: 'أحمد جمال'),
+    AuthorDto(id: 'u_11', fullName: 'Lena Fischer'),
+    AuthorDto(id: 'u_12', fullName: 'منة الله'),
+    AuthorDto(id: 'u_13', fullName: 'Tarek Adel'),
   ];
 
   String _ago(Duration d) => _now().toUtc().subtract(d).toIso8601String();
@@ -127,6 +150,74 @@ class CommunityMockDataSource implements CommunityDataSource {
         isBookmarked: false,
         createdAt: _ago(const Duration(days: 2)),
       ),
+      // More moments, so every story circle has a few photos.
+      PostDto(
+        id: 'p_hill',
+        author: maya,
+        images: const [AppImages.homeHero3],
+        caption: 'Sailing past the Tombs of the Nobles at golden hour.',
+        location: 'West Bank, Aswan',
+        category: 'nile',
+        likeCount: 96,
+        commentCount: 0,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: _ago(const Duration(hours: 12)),
+      ),
+      PostDto(
+        id: 'p_elephantine',
+        author: omar,
+        images: const [AppImages.elephantineIsland],
+        caption: 'جزيرة الفنتين من المركب، هدوء لا يوصف.',
+        location: 'جزيرة الفنتين',
+        category: 'nile',
+        likeCount: 52,
+        commentCount: 0,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: _ago(const Duration(days: 3)),
+      ),
+      PostDto(
+        id: 'p_museum',
+        author: youssef,
+        images: const [AppImages.nubianMuseum],
+        caption:
+            'The Nubian Museum keeps the story of the villages that the '
+            'lake covered. Give it a whole morning.',
+        location: 'Nubian Museum',
+        category: 'nubian',
+        likeCount: 74,
+        commentCount: 0,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: _ago(const Duration(days: 1, hours: 4)),
+      ),
+      PostDto(
+        id: 'p_doors',
+        author: mariam,
+        images: const [AppImages.onboardingNubian],
+        caption: 'ألوان البيوت النوبية تفرح القلب. #ألوان_النوبة',
+        location: 'غرب سهيل',
+        category: 'nubian',
+        likeCount: 58,
+        commentCount: 0,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: _ago(const Duration(days: 4)),
+      ),
+      PostDto(
+        id: 'p_temple',
+        author: maya,
+        images: const [AppImages.onboardingTemple],
+        caption: 'Kom Ombo at sunset, a short drive and so worth it.',
+        location: 'Kom Ombo',
+        category: 'local_experience',
+        likeCount: 47,
+        commentCount: 0,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: _ago(const Duration(days: 5)),
+      ),
     ]);
 
     _comments['p_sunset'] = [
@@ -183,11 +274,12 @@ class CommunityMockDataSource implements CommunityDataSource {
     ),
   );
 
-  Paged<T> _page<T>(List<T> all, int page) {
-    final totalPages = all.isEmpty ? 1 : (all.length / pageSize).ceil();
-    final start = (page - 1) * pageSize;
+  Paged<T> _page<T>(List<T> all, int page, [int? size]) {
+    final limit = size ?? pageSize;
+    final totalPages = all.isEmpty ? 1 : (all.length / limit).ceil();
+    final start = (page - 1) * limit;
     return Paged(
-      items: all.skip(start).take(pageSize).toList(),
+      items: all.skip(start).take(limit).toList(),
       page: page,
       totalPages: totalPages,
       total: all.length,
@@ -201,13 +293,43 @@ class CommunityMockDataSource implements CommunityDataSource {
   }
 
   @override
-  Future<Paged<PostDto>> getPosts({String? category, int page = 1}) async {
+  Future<Paged<PostDto>> getPosts({
+    String? category,
+    String? sort,
+    int page = 1,
+    int? limit,
+  }) async {
     await _wait();
-    final all = [
-      for (final p in _posts)
-        if (category == null || p.category == category) _view(p),
-    ]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    return _page(all, page);
+    if (sort != null && sort != 'new' && sort != 'top') {
+      throw const AppException(
+        code: ErrorCodes.validation,
+        statusCode: 422,
+        details: {'sort': ErrorCodes.validation},
+      );
+    }
+    final weekAgo = _now().toUtc().subtract(const Duration(days: 7));
+    final all =
+        [
+          for (final p in _posts)
+            if (category == null || p.category == category)
+              if (sort != 'top' || DateTime.parse(p.createdAt).isAfter(weekAgo))
+                _view(p),
+        ]..sort(
+          (a, b) => sort == 'top' && a.likeCount != b.likeCount
+              ? b.likeCount.compareTo(a.likeCount)
+              : b.createdAt.compareTo(a.createdAt),
+        );
+    return _page(all, page, limit ?? pageSize);
+  }
+
+  @override
+  Future<Paged<AuthorDto>> getLikes(String postId, {int page = 1}) async {
+    await _wait();
+    final post = _view(_find(postId));
+    final others = _likers
+        .where((a) => a.id != post.author.id)
+        .take(post.isLiked ? post.likeCount - 1 : post.likeCount);
+    return _page([if (post.isLiked) _me(), ...others], page);
   }
 
   @override

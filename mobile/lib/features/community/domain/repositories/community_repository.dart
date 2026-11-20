@@ -7,7 +7,16 @@ import '../entities/post.dart';
 abstract interface class CommunityRepository {
   Future<Result<List<Highlight>>> getHighlights();
 
-  Future<Result<Paged<Post>>> getPosts({PostCategory? category, int page = 1});
+  /// [limit] null = the usual page size.
+  Future<Result<Paged<Post>>> getPosts({
+    PostCategory? category,
+    PostSort sort = PostSort.latest,
+    int page = 1,
+    int? limit,
+  });
+
+  /// Who liked a post, newest first.
+  Future<Result<Paged<Author>>> getLikes(String postId, {int page = 1});
 
   Future<Result<Paged<Post>>> getMyPosts({int page = 1});
 

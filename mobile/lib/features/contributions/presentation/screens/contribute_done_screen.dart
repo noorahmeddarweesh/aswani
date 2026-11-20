@@ -8,6 +8,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/motion.dart';
 import '../../../../shared/widgets/primary_button.dart';
+import '../../contributions_routes.dart';
 import '../widgets/contribute_widgets.dart';
 
 /// "Contribution received".
@@ -47,6 +48,17 @@ class ContributeDoneScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Where to follow it later.
+                Text(
+                  l10n.contributeTrackNote,
+                  textAlign: TextAlign.center,
+                  style: context.text.bodySmall,
+                ),
+                TextButton(
+                  onPressed: () => context.push(ContributeRoutes.mine),
+                  child: Text(l10n.contributeTrackAction),
+                ),
+                const SizedBox(height: AppSpacing.xs),
                 PrimaryButton(
                   label: l10n.backToHome,
                   onPressed: () => context.go(AppRoutes.home),

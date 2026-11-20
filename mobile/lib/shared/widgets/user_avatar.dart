@@ -11,17 +11,22 @@ class UserAvatar extends StatelessWidget {
     required this.name,
     this.imageUrl,
     this.size = 36,
+    this.ring = false,
   });
 
   final String name;
   final String? imageUrl;
   final double size;
 
+  /// The signed-in user's photo (Home, Profile): a very thin gold ring with
+  /// a small white gap, as in the designs. [size] includes the ring.
+  final bool ring;
+
   @override
   Widget build(BuildContext context) {
     final letter = name.trim().isEmpty ? '?' : name.trim().characters.first;
-    return SizedBox.square(
-      dimension: size,
+    final photo = SizedBox.square(
+      dimension: ring ? size - 6 : size,
       child: ClipOval(
         child: imageUrl != null
             ? AppImage(imageUrl!)
@@ -38,6 +43,21 @@ class UserAvatar extends StatelessWidget {
                 ),
               ),
       ),
+    );
+    if (!ring) return photo;
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: context.colors.surface,
+        border: Border.all(
+          color: context.palette.accentGold.withValues(alpha: 0.7),
+          width: 1,
+        ),
+      ),
+      child: photo,
     );
   }
 }

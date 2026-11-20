@@ -6,6 +6,7 @@ import '../../../../core/errors/error_messages.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/widgets/eyebrow.dart';
 import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/bookmark_icon.dart';
 import '../../../../shared/widgets/motion.dart';
@@ -299,6 +300,33 @@ class StoryListSkeleton extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+/// "Memory of the place": the title and one line under it, above the
+/// featured story.
+class CultureHeader extends StatelessWidget {
+  const CultureHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.4,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Eyebrow(l10n.cultureEyebrow, color: context.palette.link),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(l10n.cultureHeadline, style: context.text.headlineLarge),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(l10n.cultureIntro, style: context.text.bodyMedium),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -87,7 +87,11 @@ class _ContributeDetailsScreenState
         state.error(f) ? message ?? l10n.contributeErrorRequired : null;
 
     return Scaffold(
-      appBar: AppTopBar(title: l10n.contributeDetailsTitle),
+      appBar: AppTopBar(
+        title: state.editing
+            ? l10n.contributeEditTitle
+            : l10n.contributeDetailsTitle,
+      ),
       body: MaxWidthBox(
         maxWidth: 640,
         child: ListView(
@@ -165,11 +169,25 @@ class _ContributeDetailsScreenState
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: PhotoPickerField(
-                photos: state.photos,
-                onChanged: vm.setPhotos,
-                title: l10n.contributePhotosTitle,
-                subtitle: l10n.contributePhotosSubtitle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (state.keepPhotos.isNotEmpty) ...[
+                    KeptPhotos(
+                      photos: state.keepPhotos,
+                      onRemove: vm.removeKeptPhoto,
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                  ],
+                  if (state.photoRoom > 0)
+                    PhotoPickerField(
+                      photos: state.photos,
+                      onChanged: vm.setPhotos,
+                      max: state.photoRoom,
+                      title: l10n.contributePhotosTitle,
+                      subtitle: l10n.contributePhotosSubtitle,
+                    ),
+                ],
               ),
             ),
             FormBlock(

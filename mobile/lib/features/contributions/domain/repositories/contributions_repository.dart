@@ -11,4 +11,15 @@ abstract interface class ContributionsRepository {
   );
 
   Future<Result<Paged<Contribution>>> getMine({int page = 1});
+
+  Future<Result<ContributionDetails>> getOne(String id);
+
+  /// Sends the whole form again; [keepPhotos] are old photo URLs to keep,
+  /// [photos] the new files. The contribution goes back to `pending`.
+  Future<Result<void>> update(
+    String id,
+    ContributionDraft draft, {
+    required List<String> keepPhotos,
+    required List<UploadFile> photos,
+  });
 }

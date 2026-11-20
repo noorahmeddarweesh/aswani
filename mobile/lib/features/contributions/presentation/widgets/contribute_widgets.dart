@@ -5,6 +5,7 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/widgets/app_image.dart';
 import '../../domain/entities/contribution.dart';
 
 extension ContributionCategoryUi on ContributionCategory {
@@ -140,6 +141,62 @@ class IconBadge extends StatelessWidget {
         size: size * 0.42,
         color: gold ? palette.accentGold : context.colors.primary,
       ),
+    );
+  }
+}
+
+/// Editing: the photos already sent, each with a remove button.
+class KeptPhotos extends StatelessWidget {
+  const KeptPhotos({super.key, required this.photos, required this.onRemove});
+
+  final List<String> photos;
+  final ValueChanged<String> onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.contributeCurrentPhotos, style: context.text.bodySmall),
+        const SizedBox(height: AppSpacing.xs),
+        Wrap(
+          spacing: AppSpacing.xs,
+          runSpacing: AppSpacing.xs,
+          children: [
+            for (final url in photos)
+              SizedBox.square(
+                dimension: 84,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ClipRRect(
+                      borderRadius: AppRadii.mdAll,
+                      child: AppImage(url),
+                    ),
+                    PositionedDirectional(
+                      top: 0,
+                      end: 0,
+                      child: IconButton(
+                        tooltip: l10n.contributeRemovePhoto,
+                        visualDensity: VisualDensity.compact,
+                        style: IconButton.styleFrom(
+                          backgroundColor: context.colors.surface,
+                        ),
+                        icon: Icon(
+                          LucideIcons.x,
+                          size: 16,
+                          color: context.palette.ink,
+                        ),
+                        onPressed: () => onRemove(url),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

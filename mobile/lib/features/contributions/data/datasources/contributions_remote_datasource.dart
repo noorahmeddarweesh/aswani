@@ -24,6 +24,25 @@ class ContributionsRemoteDataSource implements ContributionsDataSource {
   });
 
   @override
+  Future<Map<String, dynamic>> getOne(String id) => apiCall(() async {
+    final r = await _client.get<Map<String, dynamic>>('/contributions/$id');
+    return r.data!['data'] as Map<String, dynamic>;
+  });
+
+  @override
+  Future<Map<String, dynamic>> update(
+    String id,
+    Map<String, Object?> fields,
+    List<UploadFile> photos,
+  ) => apiCall(() async {
+    final r = await _client.patch<Map<String, dynamic>>(
+      '/contributions/$id',
+      data: buildFormData(fields: fields, filesField: 'photos', files: photos),
+    );
+    return r.data!['data'] as Map<String, dynamic>;
+  });
+
+  @override
   Future<Paged<Map<String, dynamic>>> getMine({int page = 1}) =>
       apiCall(() async {
         final r = await _client.get<Map<String, dynamic>>(

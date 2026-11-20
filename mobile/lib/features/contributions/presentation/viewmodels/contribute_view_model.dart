@@ -21,6 +21,9 @@ class ContributeState {
     this.address = '',
     this.contact = '',
     this.photos = const [],
+    this.keepPhotos = const [],
+    this.editingId,
+    this.saved = false,
     this.showErrors = false,
     this.submitting = false,
     this.failure,
@@ -32,6 +35,20 @@ class ContributeState {
   final String address;
   final String contact;
   final List<UploadFile> photos;
+
+  /// Editing: URLs of the photos already sent that stay.
+  final List<String> keepPhotos;
+
+  /// Set when an existing contribution is being edited (contract v0.3).
+  final String? editingId;
+
+  /// Editing only: the changes were sent.
+  final bool saved;
+
+  bool get editing => editingId != null;
+
+  /// New photos that still fit next to the kept ones.
+  int get photoRoom => UploadRules.maxPhotos - keepPhotos.length;
 
   /// Errors appear after the first "Preview & submit".
   final bool showErrors;
@@ -72,6 +89,8 @@ class ContributeState {
     String? address,
     String? contact,
     List<UploadFile>? photos,
+    List<String>? keepPhotos,
+    bool? saved,
     bool? showErrors,
     bool? submitting,
     Failure? Function()? failure,
@@ -82,6 +101,9 @@ class ContributeState {
     address: address ?? this.address,
     contact: contact ?? this.contact,
     photos: photos ?? this.photos,
+    keepPhotos: keepPhotos ?? this.keepPhotos,
+    editingId: editingId,
+    saved: saved ?? this.saved,
     showErrors: showErrors ?? this.showErrors,
     submitting: submitting ?? this.submitting,
     failure: failure != null ? failure() : this.failure,
@@ -96,6 +118,23 @@ class ContributeViewModel extends Notifier<ContributeState> {
 
   void start(ContributionCategory category) =>
       state = ContributeState(category: category);
+
+  /// Added activities > Edit: the form filled with what was sent.
+  void startEditing(ContributionDetails details) {
+    final d = details.draft;
+    state = ContributeState(
+      editingId: details.id,
+      category: d.category,
+      name: d.name,
+      description: d.description,
+      address: d.address,
+      contact: d.contactNumber ?? '',
+      keepPhotos: details.photos,
+    );
+  }
+
+  void removeKeptPhoto(String url) =>
+      state = state.copyWith(keepPhotos: [...state.keepPhotos]..remove(url));
 
   void setCategory(ContributionCategory c) =>
       state = state.copyWith(category: c);
@@ -116,22 +155,27 @@ class ContributeViewModel extends Notifier<ContributeState> {
     if (!state.isValid || state.submitting) return false;
     state = state.copyWith(submitting: true, failure: () => null);
     final contact = state.contact.replaceAll(RegExp(r'[\s-]'), '');
-    final result = await ref
-        .read(contributionsRepositoryProvider)
-        .submit(
-          ContributionDraft(
-            category: state.category!,
-            name: state.name.trim(),
-            description: state.description.trim(),
-            address: state.address.trim(),
-            contactNumber: contact.isEmpty ? null : contact,
-          ),
-          state.photos,
-        );
+    final draft = ContributionDraft(
+      category: state.category!,
+      name: state.name.trim(),
+      description: state.description.trim(),
+      address: state.address.trim(),
+      contactNumber: contact.isEmpty ? null : contact,
+    );
+    final repo = ref.read(contributionsRepositoryProvider);
+    final id = state.editingId;
+    final Result<Object?> result = id == null
+        ? await repo.submit(draft, state.photos)
+        : await repo.update(
+            id,
+            draft,
+            keepPhotos: state.keepPhotos,
+            photos: state.photos,
+          );
     if (!ref.mounted) return false;
     switch (result) {
       case Success():
-        state = state.copyWith(submitting: false);
+        state = state.copyWith(submitting: false, saved: state.editing);
         ref.invalidate(myContributionsProvider);
         return true;
       case Error(:final failure):

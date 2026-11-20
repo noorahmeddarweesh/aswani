@@ -44,8 +44,13 @@
   "communityDeletePostBody": "It will be removed from the community. This cannot be undone.",
   "communityDeletePostTitle": "Delete this post?",
   "communityEmpty": "No posts here yet. Share the first moment!",
+  "communityEyebrow": "FROM PEOPLE, FOR PEOPLE",
   "communityLike": "Appreciate",
+  "communityLikesEmpty": "No appreciations yet.",
+  "communityLikesTitle": "Appreciations",
   "communityLocationHint": "e.g. Aswan Corniche",
+  "communityMomentCamera": "Take a photo",
+  "communityMomentGallery": "Choose from gallery",
   "communityMore": "More options",
   "communityMyPosts": "My posts",
   "communityMyPostsEmpty": "You haven't posted yet.",
@@ -65,7 +70,7 @@
   "communityPostCategory": "Post category",
   "communityPostDeleted": "Post deleted.",
   "communityPosted": "Your post is live.",
-  "communityPostTitle": "Community post",
+  "communityPostTitle": "From the community",
   "communityPublish": "Publish",
   "communityPublishToCommunity": "Publish to community",
   "communityRespectNote": "Share respectfully and get permission from people in your photos.",
@@ -79,9 +84,17 @@
       }
     }
   },
-  "communityTitle": "Community",
+  "communityTitle": "Aswani community",
   "communityUnlike": "Remove appreciation",
   "communityUnsave": "Remove from saved",
+  "communityViewComments": "{count, plural, =1{View 1 comment} other{View all {count} comments}}",
+  "@communityViewComments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "communityYourMoment": "Your moment",
   "continueLabel": "Continue",
   "contributeAddActivity": "Add an activity",
@@ -98,10 +111,15 @@
   "contributeChooseCategory": "Choose a category",
   "contributeContact": "Contact number (optional)",
   "contributeContactNote": "Contact details or hours will not be shown as verified before review.",
+  "contributeCurrentPhotos": "Current photos",
   "contributeDescription": "Short description",
   "contributeDescriptionHint": "What makes this place special?",
   "contributeDetailsTitle": "Activity details",
-  "contributeEdit": "Edit details",
+  "contributeEdit": "Edit",
+  "contributeEdited": "Changes sent. Your activity is under review again.",
+  "contributeEditNote": "After you edit, your activity is reviewed again before the change appears.",
+  "contributeEditSubmit": "Send changes",
+  "contributeEditTitle": "Edit activity",
   "contributeErrorName": "Enter the name (at least 2 letters).",
   "contributeErrorPhone": "Enter an Egyptian mobile number, e.g. 01012345678.",
   "contributeErrorRequired": "This field is required.",
@@ -126,6 +144,7 @@
   "contributePreviewTitle": "Preview",
   "contributeReceivedBody": "Thank you for helping people discover more of Aswan. We'll review the information before it appears in the directory.",
   "contributeReceivedTitle": "Contribution received",
+  "contributeRemovePhoto": "Remove photo",
   "contributeReviewedNote": "Every contribution is reviewed before publication.",
   "contributeStatusAccepted": "Published",
   "contributeStatusPending": "Under review",
@@ -143,11 +162,16 @@
   },
   "contributeSubmit": "Submit contribution",
   "contributeTitle": "Make your place part of ASWANI",
+  "contributeTrackAction": "View my activities",
+  "contributeTrackNote": "You can follow it anytime from Profile › Added activities.",
   "createAccountButton": "Create account",
   "createAccountLink": "Create an account",
   "cultureAllStories": "All stories",
   "cultureBrowseByTheme": "Browse by theme",
   "cultureEmpty": "No stories in this theme yet.",
+  "cultureEyebrow": "MEMORY OF THE PLACE",
+  "cultureHeadline": "Stories that live on the banks of the Nile",
+  "cultureIntro": "Get closer to the heritage, the people and the details that make Aswan who it is.",
   "cultureMinRead": "{minutes} min read",
   "@cultureMinRead": {
     "placeholders": {
@@ -183,6 +207,7 @@
   "done": "Done",
   "errorAlreadyApplied": "You have already applied to be a guide.",
   "errorCommentNotFound": "This comment was removed.",
+  "errorContributionNotFound": "This contribution is no longer available.",
   "errorDateInPast": "Choose today or a later date.",
   "errorDeletionRequested": "You have already asked to delete your account.",
   "errorEmailExists": "An account with this email or phone already exists",
@@ -512,6 +537,22 @@
       }
     }
   },
+  "storyClose": "Close",
+  "storyEmpty": "No moments here yet.",
+  "storyNext": "Next",
+  "storyOf": "Moment {current} of {total}",
+  "@storyOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "storyPrevious": "Previous",
+  "storyViewPost": "View post",
   "styleAdventurousSubtitle": "Movement and new experiences",
   "styleAdventurousTitle": "Adventurous",
   "styleCalmSubtitle": "A slower pace and lovely views",
