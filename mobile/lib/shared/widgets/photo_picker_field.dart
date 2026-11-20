@@ -132,7 +132,8 @@ class PhotoPickerField extends ConsumerWidget {
                       const SizedBox(height: AppSpacing.sm),
                       FilledButton(
                         style: FilledButton.styleFrom(
-                          minimumSize: const Size(0, 40),
+                          minimumSize: const Size(0, 36),
+                          textStyle: context.text.labelLarge,
                           padding: const EdgeInsets.symmetric(
                             horizontal: AppSpacing.md,
                           ),

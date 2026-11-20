@@ -16,6 +16,73 @@
   "categoryServices": "Services",
   "comingSoonBody": "We're building this part of ASWANI. Check back soon.",
   "comingSoonTitle": "Coming soon",
+  "communityAddLocation": "Add location",
+  "communityAddPhotosSubtitle": "Choose up to 6 photos",
+  "communityAddPhotosTitle": "Add your travel photos",
+  "communityAppreciations": "{count, plural, =1{1 appreciation} other{{count} appreciations}}",
+  "@communityAppreciations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityCaptionHint": "What's the story behind this moment?",
+  "communityCaptionLabel": "Write a caption",
+  "communityCatFood": "Food",
+  "communityCatLocalExperience": "Local experience",
+  "communityCatNile": "Nile",
+  "communityCatNubian": "Nubian",
+  "communityCatOther": "Other",
+  "communityComment": "Comment",
+  "communityCommentHint": "Add a thoughtful comment…",
+  "communityComments": "Comments",
+  "communityDeleteComment": "Delete comment",
+  "communityDeleteCommentBody": "This cannot be undone.",
+  "communityDeleteCommentTitle": "Delete this comment?",
+  "communityDeletePost": "Delete post",
+  "communityDeletePostBody": "It will be removed from the community. This cannot be undone.",
+  "communityDeletePostTitle": "Delete this post?",
+  "communityEmpty": "No posts here yet. Share the first moment!",
+  "communityLike": "Appreciate",
+  "communityLocationHint": "e.g. Aswan Corniche",
+  "communityMore": "More options",
+  "communityMyPosts": "My posts",
+  "communityMyPostsEmpty": "You haven't posted yet.",
+  "communityNewPost": "New post",
+  "communityNoComments": "No comments yet. Be the first.",
+  "communityPhotoOf": "Photo {index} of {count}",
+  "@communityPhotoOf": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityPostCategory": "Post category",
+  "communityPostDeleted": "Post deleted.",
+  "communityPosted": "Your post is live.",
+  "communityPostTitle": "Community post",
+  "communityPublish": "Publish",
+  "communityPublishToCommunity": "Publish to community",
+  "communityRespectNote": "Share respectfully and get permission from people in your photos.",
+  "communitySave": "Save post",
+  "communitySendComment": "Send comment",
+  "communityShareText": "{caption}\n\nShared from Aswani",
+  "@communityShareText": {
+    "placeholders": {
+      "caption": {
+        "type": "String"
+      }
+    }
+  },
+  "communityTitle": "Community",
+  "communityUnlike": "Remove appreciation",
+  "communityUnsave": "Remove from saved",
+  "communityYourMoment": "Your moment",
   "continueLabel": "Continue",
   "createAccountButton": "Create account",
   "createAccountLink": "Create an account",
@@ -225,6 +292,7 @@
   "samplePrimaryButton": "Continue",
   "sampleSectionTitle": "Curated for you",
   "sampleTextButton": "Forgot password?",
+  "save": "Save",
   "savePassword": "Save password",
   "seeAll": "See all",
   "sendCode": "Send verification code",
