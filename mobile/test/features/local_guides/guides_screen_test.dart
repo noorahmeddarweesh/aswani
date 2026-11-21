@@ -1,3 +1,4 @@
+import 'package:aswani/core/l10n/generated/app_localizations.dart';
 import 'package:aswani/core/result/result.dart';
 import 'package:aswani/core/theme/app_theme.dart';
 import 'package:aswani/features/local_guides/domain/entities/guide.dart';
@@ -107,6 +108,8 @@ void main() {
         ),
       ],
       child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: AppTheme.light,
         home: GuidesScreen(
           onGuideSelected: onGuideSelected,

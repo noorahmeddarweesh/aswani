@@ -1,177 +1,143 @@
 import 'package:aswani/features/places/domain/entities/place_report.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Localized strings for the Place Details & Place Report features per API Contract v0.2 and Figma design.
+import '../../../core/l10n/generated/app_localizations.dart';
+
+/// Place Details and Report a place copy, read from the app's ARB files
+/// (app_en.arb, app_ar.arb) so every feature translates the same way.
 /// Uses 'place_' prefix for place strings and 'report_' prefix for report strings.
 class PlacesStrings {
-  const PlacesStrings._({required this.isArabic});
+  PlacesStrings._(this._l, {required this.isArabic});
 
   final bool isArabic;
+  final AppLocalizations _l;
 
   static PlacesStrings of(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final isArabic =
         locale.languageCode == 'ar' ||
         Directionality.of(context) == TextDirection.rtl;
-    return PlacesStrings._(isArabic: isArabic);
+    return PlacesStrings._(AppLocalizations.of(context), isArabic: isArabic);
   }
 
   static PlacesStrings forLocale(Locale locale) {
-    return PlacesStrings._(isArabic: locale.languageCode == 'ar');
+    return PlacesStrings._(
+      lookupAppLocalizations(locale),
+      isArabic: locale.languageCode == 'ar',
+    );
   }
 
   // --- Place Details (place_ prefix) ---
 
   /// Eyebrow displayed above place title: 'HISTORICAL PLACE' / 'موقع تاريخي'
-  String get placeEyebrow => isArabic ? 'موقع تاريخي' : 'HISTORICAL PLACE';
+  String get placeEyebrow => _l.placeEyebrow;
   String get eyebrow => placeEyebrow;
 
   /// Section heading for 'About this place' / 'عن هذا المكان'
-  String get placeAboutTitle => isArabic ? 'عن هذا المكان' : 'About this place';
+  String get placeAboutTitle => _l.placeAboutTitle;
   String get aboutTitle => placeAboutTitle;
 
   /// Visiting information card title: 'Visiting information' / 'معلومات الزيارة'
-  String get placeVisitingInfoTitle =>
-      isArabic ? 'معلومات الزيارة' : 'Visiting information';
+  String get placeVisitingInfoTitle => _l.placeVisitingInfoTitle;
   String get visitingInfoTitle => placeVisitingInfoTitle;
 
   /// Visiting information subtitle notice
-  String get placeVisitingInfoSubtitle => isArabic
-      ? 'ساعات العمل والأسعار غير المؤكدة محجوبة عمدًا.'
-      : 'Unverified hours and prices are intentionally not shown.';
+  String get placeVisitingInfoSubtitle => _l.placeVisitingInfoSubtitle;
   String get visitingInfoSubtitle => placeVisitingInfoSubtitle;
 
   /// 404 error message
-  String get placeNotFound =>
-      isArabic ? 'المكان غير موجود.' : 'Place not found.';
+  String get placeNotFound => _l.placeNotFound;
 
   /// Generic error message
-  String get placeGenericError => isArabic
-      ? 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'
-      : 'Something went wrong. Please try again.';
+  String get placeGenericError => _l.placeGenericError;
 
   /// Retry button label
-  String get placeRetry => isArabic ? 'إعادة المحاولة' : 'Try again';
+  String get placeRetry => _l.placeRetry;
   String get retry => placeRetry;
 
   /// Back button tooltip / label
-  String get placeBack => isArabic ? 'رجوع' : 'Back';
+  String get placeBack => _l.placeBack;
   String get back => placeBack;
 
   /// Share action tooltip
-  String get placeShare => isArabic ? 'مشاركة' : 'Share';
+  String get placeShare => _l.placeShare;
   String get share => placeShare;
 
   /// Share feedback message
-  String get placeShareCopied =>
-      isArabic ? 'تم نسخ الرابط إلى الحافظة' : 'Link copied to clipboard';
+  String get placeShareCopied => _l.placeShareCopied;
 
   /// Bookmark action tooltip (add)
-  String get placeBookmarkAdd => isArabic ? 'حفظ المكان' : 'Save place';
+  String get placeBookmarkAdd => _l.placeBookmarkAdd;
   String get bookmarkAdd => placeBookmarkAdd;
 
   /// Bookmark action tooltip (remove)
-  String get placeBookmarkRemove =>
-      isArabic ? 'إزالة الحفظ' : 'Remove bookmark';
+  String get placeBookmarkRemove => _l.placeBookmarkRemove;
   String get bookmarkRemove => placeBookmarkRemove;
 
   // --- Place Report Flow (report_ prefix) ---
 
   /// Report inaccurate information link: 'See something inaccurate? Report it.'
-  String get reportRowText => isArabic
-      ? 'هل ترى معلومات غير دقيقة؟ أبلغ عنها.'
-      : 'See something inaccurate? Report it.';
+  String get reportRowText => _l.placeReportRowText;
   String get reportRow => reportRowText;
 
   // Screen 9: What Needs Updating
-  String get reportTitle => isArabic ? 'الإبلاغ عن مكان' : 'Report a place';
-  String get reportEyebrow =>
-      isArabic ? 'ساعد في تحسين الدليل' : 'HELP IMPROVE THE GUIDE';
-  String get reportWhatNeedsUpdating =>
-      isArabic ? 'ما الذي يحتاج إلى تحديث؟' : 'What needs updating?';
-  String get reportSubtitle => isArabic
-      ? 'اختر السبب الأكثر تطابقًا مع ما وجدته.'
-      : 'Choose the reason that best matches what you found.';
+  String get reportTitle => _l.placeReportTitle;
+  String get reportEyebrow => _l.placeReportEyebrow;
+  String get reportWhatNeedsUpdating => _l.placeReportWhatNeedsUpdating;
+  String get reportSubtitle => _l.placeReportSubtitle;
 
   String reasonLabel(PlaceReportReason reason) {
     switch (reason) {
       case PlaceReportReason.notExist:
-        return isArabic ? 'المكان غير موجود' : 'Place does not exist';
+        return _l.placeReasonLabelNotExist;
       case PlaceReportReason.permanentlyClosed:
-        return isArabic ? 'مغلق نهائيًا' : 'Permanently closed';
+        return _l.placeReasonLabelPermanentlyClosed;
       case PlaceReportReason.temporarilyClosed:
-        return isArabic ? 'مغلق مؤقتًا' : 'Temporarily closed';
+        return _l.placeReasonLabelTemporarilyClosed;
       case PlaceReportReason.incorrectLocation:
-        return isArabic ? 'الموقع غير صحيح' : 'Incorrect location';
+        return _l.placeReasonLabelIncorrectLocation;
       case PlaceReportReason.incorrectInformation:
-        return isArabic ? 'المعلومات غير صحيحة' : 'Incorrect information';
+        return _l.placeReasonLabelIncorrectInformation;
       case PlaceReportReason.other:
-        return isArabic ? 'أخرى' : 'Other';
+        return _l.placeReasonLabelOther;
     }
   }
 
-  String get reportContinue => isArabic ? 'متابعة' : 'Continue';
+  String get reportContinue => _l.placeReportContinue;
 
   // Screen 10: Report Details
-  String get reportDetailsTitle =>
-      isArabic ? 'تفاصيل البلاغ' : 'Report details';
-  String get reportSelectedPlace =>
-      isArabic ? 'المكان المحدد' : 'SELECTED PLACE';
-  String get reportTellUs =>
-      isArabic ? 'أخبرنا بما وجدته *' : 'Tell us what you found *';
-  String get reportDetailsHint => isArabic
-      ? 'أضف تفاصيل تساعد فريق المراجعة...'
-      : 'Add details that help the review team...';
-  String get reportAddPhoto =>
-      isArabic ? 'إضافة صورة داعمة' : 'Add supporting photo';
-  String get reportPhotoOptional => isArabic ? 'اختياري' : 'Optional';
-  String get reportRemovePhoto => isArabic ? 'إزالة الصورة' : 'Remove photo';
-  String get reportNoticeTitle =>
-      isArabic ? 'تتم مراجعة كل بلاغ' : 'Every report is reviewed';
-  String get reportNoticeSubtitle => isArabic
-      ? 'تُمنح النقاط فقط بعد قبول البلاغ.'
-      : 'Points are awarded only after acceptance.';
-  String get reportSubmit => isArabic ? 'إرسال البلاغ' : 'Submit report';
+  String get reportDetailsTitle => _l.placeReportDetailsTitle;
+  String get reportSelectedPlace => _l.placeReportSelectedPlace;
+  String get reportTellUs => _l.placeReportTellUs;
+  String get reportDetailsHint => _l.placeReportDetailsHint;
+  String get reportAddPhoto => _l.placeReportAddPhoto;
+  String get reportPhotoOptional => _l.placeReportPhotoOptional;
+  String get reportRemovePhoto => _l.placeReportRemovePhoto;
+  String get reportNoticeTitle => _l.placeReportNoticeTitle;
+  String get reportNoticeSubtitle => _l.placeReportNoticeSubtitle;
+  String get reportSubmit => _l.placeReportSubmit;
 
   // Screen 10 Validation Errors
-  String get reportDetailsRequired => isArabic
-      ? 'يرجى تقديم تفاصيل عما يحتاج إلى تحديث'
-      : 'Please provide details about what needs updating';
-  String get reportDetailsTooLong => isArabic
-      ? 'يجب ألا تتجاوز التفاصيل 1000 حرف'
-      : 'Details must be 1000 characters or fewer';
-  String get reportPhotoTooLarge => isArabic
-      ? 'حجم الصورة يتجاوز الحد الأقصى 5 ميجابايت'
-      : 'Photo exceeds 5 MB limit';
-  String get reportPhotoUnsupported => isArabic
-      ? 'يتم دعم صور JPG و PNG و WebP فقط'
-      : 'Only JPG, PNG, and WebP photos are supported';
+  String get reportDetailsRequired => _l.placeReportDetailsRequired;
+  String get reportDetailsTooLong => _l.placeReportDetailsTooLong;
+  String get reportPhotoTooLarge => _l.placeReportPhotoTooLarge;
+  String get reportPhotoUnsupported => _l.placeReportPhotoUnsupported;
 
   // Screen 11: Report Under Review (Submitted)
-  String get reportUnderReviewEyebrow =>
-      isArabic ? 'قيد المراجعة' : 'UNDER REVIEW';
-  String get reportThankYou => isArabic
-      ? 'شكرًا لمساعدتك في الحفاظ على دقة أسواني'
-      : 'Thank you for helping keep ASWANI accurate';
-  String get reportDoneSubtitle => isArabic
-      ? 'تقريرك لدى فريق المراجعة. تُمنح النقاط فقط في حال قبول المعلومات.'
-      : 'Your report is with the review team. Points are awarded only if the information is accepted.';
+  String get reportUnderReviewEyebrow => _l.placeReportUnderReviewEyebrow;
+  String get reportThankYou => _l.placeReportThankYou;
+  String get reportDoneSubtitle => _l.placeReportDoneSubtitle;
   String get reportPointsValue => '+25';
-  String get reportPointsPending => isArabic ? 'نقطة معلقة' : 'points pending';
-  String get reportPendingReview =>
-      isArabic ? 'قيد المراجعة' : 'Pending review';
+  String get reportPointsPending => _l.placeReportPointsPending;
+  String get reportPendingReview => _l.placeReportPendingReview;
 
   // 3-Step Timeline
-  String get reportStepSubmitted => isArabic ? 'تم الإرسال' : 'Submitted';
-  String get reportStepUnderReview =>
-      isArabic ? 'قيد المراجعة' : 'Under review';
-  String get reportStepPoints =>
-      isArabic ? 'نقاط بعد القبول' : 'Points after acceptance';
-  String get reportTimelineCaption => isArabic
-      ? 'تم الإرسال • قيد المراجعة • نقاط بعد القبول'
-      : 'Submitted • Under review • Points after acceptance';
+  String get reportStepSubmitted => _l.placeReportStepSubmitted;
+  String get reportStepUnderReview => _l.placeReportStepUnderReview;
+  String get reportStepPoints => _l.placeReportStepPoints;
+  String get reportTimelineCaption => _l.placeReportTimelineCaption;
 
-  String get reportDoneButton => isArabic ? 'تم' : 'Done';
+  String get reportDoneButton => _l.placeReportDoneButton;
 
   // Key-based lookup supporting exact 'place_' and 'report_' prefixes.
   String tr(String key) {

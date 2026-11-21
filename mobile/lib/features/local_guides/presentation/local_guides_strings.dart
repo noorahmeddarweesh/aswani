@@ -1,150 +1,136 @@
 import 'package:aswani/features/local_guides/domain/entities/guide_enums.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Localized strings for the Local Guides feature.
+import '../../../core/l10n/generated/app_localizations.dart';
+
+/// Local Guides copy, read from the app's ARB files (app_en.arb,
+/// app_ar.arb) so every feature translates the same way.
 /// Provides English and Arabic copy matching tour_guides.jpg and design_spec.txt
 /// without modifying core ARB files during Phase 1.
 class LocalGuidesStrings {
-  const LocalGuidesStrings._({required this.isArabic});
+  LocalGuidesStrings._(this._l, {required this.isArabic});
 
+  /// Only for formats the ARB files cannot hold (the review date).
   final bool isArabic;
+  final AppLocalizations _l;
 
   static LocalGuidesStrings of(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final isArabic =
         locale.languageCode == 'ar' ||
         Directionality.of(context) == TextDirection.rtl;
-    return LocalGuidesStrings._(isArabic: isArabic);
+    return LocalGuidesStrings._(
+      AppLocalizations.of(context),
+      isArabic: isArabic,
+    );
   }
 
   // Screen header
-  String get eyebrow => isArabic ? 'معرفة محلية' : 'LOCAL KNOWLEDGE';
-  String get title => isArabic
-      ? 'استكشف أسوان مع مرشد محلي'
-      : 'Explore Aswan with a local guide';
-  String get subtitle => isArabic
-      ? 'اعثر على من يعرف قصصها وثقافتها وأماكنها الخفية.'
-      : 'Find someone who knows its stories, culture, and hidden places.';
+  String get eyebrow => _l.guidesEyebrow;
+  String get title => _l.guidesTitle;
+  String get subtitle => _l.guidesSubtitle;
 
   // Search
-  String get searchHint =>
-      isArabic ? 'ابحث بالاسم أو التخصص' : 'Search by name or specialty';
+  String get searchHint => _l.guidesSearchHint;
 
   // Specialty chips
-  String get filterAll => isArabic ? 'الكل' : 'All';
+  String get filterAll => _l.guidesFilterAll;
   String specialtyLabel(GuideSpecialty specialty) {
     switch (specialty) {
       case GuideSpecialty.nubianCulture:
-        return isArabic ? 'ثقافة نوبية' : 'Nubian culture';
+        return _l.guidesSpecialtyLabelNubianCulture;
       case GuideSpecialty.historicalSites:
-        return isArabic ? 'مواقع تاريخية' : 'Historical sites';
+        return _l.guidesSpecialtyLabelHistoricalSites;
       case GuideSpecialty.nile:
-        return isArabic ? 'النيل' : 'Nile';
+        return _l.guidesSpecialtyLabelNile;
       case GuideSpecialty.photography:
-        return isArabic ? 'تصوير' : 'Photography';
+        return _l.guidesSpecialtyLabelPhotography;
       case GuideSpecialty.localExperiences:
-        return isArabic ? 'تجارب محلية' : 'Local experiences';
+        return _l.guidesSpecialtyLabelLocalExperiences;
     }
   }
 
   // Featured guide card
-  String get sampleProfile => isArabic ? 'ملف تجريبي' : 'SAMPLE PROFILE';
+  String get sampleProfile => _l.guidesSampleProfile;
   String durationLabel(GuideDuration duration) {
     switch (duration) {
       case GuideDuration.fewHours:
-        return isArabic ? 'بضع ساعات' : 'Few hours';
+        return _l.guidesDurationLabelFewHours;
       case GuideDuration.oneDay:
-        return isArabic ? 'يوم كامل' : 'Full day';
+        return _l.guidesDurationLabelOneDay;
       case GuideDuration.multipleDays:
-        return isArabic ? 'عدة أيام' : 'Multiple days';
+        return _l.guidesDurationLabelMultipleDays;
     }
   }
 
   // Suggested guides section
-  String get suggestedSectionTitle =>
-      isArabic ? 'مرشدون مقترحون' : 'Suggested guides';
-  String get filterAction => isArabic ? 'تصفية ←' : 'Filter →';
-  String get illustrativeNote =>
-      isArabic ? 'معلومات توضيحية' : 'Illustrative information';
+  String get suggestedSectionTitle => _l.guidesSuggestedSectionTitle;
+  String get filterAction => _l.guidesFilterAction;
+  String get illustrativeNote => _l.guidesIllustrativeNote;
 
   // CTA Card
-  String get ctaTitle =>
-      isArabic ? 'تعرف أسوان عن ظهر قلب؟' : 'Know Aswan by heart?';
-  String get ctaSubtitle =>
-      isArabic ? 'قدّم لتقديم خدمات الإرشاد' : 'Apply to offer guide services';
+  String get ctaTitle => _l.guidesCtaTitle;
+  String get ctaSubtitle => _l.guidesCtaSubtitle;
 
   // States
-  String get emptySearch => isArabic
-      ? 'لا يوجد مرشدون يطابقون بحثك.'
-      : 'No guides match your search.';
-  String get emptyFilter => isArabic
-      ? 'لا يوجد مرشدون متاحون لهذا التخصص.'
-      : 'No guides available for this specialty.';
-  String get errorLoading => isArabic
-      ? 'تعذر تحميل المرشدين. يُرجى المحاولة مرة أخرى.'
-      : 'Failed to load guides. Please try again.';
-  String get retry => isArabic ? 'حاول مرة أخرى' : 'Try again';
+  String get emptySearch => _l.guidesEmptySearch;
+  String get emptyFilter => _l.guidesEmptyFilter;
+  String get errorLoading => _l.guidesErrorLoading;
+  String get retry => _l.guidesRetry;
 
   // Guide Details Screen (P4)
   String get guidesSampleProfileNotVerified =>
-      isArabic ? 'ملف تجريبي • غير موثق' : 'SAMPLE PROFILE • NOT VERIFIED';
+      _l.guidesSampleProfileNotVerified;
   String get sampleProfileNotVerified => guidesSampleProfileNotVerified;
 
-  String get guidesSpecialties => isArabic ? 'التخصصات' : 'Specialties';
+  String get guidesSpecialties => _l.guidesSpecialties;
   String get specialtiesHeader => guidesSpecialties;
 
-  String get guidesAvailableTourDurations =>
-      isArabic ? 'مدد الجولات المتاحة' : 'Available tour durations';
+  String get guidesAvailableTourDurations => _l.guidesAvailableTourDurations;
   String get availableDurationsHeader => guidesAvailableTourDurations;
 
-  String get guidesNoticeTitle => isArabic
-      ? 'طلب إرشاد، وليس حجزًا مؤكدًا'
-      : 'A request, not a confirmed booking';
+  String get guidesNoticeTitle => _l.guidesNoticeTitle;
   String get noticeTitle => guidesNoticeTitle;
 
-  String get guidesNoticeSubtitle => isArabic
-      ? 'يقوم المرشد بمراجعة التفاصيل قبل تأكيد أي موعد.'
-      : 'The guide reviews details before any time is confirmed.';
+  String get guidesNoticeSubtitle => _l.guidesNoticeSubtitle;
   String get noticeSubtitle => guidesNoticeSubtitle;
 
-  String get guidesRequestThisGuide =>
-      isArabic ? 'طلب هذا المرشد' : 'Request this guide';
+  String get guidesRequestThisGuide => _l.guidesRequestThisGuide;
   String get requestThisGuide => guidesRequestThisGuide;
 
-  String get guidesNotFound =>
-      isArabic ? 'لم يتم العثور على المرشد.' : 'Guide not found.';
+  String get guidesNotFound => _l.guidesNotFound;
   String get guideNotFound => guidesNotFound;
 
-  String get guidesBack => isArabic ? 'رجوع' : 'Back';
+  String get guidesBack => _l.guidesBack;
   String get back => guidesBack;
 
-  String get guidesShare => isArabic ? 'مشاركة' : 'Share';
+  String get guidesShare => _l.guidesShare;
   String get share => guidesShare;
 
   String languageLabel(GuideLanguage language) {
     switch (language) {
       case GuideLanguage.ar:
-        return isArabic ? 'العربية' : 'Arabic';
+        return _l.guidesLanguageLabelAr;
       case GuideLanguage.en:
-        return isArabic ? 'الإنجليزية' : 'English';
+        return _l.guidesLanguageLabelEn;
       case GuideLanguage.fr:
-        return isArabic ? 'الفرنسية' : 'French';
+        return _l.guidesLanguageLabelFr;
       case GuideLanguage.de:
-        return isArabic ? 'الألمانية' : 'German';
+        return _l.guidesLanguageLabelDe;
       case GuideLanguage.it:
-        return isArabic ? 'الإيطالية' : 'Italian';
+        return _l.guidesLanguageLabelIt;
       case GuideLanguage.es:
-        return isArabic ? 'الإسبانية' : 'Spanish';
+        return _l.guidesLanguageLabelEs;
     }
   }
 
   String languagesFormatted(List<GuideLanguage> languages) {
-    return languages.map(languageLabel).join(isArabic ? ' و ' : ' & ');
+    return languages.map(languageLabel).join(_l.guidesLanguagesJoiner);
   }
 
   String detailsSpecialtyLabel(GuideSpecialty specialty) {
     if (specialty == GuideSpecialty.historicalSites) {
-      return isArabic ? 'جولات تاريخية' : 'Historical walks';
+      return _l.guidesDetailsSpecialtyLabelHistoricalSites;
     }
     return specialtyLabel(specialty);
   }
@@ -152,108 +138,74 @@ class LocalGuidesStrings {
   String detailsDurationLabel(GuideDuration duration) {
     switch (duration) {
       case GuideDuration.fewHours:
-        return isArabic ? 'بضع ساعات' : 'Few hours';
+        return _l.guidesDetailsDurationLabelFewHours;
       case GuideDuration.oneDay:
-        return isArabic ? 'يوم واحد' : 'One day';
+        return _l.guidesDetailsDurationLabelOneDay;
       case GuideDuration.multipleDays:
-        return isArabic ? 'عدة أيام' : 'Multiple days';
+        return _l.guidesDetailsDurationLabelMultipleDays;
     }
   }
 
   // Request a Guide Form (P5)
-  String get requestScreenTitle => isArabic ? 'طلب مرشد' : 'Request a guide';
-  String get requestIntro => isArabic
-      ? 'أخبرنا بما يناسب خططك. اختر المدة التي تحتاجها بدقة.'
-      : 'Tell us what fits your plans. Choose exactly how long you need.';
-  String get requestPreferredDate =>
-      isArabic ? 'التاريخ المفضل' : 'Preferred date';
-  String get requestSelectDate => isArabic ? 'اختر التاريخ' : 'Select date';
-  String get requestTourDuration => isArabic ? 'مدة الجولة' : 'Tour duration';
+  String get requestScreenTitle => _l.guidesRequestScreenTitle;
+  String get requestIntro => _l.guidesRequestIntro;
+  String get requestPreferredDate => _l.guidesRequestPreferredDate;
+  String get requestSelectDate => _l.guidesRequestSelectDate;
+  String get requestTourDuration => _l.guidesRequestTourDuration;
 
   String requestDurationLabel(RequestDuration duration) {
     switch (duration) {
       case RequestDuration.fewHours:
-        return isArabic ? 'بضع ساعات' : 'A few hours';
+        return _l.guidesRequestDurationLabelFewHours;
       case RequestDuration.oneDay:
-        return isArabic ? 'يوم واحد' : 'One day';
+        return _l.guidesRequestDurationLabelOneDay;
       case RequestDuration.twoDays:
-        return isArabic ? 'يومان' : 'Two days';
+        return _l.guidesRequestDurationLabelTwoDays;
       case RequestDuration.threeDays:
-        return isArabic ? '3 أيام' : '3 days';
+        return _l.guidesRequestDurationLabelThreeDays;
       case RequestDuration.custom:
-        return isArabic ? 'مخصص' : 'Custom';
+        return _l.guidesRequestDurationLabelCustom;
     }
   }
 
-  String get requestStartTime => isArabic ? 'وقت البدء' : 'Start time';
-  String get requestGroupSize => isArabic ? 'حجم المجموعة' : 'Group size';
-  String requestGroupSizeFormatted(int count) {
-    if (isArabic) {
-      if (count == 1) return 'شخص واحد';
-      if (count == 2) return 'شخصان';
-      if (count >= 3 && count <= 10) return '$count أشخاص';
-      return '$count شخص';
-    }
-    return count == 1 ? '1 person' : '$count people';
-  }
+  String get requestStartTime => _l.guidesRequestStartTime;
+  String get requestGroupSize => _l.guidesRequestGroupSize;
+  String requestGroupSizeFormatted(int count) => _l.guidesGroupSize(count);
 
-  String get requestPreferredLanguage =>
-      isArabic ? 'اللغة المفضلة' : 'Preferred language';
-  String get requestAdditionalNotes =>
-      isArabic ? 'ملاحظات إضافية (اختياري)' : 'Additional notes (optional)';
-  String get requestNotesHint => isArabic
-      ? 'أخبر المرشد بما يهمك...'
-      : 'Tell the guide what matters to you...';
-  String get requestReviewButton =>
-      isArabic ? 'مراجعة الطلب' : 'Review request';
+  String get requestPreferredLanguage => _l.guidesRequestPreferredLanguage;
+  String get requestAdditionalNotes => _l.guidesRequestAdditionalNotes;
+  String get requestNotesHint => _l.guidesRequestNotesHint;
+  String get requestReviewButton => _l.guidesRequestReviewButton;
 
   // Validation & Helpers
-  String get requestDateRequired =>
-      isArabic ? 'التاريخ مطلوب' : 'Date is required';
-  String get requestDateInPast => isArabic
-      ? 'لا يمكن أن يكون التاريخ في الماضي'
-      : 'Date cannot be in the past';
-  String get requestCustomHoursRequired => isArabic
-      ? 'يجب أن تكون الساعات بين 1 و 12'
-      : 'Custom duration must be between 1 and 12 hours';
-  String get requestCustomDurationLabel =>
-      isArabic ? 'عدد الساعات' : 'Custom hours';
-  String requestHoursCount(int hours) {
-    if (isArabic) {
-      if (hours == 1) return 'ساعة واحدة';
-      if (hours == 2) return 'ساعتان';
-      if (hours >= 3 && hours <= 10) return '$hours ساعات';
-      return '$hours ساعة';
-    }
-    return hours == 1 ? '1 hour' : '$hours hours';
-  }
+  String get requestDateRequired => _l.guidesRequestDateRequired;
+  String get requestDateInPast => _l.guidesRequestDateInPast;
+  String get requestCustomHoursRequired => _l.guidesRequestCustomHoursRequired;
+  String get requestCustomDurationLabel => _l.guidesRequestCustomDurationLabel;
+  String requestHoursCount(int hours) => _l.guidesHoursCount(hours);
 
   // Review Request Screen (P6)
-  String get reviewScreenTitle => isArabic ? 'مراجعة الطلب' : 'Review request';
-  String get selectedGuideEyebrow =>
-      isArabic ? 'المرشد المحدد' : 'SELECTED GUIDE';
-  String get reviewSampleProfile => isArabic ? 'ملف تجريبي' : 'Sample profile';
-  String get reviewDateLabel => isArabic ? 'التاريخ' : 'Date';
-  String get reviewDurationLabel => isArabic ? 'المدة' : 'Duration';
-  String get reviewGroupLabel => isArabic ? 'المجموعة' : 'Group';
-  String get reviewLanguageLabel => isArabic ? 'اللغة' : 'Language';
-  String get reviewInterestsLabel => isArabic ? 'الاهتمامات' : 'Interests';
+  String get reviewScreenTitle => _l.guidesReviewScreenTitle;
+  String get selectedGuideEyebrow => _l.guidesSelectedGuideEyebrow;
+  String get reviewSampleProfile => _l.guidesReviewSampleProfile;
+  String get reviewDateLabel => _l.guidesReviewDateLabel;
+  String get reviewDurationLabel => _l.guidesReviewDurationLabel;
+  String get reviewGroupLabel => _l.guidesReviewGroupLabel;
+  String get reviewLanguageLabel => _l.guidesReviewLanguageLabel;
+  String get reviewInterestsLabel => _l.guidesReviewInterestsLabel;
 
   String reviewDurationFormatted(RequestDuration duration, int? hours) {
     switch (duration) {
       case RequestDuration.fewHours:
-        return isArabic ? 'بضع ساعات' : 'A few hours';
+        return _l.guidesReviewDurationFormattedFewHours;
       case RequestDuration.oneDay:
-        return isArabic ? 'يوم واحد • 6 ساعات' : 'One day • 6 hours';
+        return _l.guidesReviewDurationFormattedOneDay;
       case RequestDuration.twoDays:
-        return isArabic ? 'يومان' : 'Two days';
+        return _l.guidesReviewDurationFormattedTwoDays;
       case RequestDuration.threeDays:
-        return isArabic ? '3 أيام' : '3 days';
+        return _l.guidesReviewDurationFormattedThreeDays;
       case RequestDuration.custom:
-        final h = hours ?? 4;
-        return isArabic
-            ? 'مخصص • ${requestHoursCount(h)}'
-            : 'Custom • $h hours';
+        return _l.guidesReviewDurationCustom(requestHoursCount(hours ?? 4));
     }
   }
 
@@ -322,162 +274,120 @@ class LocalGuidesStrings {
         : '$weekdayName, $dayNum $monthName';
   }
 
-  String get availabilityNoticeTitle =>
-      isArabic ? 'التوفر غير مضمون' : 'Availability is not guaranteed';
-  String get availabilityNoticeSubtitle => isArabic
-      ? 'يتم تأكيد الموعد فقط بعد موافقة المرشد.'
-      : 'The date is confirmed only after the guide accepts.';
-  String get confirmAndSendRequest =>
-      isArabic ? 'تأكيد وإرسال الطلب' : 'Confirm and send request';
+  String get availabilityNoticeTitle => _l.guidesAvailabilityNoticeTitle;
+  String get availabilityNoticeSubtitle => _l.guidesAvailabilityNoticeSubtitle;
+  String get confirmAndSendRequest => _l.guidesConfirmAndSendRequest;
 
   // Request Submitted Screen (P6)
-  String get requestSubmittedTitle =>
-      isArabic ? 'تم إرسال الطلب' : 'Request submitted';
-  String get requestSubmittedBody => isArabic
-      ? 'طلبك قيد المراجعة. ليس حجزًا مؤكدًا بعد؛ سنخطرك عندما يرد المرشد.'
-      : "Your request is under review. It is not a confirmed booking yet; we'll notify you when the guide responds.";
-  String get backToHome => isArabic ? 'العودة للرئيسية' : 'Back to home';
+  String get requestSubmittedTitle => _l.guidesRequestSubmittedTitle;
+  String get requestSubmittedBody => _l.guidesRequestSubmittedBody;
+  String get backToHome => _l.guidesBackToHome;
 
   // Become a Guide Screen (P7)
-  String get guidesApplyTitle => isArabic ? 'كن مرشدًا' : 'Become a guide';
+  String get guidesApplyTitle => _l.guidesApplyTitle;
   String get applyTitle => guidesApplyTitle;
 
-  String get guidesApplyIntro => isArabic
-      ? 'أظهر للزوار أسوان من منظورك المحلي. تتم مراجعة التفاصيل قبل النشر.'
-      : 'Show visitors Aswan through your local perspective. Details are reviewed before publication.';
+  String get guidesApplyIntro => _l.guidesApplyIntro;
   String get applyIntro => guidesApplyIntro;
 
-  String get guidesProfilePhoto =>
-      isArabic ? 'صورة الملف الشخصي' : 'Profile photo';
+  String get guidesProfilePhoto => _l.guidesProfilePhoto;
   String get profilePhoto => guidesProfilePhoto;
 
-  String get guidesChangePhoto => isArabic ? 'تغيير الصورة' : 'Change photo';
+  String get guidesChangePhoto => _l.guidesChangePhoto;
   String get changePhoto => guidesChangePhoto;
 
-  String get guidesRemovePhoto => isArabic ? 'إزالة الصورة' : 'Remove photo';
+  String get guidesRemovePhoto => _l.guidesRemovePhoto;
   String get removePhoto => guidesRemovePhoto;
 
-  String get guidesFullNameLabel => isArabic ? 'الاسم الكامل *' : 'Full name *';
+  String get guidesFullNameLabel => _l.guidesFullNameLabel;
   String get fullNameLabel => guidesFullNameLabel;
 
-  String get guidesFullNameHint =>
-      isArabic ? 'الاسم الظاهر للزوار' : 'Name shown to visitors';
+  String get guidesFullNameHint => _l.guidesFullNameHint;
   String get fullNameHint => guidesFullNameHint;
 
-  String get guidesLanguagesLabel => isArabic ? 'اللغات *' : 'Languages *';
+  String get guidesLanguagesLabel => _l.guidesLanguagesLabel;
   String get languagesLabel => guidesLanguagesLabel;
 
-  String get guidesLanguagesHint =>
-      isArabic ? 'العربية، الإنجليزية' : 'Arabic, English';
+  String get guidesLanguagesHint => _l.guidesLanguagesHint;
   String get languagesHint => guidesLanguagesHint;
 
-  String get guidesSpecialtiesLabel =>
-      isArabic ? 'تخصصات الجولات *' : 'Tour specialties *';
+  String get guidesSpecialtiesLabel => _l.guidesSpecialtiesLabel;
   String get specialtiesLabel => guidesSpecialtiesLabel;
 
-  String get guidesSpecialtiesHint =>
-      isArabic ? 'ثقافة نوبية، النيل...' : 'Nubian culture, Nile...';
+  String get guidesSpecialtiesHint => _l.guidesSpecialtiesHint;
   String get specialtiesHint => guidesSpecialtiesHint;
 
-  String get guidesBioLabel =>
-      isArabic ? 'نبذة شخصية قصيرة *' : 'Short biography *';
+  String get guidesBioLabel => _l.guidesBioLabel;
   String get bioLabel => guidesBioLabel;
 
-  String get guidesBioHint => isArabic
-      ? 'شارك خبراتك واهتماماتك...'
-      : 'Share your experience and interests...';
+  String get guidesBioHint => _l.guidesBioHint;
   String get bioHint => guidesBioHint;
 
-  String get guidesDurationsLabel =>
-      isArabic ? 'المدد المتاحة' : 'Available durations';
+  String get guidesDurationsLabel => _l.guidesDurationsLabel;
   String get durationsLabel => guidesDurationsLabel;
 
-  String get guidesDurationsHint =>
-      isArabic ? 'بضع ساعات، يوم كامل' : 'Few hours, full day';
+  String get guidesDurationsHint => _l.guidesDurationsHint;
   String get durationsHint => guidesDurationsHint;
 
-  String get guidesContactLabel =>
-      isArabic ? 'بيانات التواصل *' : 'Contact details *';
+  String get guidesContactLabel => _l.guidesContactLabel;
   String get contactLabel => guidesContactLabel;
 
   String get guidesContactHint => '+20';
   String get contactHint => guidesContactHint;
 
-  String get guidesSubmitApplication =>
-      isArabic ? 'إرسال الطلب' : 'Submit application';
+  String get guidesSubmitApplication => _l.guidesSubmitApplication;
   String get submitApplication => guidesSubmitApplication;
 
   // Application Received Screen (P7)
   String get guidesApplicationReceivedTitle =>
-      isArabic ? 'تم استلام الطلب' : 'Application received';
+      _l.guidesApplicationReceivedTitle;
   String get applicationReceivedTitle => guidesApplicationReceivedTitle;
 
-  String get guidesApplicationReceivedBody => isArabic
-      ? 'سنراجع المعلومات ونتواصل معك. لا يعني التقديم اعتمادًا أو توثيقًا رسميًا.'
-      : "We'll review the information and contact you. Submission does not indicate official verification or certification.";
+  String get guidesApplicationReceivedBody => _l.guidesApplicationReceivedBody;
   String get applicationReceivedBody => guidesApplicationReceivedBody;
 
-  String get guidesBackToGuides =>
-      isArabic ? 'العودة للمرشدين' : 'Back to guides';
+  String get guidesBackToGuides => _l.guidesBackToGuides;
   String get backToGuides => guidesBackToGuides;
 
   // Multi-select Bottom Sheet (P7)
-  String get guidesSelectLanguages =>
-      isArabic ? 'تحديد اللغات' : 'Select languages';
+  String get guidesSelectLanguages => _l.guidesSelectLanguages;
   String get selectLanguages => guidesSelectLanguages;
 
-  String get guidesSelectSpecialties =>
-      isArabic ? 'تحديد تخصصات الجولات' : 'Select tour specialties';
+  String get guidesSelectSpecialties => _l.guidesSelectSpecialties;
   String get selectSpecialties => guidesSelectSpecialties;
 
-  String get guidesSelectDurations =>
-      isArabic ? 'تحديد مدد الجولات' : 'Select available durations';
+  String get guidesSelectDurations => _l.guidesSelectDurations;
   String get selectDurations => guidesSelectDurations;
 
-  String get guidesDone => isArabic ? 'تم' : 'Done';
+  String get guidesDone => _l.guidesDone;
   String get done => guidesDone;
 
-  String get guidesCancel => isArabic ? 'إلغاء' : 'Cancel';
+  String get guidesCancel => _l.guidesCancel;
   String get cancel => guidesCancel;
 
   // Validation & Error Messages (P7)
-  String get guidesFieldRequired =>
-      isArabic ? 'هذا الحقل مطلوب' : 'This field is required';
+  String get guidesFieldRequired => _l.guidesFieldRequired;
   String get fieldRequired => guidesFieldRequired;
 
-  String get guidesSelectAtLeastOne => isArabic
-      ? 'يرجى اختيار خيار واحد على الأقل'
-      : 'Please select at least one option';
+  String get guidesSelectAtLeastOne => _l.guidesSelectAtLeastOne;
   String get selectAtLeastOne => guidesSelectAtLeastOne;
 
-  String get guidesInvalidPhone => isArabic
-      ? 'أدخل رقم هاتف مصري صحيح (مثال: 010xxxxxxxx)'
-      : 'Enter a valid Egyptian mobile number (e.g. 010xxxxxxxx)';
+  String get guidesInvalidPhone => _l.guidesInvalidPhone;
   String get invalidPhone => guidesInvalidPhone;
 
-  String get guidesBioTooShort => isArabic
-      ? 'يجب ألا تقل النبذة عن 10 أحرف'
-      : 'Biography must be at least 10 characters';
+  String get guidesBioTooShort => _l.guidesBioTooShort;
   String get bioTooShort => guidesBioTooShort;
 
-  String get guidesAlreadyApplied => isArabic
-      ? 'يوجد بالفعل طلب مقدم بهذا الرقم.'
-      : 'An application with this mobile number already exists.';
+  String get guidesAlreadyApplied => _l.guidesAlreadyApplied;
   String get alreadyApplied => guidesAlreadyApplied;
 
-  String get guidesFileTooLarge => isArabic
-      ? 'يجب أن يكون حجم الصورة أقل من 5 ميجابايت.'
-      : 'Profile photo must be less than 5 MB.';
+  String get guidesFileTooLarge => _l.guidesFileTooLarge;
   String get fileTooLarge => guidesFileTooLarge;
 
-  String get guidesUnsupportedFileType => isArabic
-      ? 'التنسيقات المدعومة هي JPG و PNG و WEBP فقط.'
-      : 'Only JPG, PNG, and WEBP formats are supported.';
+  String get guidesUnsupportedFileType => _l.guidesUnsupportedFileType;
   String get unsupportedFileType => guidesUnsupportedFileType;
 
-  String get guidesGeneralValidationError => isArabic
-      ? 'يرجى تصحيح الأخطاء الموضحة.'
-      : 'Please correct the highlighted errors.';
+  String get guidesGeneralValidationError => _l.guidesGeneralValidationError;
   String get generalValidationError => guidesGeneralValidationError;
 }
 
