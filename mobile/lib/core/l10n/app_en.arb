@@ -332,6 +332,8 @@
   "guidesLanguagesHint": "Arabic, English",
   "guidesLanguagesJoiner": " & ",
   "guidesLanguagesLabel": "Languages *",
+  "guidesMyRequestsEmpty": "No guide requests yet. Pick a guide and tell them when you're coming.",
+  "guidesMyRequestsFind": "Find a guide",
   "guidesNotFound": "Guide not found.",
   "guidesNoticeSubtitle": "The guide reviews details before any time is confirmed.",
   "guidesNoticeTitle": "A request, not a confirmed booking",
@@ -356,6 +358,9 @@
   "guidesRequestScreenTitle": "Request a guide",
   "guidesRequestSelectDate": "Select date",
   "guidesRequestStartTime": "Start time",
+  "guidesRequestStatusAccepted": "Accepted",
+  "guidesRequestStatusPending": "Waiting for the guide",
+  "guidesRequestStatusRejected": "Declined",
   "guidesRequestSubmittedBody": "Your request is under review. It is not a confirmed booking yet; we'll notify you when the guide responds.",
   "guidesRequestSubmittedTitle": "Request submitted",
   "guidesRequestThisGuide": "Request this guide",
@@ -389,6 +394,14 @@
   "guidesSelectLanguages": "Select languages",
   "guidesSelectSpecialties": "Select tour specialties",
   "guidesShare": "Share",
+  "guidesShareText": "{name}, local guide in Aswan\n\nFind them on Aswani",
+  "@guidesShareText": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "guidesSpecialties": "Specialties",
   "guidesSpecialtiesHint": "Nubian culture, Nile...",
   "guidesSpecialtiesLabel": "Tour specialties *",
@@ -527,6 +540,8 @@
   "placeBookmarkRemove": "Remove bookmark",
   "placeEyebrow": "HISTORICAL PLACE",
   "placeGenericError": "Something went wrong. Please try again.",
+  "placeMyReports": "My place reports",
+  "placeMyReportsEmpty": "You haven't reported a place yet. Spot something wrong on a place page? Tap \"Report\".",
   "placeNotFound": "Place not found.",
   "placeReasonLabelIncorrectInformation": "Incorrect information",
   "placeReasonLabelIncorrectLocation": "Incorrect location",
@@ -553,6 +568,9 @@
   "placeReportRemovePhoto": "Remove photo",
   "placeReportRowText": "See something inaccurate? Report it.",
   "placeReportSelectedPlace": "SELECTED PLACE",
+  "placeReportStatusAccepted": "Accepted",
+  "placeReportStatusPending": "Under review",
+  "placeReportStatusRejected": "Not accepted",
   "placeReportStepPoints": "Points after acceptance",
   "placeReportStepSubmitted": "Submitted",
   "placeReportStepUnderReview": "Under review",
@@ -567,6 +585,17 @@
   "placeRetry": "Try again",
   "placeShare": "Share",
   "placeShareCopied": "Link copied to clipboard",
+  "placeShareText": "{name}, {city}\n\nDiscover it on Aswani",
+  "@placeShareText": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
   "placeVisitingInfoSubtitle": "Unverified hours and prices are intentionally not shown.",
   "placeVisitingInfoTitle": "Visiting information",
   "profileChangePhoto": "Change profile photo",

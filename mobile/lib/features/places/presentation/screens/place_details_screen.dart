@@ -2,6 +2,8 @@ import 'package:aswani/core/errors/failure.dart';
 import 'package:aswani/shared/extensions/context_x.dart';
 import 'package:aswani/shared/widgets/bookmark_icon.dart';
 import 'package:aswani/shared/widgets/motion.dart';
+import 'package:aswani/shared/widgets/state_views.dart';
+import 'package:aswani/shared/utils/share.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -74,98 +76,25 @@ class PlaceDetailsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.colors.surface,
       body: placeAsync.when(
-        loading: () => Stack(
-          children: [
-            const Center(child: CircularProgressIndicator()),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: _buildCircleButton(
-                      context,
-                      tooltip: strings.back,
-                      onPressed:
-                          onBackTap ?? () => Navigator.of(context).maybePop(),
-                      child: Icon(
-                        LucideIcons.chevronLeftDir,
-                        size: 20,
-                        color: context.colors.primary,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        loading: () => _DetailsFrame(
+          backTooltip: strings.back,
+          onBack: onBackTap ?? () => Navigator.of(context).maybePop(),
+          child: const _PlaceDetailsSkeleton(),
         ),
         error: (error, _) {
           final isNotFound =
-              error is Failure &&
-              (error.code == ErrorCodes.placeNotFound ||
-                  error.code == 'PLACE_NOT_FOUND');
-          final message = isNotFound
-              ? strings.placeNotFound
-              : strings.placeGenericError;
-
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    tooltip: strings.back,
-                    onPressed:
-                        onBackTap ?? () => Navigator.of(context).maybePop(),
-                    icon: Icon(
-                      LucideIcons.chevronLeftDir,
-                      color: context.colors.primary,
-                    ),
-                  ),
-                  const Spacer(),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          LucideIcons.alertCircle,
-                          size: 48,
-                          color: context.palette.textSecondary,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          message,
-                          textAlign: TextAlign.center,
-                          style: context.text.titleMedium?.copyWith(
-                            fontSize: 16,
-                            color: context.palette.ink,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        FilledButton(
-                          onPressed: () {
-                            ref
-                                .read(
-                                  placeDetailsViewModelProvider(placeId)
-                                      .notifier,
-                                )
-                                .retry();
-                          },
-                          child: Text(strings.retry),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                ],
+              error is Failure && error.code == ErrorCodes.placeNotFound;
+          return _DetailsFrame(
+            backTooltip: strings.back,
+            onBack: onBackTap ?? () => Navigator.of(context).maybePop(),
+            child: Center(
+              child: ErrorState(
+                message: isNotFound
+                    ? strings.placeNotFound
+                    : strings.placeGenericError,
+                onRetry: () => ref
+                    .read(placeDetailsViewModelProvider(placeId).notifier)
+                    .retry(),
               ),
             ),
           );
@@ -344,14 +273,12 @@ class PlaceDetailsScreen extends ConsumerWidget {
                           tooltip: strings.share,
                           onPressed:
                               onShareTap ??
-                              () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(strings.placeShareCopied),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                );
-                              },
+                              () => shareText(
+                                strings.shareText(
+                                  place.name(lang),
+                                  lang == 'ar' ? place.cityAr : place.cityEn,
+                                ),
+                              ),
                           child: Icon(
                             LucideIcons.share2,
                             size: 18,
@@ -387,6 +314,71 @@ class PlaceDetailsScreen extends ConsumerWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// Back button over a loading or error body, so the user is never stuck.
+class _DetailsFrame extends StatelessWidget {
+  const _DetailsFrame({
+    required this.backTooltip,
+    required this.onBack,
+    required this.child,
+  });
+
+  final String backTooltip;
+  final VoidCallback onBack;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: IconButton(
+              tooltip: backTooltip,
+              onPressed: onBack,
+              icon: Icon(
+                LucideIcons.chevronLeftDir,
+                color: context.colors.primary,
+              ),
+            ),
+          ),
+          Expanded(child: child),
+        ],
+      ),
+    );
+  }
+}
+
+/// Grey blocks in the shape of the page while the place loads.
+class _PlaceDetailsSkeleton extends StatelessWidget {
+  const _PlaceDetailsSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonBox(height: 240),
+          SizedBox(height: 24),
+          SkeletonBox(width: 120, height: 14),
+          SizedBox(height: 12),
+          SkeletonBox(width: 220, height: 28),
+          SizedBox(height: 12),
+          SkeletonBox(width: 160, height: 14),
+          SizedBox(height: 24),
+          SkeletonBox(height: 72),
+          SizedBox(height: 16),
+          SkeletonBox(height: 96),
+        ],
       ),
     );
   }

@@ -229,6 +229,12 @@ class _ProfileBody extends StatelessWidget {
           onTap: () => context.push(ContributeRoutes.mine),
         ),
         ProfileLinkRow(
+          icon: LucideIcons.flag,
+          title: l10n.placeMyReports,
+          subtitle: l10n.profileReportsUnderReview(c.reportsUnderReview),
+          onTap: () => context.push(PlacesRoutes.myReports),
+        ),
+        ProfileLinkRow(
           icon: LucideIcons.calendarDays,
           title: l10n.profileGuideRequests,
           subtitle: l10n.profileGuideRequestsPending(c.guideRequestsPending),

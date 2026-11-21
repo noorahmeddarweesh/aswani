@@ -86,6 +86,19 @@ class PlacesStrings {
   String get reportWhatNeedsUpdating => _l.placeReportWhatNeedsUpdating;
   String get reportSubtitle => _l.placeReportSubtitle;
 
+  String shareText(String name, String city) => _l.placeShareText(name, city);
+
+  String get myReports => _l.placeMyReports;
+  String get myReportsEmpty => _l.placeMyReportsEmpty;
+  String points(int points) => _l.contributePoints(points);
+
+  /// Review status from the API: pending, accepted or rejected.
+  String reportStatusLabel(String status) => switch (status) {
+    'accepted' => _l.placeReportStatusAccepted,
+    'rejected' => _l.placeReportStatusRejected,
+    _ => _l.placeReportStatusPending,
+  };
+
   String reasonLabel(PlaceReportReason reason) {
     switch (reason) {
       case PlaceReportReason.notExist:

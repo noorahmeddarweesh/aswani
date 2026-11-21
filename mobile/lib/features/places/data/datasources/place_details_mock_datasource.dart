@@ -234,7 +234,7 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
     final newId = 'rep-${_reports.length + 1}';
     final createdAt = DateTime.now().toUtc().toIso8601String();
 
-    _reports.add({
+    _reports.insert(0, {
       'id': newId,
       'place': {
         'id': placeJson['id'],

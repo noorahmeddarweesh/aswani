@@ -268,7 +268,7 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
     final newId = 'req-${_requests.length + 1}';
     final createdAt = DateTime.now().toUtc().toIso8601String();
 
-    _requests.add({
+    _requests.insert(0, {
       'id': newId,
       'guide': {
         'id': guide['id'],

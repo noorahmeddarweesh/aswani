@@ -67,7 +67,10 @@ class PlaceDetailsViewModel extends AsyncNotifier<PlaceDetails> {
   }
 }
 
+/// No automatic retry: the page shows the error with its own "Try again"
+/// button right away, instead of a skeleton while Riverpod retries.
 final placeDetailsViewModelProvider = AsyncNotifierProvider.autoDispose
     .family<PlaceDetailsViewModel, PlaceDetails, String>(
       PlaceDetailsViewModel.new,
+      retry: (_, _) => null,
     );

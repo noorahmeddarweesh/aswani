@@ -4,6 +4,7 @@ import '../../core/router/app_page.dart';
 import '../../core/router/app_routes.dart';
 import 'domain/entities/place_report.dart';
 import 'presentation/screens/explore_screen.dart';
+import 'presentation/screens/my_place_reports_screen.dart';
 import 'presentation/screens/place_details_screen.dart';
 import 'presentation/screens/place_report_details_screen.dart';
 import 'presentation/screens/place_report_reason_screen.dart';
@@ -24,6 +25,9 @@ abstract final class PlacesRoutes {
   /// "Thank you": points pending until the report is accepted.
   static String reportDone(String id, {required int points}) =>
       '/places/$id/report/done?points=$points';
+
+  /// The user's place reports (opened from Profile).
+  static const String myReports = '/place-reports';
 }
 
 /// Routes inside the Explore tab (the tab bar stays visible).
@@ -33,6 +37,11 @@ final List<RouteBase> exploreTabRoutes = [
 
 /// Full-screen place routes: the photo runs to the top edge, no tab bar.
 final List<RouteBase> placesRootRoutes = [
+  GoRoute(
+    path: PlacesRoutes.myReports,
+    pageBuilder: (context, state) =>
+        appPage(state, const MyPlaceReportsScreen()),
+  ),
   GoRoute(
     path: '/places/:id',
     pageBuilder: (context, state) {

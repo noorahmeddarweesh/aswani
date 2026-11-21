@@ -1,10 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../core/router/app_page.dart';
 import '../../core/router/app_routes.dart';
-import '../../shared/extensions/context_x.dart';
-import '../../shared/widgets/coming_soon_screen.dart';
 import 'presentation/screens/guide_application_received_screen.dart';
 import 'presentation/screens/guide_application_screen.dart';
 import 'presentation/screens/guide_details_screen.dart';
@@ -12,6 +9,7 @@ import 'presentation/screens/guide_request_review_screen.dart';
 import 'presentation/screens/guide_request_screen.dart';
 import 'presentation/screens/guide_request_submitted_screen.dart';
 import 'presentation/screens/guides_screen.dart';
+import 'presentation/screens/my_guide_requests_screen.dart';
 
 // Owner: Person A (Places & Guides). Only this file registers guides routes.
 
@@ -44,13 +42,8 @@ final List<RouteBase> guidesTabRoutes = [
 final List<RouteBase> guidesRootRoutes = [
   GoRoute(
     path: GuidesRoutes.requests,
-    pageBuilder: (context, state) => appPage(
-      state,
-      ComingSoonScreen(
-        title: context.l10n.navGuides,
-        icon: LucideIcons.calendarClock,
-      ),
-    ),
+    pageBuilder: (context, state) =>
+        appPage(state, const MyGuideRequestsScreen()),
   ),
   // Before /guides/:id, so "apply" is never read as a guide id.
   GoRoute(

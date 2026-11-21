@@ -6,6 +6,7 @@ import '../../../../core/errors/failure.dart';
 import '../../../../core/responsive/window_size.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
+import '../../../../shared/utils/share.dart';
 import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/circle_icon_button.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -59,7 +60,8 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
 
     if (asyncGuide.hasError) {
       final error = asyncGuide.error;
-      final isNotFound = error is Failure && error.code == 'GUIDE_NOT_FOUND';
+      final isNotFound =
+          error is Failure && error.code == ErrorCodes.guideNotFound;
       final message = isNotFound ? l10n.guideNotFound : l10n.errorLoading;
 
       return Scaffold(
@@ -297,7 +299,9 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
                       CircleIconButton(
                         icon: LucideIcons.share2,
                         tooltip: l10n.share,
-                        onPressed: widget.onSharePressed ?? () {},
+                        onPressed:
+                            widget.onSharePressed ??
+                            () => shareText(l10n.shareText(guide.fullName)),
                       ),
                     ],
                   ),

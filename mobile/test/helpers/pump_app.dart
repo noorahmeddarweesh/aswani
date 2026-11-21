@@ -8,6 +8,7 @@ import 'package:aswani/features/contributions/data/datasources/contributions_moc
 import 'package:aswani/features/culture/culture_providers.dart';
 import 'package:aswani/features/local_guides/data/datasources/local_guides_mock_datasource.dart';
 import 'package:aswani/features/local_guides/local_guides_providers.dart';
+import 'package:aswani/features/places/data/datasources/place_details_datasource.dart';
 import 'package:aswani/features/places/data/datasources/place_details_mock_datasource.dart';
 import 'package:aswani/features/places/place_details_providers.dart';
 import 'package:aswani/features/profile/data/datasources/profile_mock_datasource.dart';
@@ -26,7 +27,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Mock data sources without network delay, so tests run fast.
 /// [network] drives the online/offline state; default: always online.
-List<Override> fastMocks({Stream<bool>? network}) => [
+/// [placeDetails] swaps in another place details source (e.g. one that
+/// fails), since a provider can only be overridden once.
+List<Override> fastMocks({
+  Stream<bool>? network,
+  PlaceDetailsDataSource? placeDetails,
+}) => [
   isOnlineProvider.overrideWith((ref) => network ?? Stream.value(true)),
   authDataSourceProvider.overrideWithValue(
     AuthMockDataSource(delay: Duration.zero),
@@ -50,7 +56,7 @@ List<Override> fastMocks({Stream<bool>? network}) => [
     ProfileMockDataSource(delay: Duration.zero),
   ),
   placeDetailsDataSourceProvider.overrideWithValue(
-    PlaceDetailsMockDataSource(delay: Duration.zero),
+    placeDetails ?? PlaceDetailsMockDataSource(delay: Duration.zero),
   ),
   localGuidesDataSourceProvider.overrideWithValue(
     LocalGuidesMockDataSource(delay: Duration.zero),
@@ -61,13 +67,14 @@ List<Override> fastMocks({Stream<bool>? network}) => [
 Future<ProviderContainer> pumpApp(
   WidgetTester tester, {
   List<Override> overrides = const [],
+  List<Override>? mocks,
 }) async {
   tester.view.physicalSize = const Size(390 * 3, 844 * 3);
   tester.view.devicePixelRatio = 3;
   addTearDown(tester.view.reset);
   reduceMotion(tester);
   final container = ProviderContainer(
-    overrides: [...fastMocks(), ...overrides],
+    overrides: [...mocks ?? fastMocks(), ...overrides],
   );
   addTearDown(container.dispose);
   await tester.pumpWidget(

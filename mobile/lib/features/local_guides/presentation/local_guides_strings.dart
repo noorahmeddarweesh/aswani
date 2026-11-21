@@ -209,6 +209,18 @@ class LocalGuidesStrings {
     }
   }
 
+  String shareText(String name) => _l.guidesShareText(name);
+
+  String get myRequests => _l.profileGuideRequests;
+  String get myRequestsEmpty => _l.guidesMyRequestsEmpty;
+  String get myRequestsFind => _l.guidesMyRequestsFind;
+
+  String requestStatusLabel(RequestStatus status) => switch (status) {
+    RequestStatus.pending => _l.guidesRequestStatusPending,
+    RequestStatus.accepted => _l.guidesRequestStatusAccepted,
+    RequestStatus.rejected => _l.guidesRequestStatusRejected,
+  };
+
   String formatReviewDate(String yyyyMmDd) {
     final parsed = DateTime.tryParse(yyyyMmDd);
     if (parsed == null) return yyyyMmDd;
