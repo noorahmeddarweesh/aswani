@@ -75,94 +75,86 @@ class _PlaceReportReasonScreenState
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 12),
-                      // Eyebrow
-                      Text(
-                        strings.reportEyebrow,
-                        style: context.text.labelSmall?.copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.8,
-                          color: context.palette.link,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-
-                      // Title
-                      Text(
-                        strings.reportWhatNeedsUpdating,
-                        style: context.text.headlineMedium?.copyWith(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w400,
-                          color: context.palette.ink,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Subtitle
-                      Text(
-                        strings.reportSubtitle,
-                        style: context.text.bodyMedium?.copyWith(
-                          fontSize: 14,
-                          color: context.palette.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Reason Cards List
-                      for (final reason in PlaceReportReason.values) ...[
-                        ReportReasonOptionCard(
-                          title: strings.reasonLabel(reason),
-                          isSelected: selectedReason == reason,
-                          onTap: () {
-                            ref
-                                .read(placeReportViewModelProvider.notifier)
-                                .selectReason(reason);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                      const SizedBox(height: 16),
-                    ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 12),
+                // Eyebrow
+                Text(
+                  strings.reportEyebrow,
+                  style: context.text.labelSmall?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.8,
+                    color: context.palette.link,
                   ),
                 ),
-              ),
+                const SizedBox(height: 6),
 
-              // Bottom Continue CTA
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: SizedBox(
-                  height: 52,
-                  child: FilledButton(
-                    onPressed: formState.canContinueFromReason
-                        ? () {
-                            widget.onContinue?.call(selectedReason!);
-                          }
-                        : null,
-                    style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                // Title
+                Text(
+                  strings.reportWhatNeedsUpdating,
+                  style: context.text.headlineMedium?.copyWith(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w400,
+                    color: context.palette.ink,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Subtitle
+                Text(
+                  strings.reportSubtitle,
+                  style: context.text.bodyMedium?.copyWith(
+                    fontSize: 14,
+                    color: context.palette.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Reason Cards List
+                for (final reason in PlaceReportReason.values) ...[
+                  ReportReasonOptionCard(
+                    title: strings.reasonLabel(reason),
+                    isSelected: selectedReason == reason,
+                    onTap: () {
+                      ref
+                          .read(placeReportViewModelProvider.notifier)
+                          .selectReason(reason);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
+                // Continue sits right under the reasons, like the design.
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                    height: 52,
+                    child: FilledButton(
+                      onPressed: formState.canContinueFromReason
+                          ? () {
+                              widget.onContinue?.call(selectedReason!);
+                            }
+                          : null,
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      strings.reportContinue,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                      child: Text(
+                        strings.reportContinue,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

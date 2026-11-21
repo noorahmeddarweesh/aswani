@@ -13,6 +13,7 @@ import '../widgets/become_guide_cta_card.dart';
 import '../widgets/featured_guide_card.dart';
 import '../widgets/guides_search_bar.dart';
 import '../widgets/specialty_filter_chips.dart';
+import '../widgets/specialty_filter_sheet.dart';
 import '../widgets/suggested_guide_card.dart';
 
 /// Local Guides main list screen matching tour_guides.jpg:
@@ -88,6 +89,11 @@ class _GuidesScreenState extends ConsumerState<GuidesScreen> {
     final l10n = context.guidesL10n;
     final filter = ref.watch(guidesFilterProvider);
     final filterVm = ref.read(guidesFilterProvider.notifier);
+    void openFilter() => showSpecialtyFilterSheet(
+      context,
+      selected: filter.specialty,
+      onSelected: filterVm.setSpecialty,
+    );
     final asyncGuides = ref.watch(guidesListProvider);
     final listVm = ref.read(guidesListProvider.notifier);
 
@@ -142,7 +148,7 @@ class _GuidesScreenState extends ConsumerState<GuidesScreen> {
                   child: GuidesSearchBar(
                     controller: _searchController,
                     onChanged: filterVm.onSearchChanged,
-                    onFilterPressed: widget.onFilterPressed,
+                    onFilterPressed: widget.onFilterPressed ?? openFilter,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -197,18 +203,14 @@ class _GuidesScreenState extends ConsumerState<GuidesScreen> {
                                 Expanded(
                                   child: Text(
                                     l10n.suggestedSectionTitle,
-                                    style: context.text.titleLarge?.copyWith(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: context.palette.ink,
-                                    ),
+                                    style: context.text.headlineSmall,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const SizedBox(width: AppSpacing.sm),
                                 GestureDetector(
-                                  onTap: widget.onFilterPressed,
+                                  onTap: widget.onFilterPressed ?? openFilter,
                                   child: Text(
                                     l10n.filterAction,
                                     style: context.text.labelMedium?.copyWith(

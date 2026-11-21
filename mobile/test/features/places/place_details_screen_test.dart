@@ -259,7 +259,7 @@ void main() {
         // Report Tile
         expect(find.byType(PlaceReportTile), findsOneWidget);
         expect(
-          find.text('See something inaccurate? Report it.'),
+          find.text('See something inaccurate? Report it'),
           findsOneWidget,
         );
       },
@@ -339,6 +339,10 @@ void main() {
 
       expect(find.text('موقع تاريخي'), findsOneWidget);
       expect(find.text('معبد فيلة'), findsOneWidget);
+      // The photo counter stays "1 / N" in Arabic, not "N / 1".
+      final counter = tester.widget<Text>(find.textContaining(' / ').first);
+      expect(counter.textDirection, TextDirection.ltr);
+      expect(counter.data, startsWith('1 / '));
       expect(find.text('جزيرة أجيليكيا، أسوان'), findsOneWidget);
       expect(find.text('الوصول بالقارب'), findsOneWidget);
       expect(find.text('تحقق قبل الزيارة'), findsOneWidget);

@@ -174,15 +174,7 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
                         ],
 
                         // Guide Name
-                        Text(
-                          guide.fullName,
-                          style: context.text.headlineLarge?.copyWith(
-                            fontSize: 28,
-                            height: 1.2,
-                            fontWeight: FontWeight.w600,
-                            color: context.palette.ink,
-                          ),
-                        ),
+                        Text(guide.fullName, style: context.text.headlineLarge),
                         const SizedBox(height: AppSpacing.xs),
 
                         // Location and Languages line
@@ -223,10 +215,8 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
                         // Specialties Section
                         Text(
                           l10n.specialtiesHeader,
-                          style: context.text.titleMedium?.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: context.palette.ink,
+                          style: context.text.headlineSmall?.copyWith(
+                            fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
@@ -259,10 +249,8 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
                         // Available Tour Durations Section
                         Text(
                           l10n.availableDurationsHeader,
-                          style: context.text.titleMedium?.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: context.palette.ink,
+                          style: context.text.headlineSmall?.copyWith(
+                            fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),

@@ -566,7 +566,7 @@
   "placeReportPhotoUnsupported": "Only JPG, PNG, and WebP photos are supported",
   "placeReportPointsPending": "points pending",
   "placeReportRemovePhoto": "Remove photo",
-  "placeReportRowText": "See something inaccurate? Report it.",
+  "placeReportRowText": "See something inaccurate? Report it",
   "placeReportSelectedPlace": "SELECTED PLACE",
   "placeReportStatusAccepted": "Accepted",
   "placeReportStatusPending": "Under review",

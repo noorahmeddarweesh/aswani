@@ -42,8 +42,8 @@ class ReportPhotoPickerBox extends StatelessWidget {
               border: Border.all(
                 color: errorText != null
                     ? context.colors.error
-                    : context.palette.divider,
-                width: 1.5,
+                    : context.palette.border,
+                width: 1,
               ),
             ),
             child: hasPhoto

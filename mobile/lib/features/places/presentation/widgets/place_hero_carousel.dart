@@ -140,6 +140,8 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
                 ),
                 child: Text(
                   '${_currentPage + 1} / ${effectiveImages.length}',
+                  // Always "1 / 3", also in Arabic (RTL would show "3 / 1").
+                  textDirection: TextDirection.ltr,
                   style: TextStyle(
                     color: context.palette.onBrandSurface,
                     fontSize: 11,

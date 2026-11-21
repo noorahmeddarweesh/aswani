@@ -28,6 +28,13 @@ class GuidesFilterViewModel extends Notifier<GuidesFilter> {
     }
   }
 
+  /// Picks one specialty from the Filter sheet; null shows every guide.
+  void setSpecialty(GuideSpecialty? specialty) {
+    state = specialty == null
+        ? state.copyWith(clearSpecialty: true)
+        : state.copyWith(specialty: specialty);
+  }
+
   /// Debounced search update (300 ms).
   void onSearchChanged(String query) {
     _debounceTimer?.cancel();

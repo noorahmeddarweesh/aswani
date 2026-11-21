@@ -118,190 +118,181 @@ class _PlaceReportDetailsScreenState
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 12),
+                // Selected Place Summary Card
+                ReportPlaceSummaryCard(place: formState.place),
+                const SizedBox(height: 20),
+
+                // Details Form Field Label
+                Text(
+                  strings.reportTellUs,
+                  style: context.text.titleSmall?.copyWith(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: context.palette.ink,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Multiline Text Area with 1000 char counter
+                TextField(
+                  controller: _detailsController,
+                  minLines: 4,
+                  maxLines: 6,
+                  maxLength: 1000,
+                  onChanged: (val) {
+                    ref
+                        .read(placeReportViewModelProvider.notifier)
+                        .setDetails(val);
+                  },
+                  decoration: InputDecoration(
+                    hintText: strings.reportDetailsHint,
+                    hintStyle: TextStyle(
+                      color: context.palette.textSecondary,
+                      fontSize: 14,
+                    ),
+                    filled: true,
+                    fillColor: context.palette.inputFill,
+                    errorText: detailsError,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: context.palette.border),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: detailsError != null
+                            ? context.colors.error
+                            : context.palette.border,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: detailsError != null
+                            ? context.colors.error
+                            : context.palette.link,
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Supporting Photo Box
+                ReportPhotoPickerBox(
+                  photoPath: formState.photo?.path,
+                  errorText: photoError,
+                  onTap: () async {
+                    final picked = await ref.read(pickPhotosProvider)(1);
+                    if (picked.isEmpty) return;
+                    ref
+                        .read(placeReportViewModelProvider.notifier)
+                        .setPhoto(picked.first);
+                  },
+                  onRemove: () {
+                    ref
+                        .read(placeReportViewModelProvider.notifier)
+                        .removePhoto();
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // Notice Banner
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: context.palette.successTint,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 12),
-                      // Selected Place Summary Card
-                      ReportPlaceSummaryCard(place: formState.place),
-                      const SizedBox(height: 20),
-
-                      // Details Form Field Label
-                      Text(
-                        strings.reportTellUs,
-                        style: context.text.titleSmall?.copyWith(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: context.palette.ink,
-                        ),
+                      Icon(
+                        LucideIcons.shieldCheck,
+                        size: 20,
+                        color: context.palette.link,
                       ),
-                      const SizedBox(height: 8),
-
-                      // Multiline Text Area with 1000 char counter
-                      TextField(
-                        controller: _detailsController,
-                        minLines: 4,
-                        maxLines: 6,
-                        maxLength: 1000,
-                        onChanged: (val) {
-                          ref
-                              .read(placeReportViewModelProvider.notifier)
-                              .setDetails(val);
-                        },
-                        decoration: InputDecoration(
-                          hintText: strings.reportDetailsHint,
-                          hintStyle: TextStyle(
-                            color: context.palette.textSecondary,
-                            fontSize: 14,
-                          ),
-                          filled: true,
-                          fillColor: context.palette.inputFill,
-                          errorText: detailsError,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: context.palette.border,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: detailsError != null
-                                  ? context.colors.error
-                                  : context.palette.border,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: detailsError != null
-                                  ? context.colors.error
-                                  : context.palette.link,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Supporting Photo Box
-                      ReportPhotoPickerBox(
-                        photoPath: formState.photo?.path,
-                        errorText: photoError,
-                        onTap: () async {
-                          final picked = await ref.read(pickPhotosProvider)(1);
-                          if (picked.isEmpty) return;
-                          ref
-                              .read(placeReportViewModelProvider.notifier)
-                              .setPhoto(picked.first);
-                        },
-                        onRemove: () {
-                          ref
-                              .read(placeReportViewModelProvider.notifier)
-                              .removePhoto();
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Notice Banner
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: context.palette.successTint,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              LucideIcons.shieldCheck,
-                              size: 20,
-                              color: context.palette.link,
+                            Text(
+                              strings.reportNoticeTitle,
+                              style: context.text.titleSmall?.copyWith(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: context.palette.ink,
+                              ),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    strings.reportNoticeTitle,
-                                    style: context.text.titleSmall?.copyWith(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: context.palette.ink,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    strings.reportNoticeSubtitle,
-                                    style: context.text.bodySmall?.copyWith(
-                                      fontSize: 11,
-                                      color: context.palette.textSecondary,
-                                    ),
-                                  ),
-                                ],
+                            const SizedBox(height: 2),
+                            Text(
+                              strings.reportNoticeSubtitle,
+                              style: context.text.bodySmall?.copyWith(
+                                fontSize: 11,
+                                color: context.palette.textSecondary,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
-              ),
-
-              // Bottom Submit CTA
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: SizedBox(
-                  height: 52,
-                  child: FilledButton(
-                    onPressed: formState.isSubmitting
-                        ? null
-                        : () async {
-                            final success = await ref
-                                .read(placeReportViewModelProvider.notifier)
-                                .submit();
-                            if (success && mounted) {
-                              final res = ref
-                                  .read(placeReportViewModelProvider)
-                                  .result;
-                              if (res != null) {
-                                widget.onSubmitSuccess?.call(res);
+                const SizedBox(height: 16),
+                // Submit sits right under the form, like the design.
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: SizedBox(
+                    height: 52,
+                    child: FilledButton(
+                      onPressed: formState.isSubmitting
+                          ? null
+                          : () async {
+                              final success = await ref
+                                  .read(placeReportViewModelProvider.notifier)
+                                  .submit();
+                              if (success && mounted) {
+                                final res = ref
+                                    .read(placeReportViewModelProvider)
+                                    .result;
+                                if (res != null) {
+                                  widget.onSubmitSuccess?.call(res);
+                                }
                               }
-                            }
-                          },
-                    style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                            },
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
+                      child: formState.isSubmitting
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: context.palette.onBrandSurface,
+                              ),
+                            )
+                          : Text(
+                              strings.reportSubmit,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
-                    child: formState.isSubmitting
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: context.palette.onBrandSurface,
-                            ),
-                          )
-                        : Text(
-                            strings.reportSubmit,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

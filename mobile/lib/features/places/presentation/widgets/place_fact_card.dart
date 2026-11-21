@@ -29,27 +29,28 @@ class PlaceFactCard extends StatelessWidget {
     final lang = Localizations.localeOf(context).languageCode;
     final icon = _iconForType(fact.type);
 
+    // Icon above the label, centered, like the design. Grows with large
+    // text instead of clipping.
     return Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      constraints: const BoxConstraints(minHeight: 64),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
         color: context.palette.surfaceMuted,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 18, color: context.palette.link),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              fact.label(lang),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: context.text.bodyMedium?.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: context.palette.ink,
-              ),
+          Icon(icon, size: 20, color: context.colors.primary),
+          const SizedBox(height: 6),
+          Text(
+            fact.label(lang),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: context.text.bodySmall?.copyWith(
+              fontSize: 12,
+              color: context.palette.ink,
             ),
           ),
         ],

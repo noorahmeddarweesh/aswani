@@ -155,11 +155,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                           // Place Title
                           Text(
                             place.name(lang),
-                            style: context.text.headlineMedium?.copyWith(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w400,
-                              color: context.palette.ink,
-                            ),
+                            style: context.text.headlineLarge,
                           ),
                           const SizedBox(height: 8),
 
@@ -187,20 +183,26 @@ class PlaceDetailsScreen extends ConsumerWidget {
 
                           // Key Facts Row (side-by-side cards, safe when empty)
                           if (place.facts.isNotEmpty) ...[
-                            Row(
-                              children: [
-                                for (
-                                  int i = 0;
-                                  i < place.facts.length;
-                                  i++
-                                ) ...[
-                                  Expanded(
-                                    child: PlaceFactCard(fact: place.facts[i]),
-                                  ),
-                                  if (i != place.facts.length - 1)
-                                    const SizedBox(width: 12),
+                            // Same height for both cards.
+                            IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  for (
+                                    int i = 0;
+                                    i < place.facts.length;
+                                    i++
+                                  ) ...[
+                                    Expanded(
+                                      child: PlaceFactCard(
+                                        fact: place.facts[i],
+                                      ),
+                                    ),
+                                    if (i != place.facts.length - 1)
+                                      const SizedBox(width: 12),
+                                  ],
                                 ],
-                              ],
+                              ),
                             ),
                             const SizedBox(height: 24),
                           ],
@@ -208,11 +210,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                           // "About this place" Section
                           Text(
                             strings.aboutTitle,
-                            style: context.text.titleMedium?.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: context.palette.ink,
-                            ),
+                            style: context.text.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           Text(

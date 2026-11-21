@@ -46,11 +46,7 @@ class GuideDurationTile extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             l10n.detailsDurationLabel(duration),
-            style: context.text.labelSmall?.copyWith(
-              color: context.palette.ink,
-              fontWeight: FontWeight.w600,
-              fontSize: 11,
-            ),
+            style: context.text.bodySmall?.copyWith(fontSize: 11),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

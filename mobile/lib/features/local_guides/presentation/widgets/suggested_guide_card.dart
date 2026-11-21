@@ -71,10 +71,9 @@ class SuggestedGuideCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       l10n.illustrativeNote,
-                      style: context.text.labelSmall?.copyWith(
+                      style: context.text.bodySmall?.copyWith(
                         color: context.palette.accentGold,
                         fontSize: 11,
-                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],

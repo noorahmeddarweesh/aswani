@@ -113,9 +113,11 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
+                                // Filled star, like the design and the
+                                // points card on Profile.
                                 Icon(
-                                  LucideIcons.star,
-                                  size: 24,
+                                  Icons.star_rounded,
+                                  size: 28,
                                   color: context.palette.accentGold,
                                 ),
                                 const SizedBox(width: 10),

@@ -16,6 +16,8 @@ class FeaturedGuideCard extends StatelessWidget {
   final Guide guide;
   final VoidCallback? onTap;
 
+  static const double _photoWidth = 136;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.guidesL10n;
@@ -31,83 +33,79 @@ class FeaturedGuideCard extends StatelessWidget {
             borderRadius: AppRadii.xlAll,
             border: Border.all(color: context.palette.border),
           ),
-          padding: const EdgeInsets.all(AppSpacing.sm),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          clipBehavior: Clip.antiAlias,
+          // Photo runs edge to edge on the leading side, as tall as the card
+          // (design: tour guides.jpg). The text decides the height, so the
+          // card grows with large text.
+          child: Stack(
             children: [
-              // Guide photo with fallback placeholder
-              ClipRRect(
-                borderRadius: AppRadii.lgAll,
-                child: SizedBox(
-                  width: 120,
-                  height: 160,
-                  child: AppImage(guide.photo ?? '', fit: BoxFit.cover),
-                ),
+              PositionedDirectional(
+                start: 0,
+                top: 0,
+                bottom: 0,
+                width: _photoWidth,
+                child: AppImage(guide.photo ?? '', fit: BoxFit.cover),
               ),
-              const SizedBox(width: AppSpacing.sm),
-              // Guide details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l10n.sampleProfile,
-                      style: context.text.labelSmall?.copyWith(
-                        color: context.palette.accentGold,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.4,
+              ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 160),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                    _photoWidth + AppSpacing.md,
+                    AppSpacing.md,
+                    AppSpacing.md,
+                    AppSpacing.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        l10n.sampleProfile,
+                        style: context.text.labelSmall?.copyWith(
+                          color: context.palette.accentGold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      guide.fullName,
-                      style: context.text.titleLarge?.copyWith(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w600,
-                        color: context.palette.ink,
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        guide.fullName,
+                        style: context.text.headlineSmall,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      guide.tagline,
-                      style: context.text.bodySmall?.copyWith(
-                        color: context.palette.textSecondary,
-                        fontSize: 12,
-                        height: 1.4,
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        guide.tagline,
+                        style: context.text.bodySmall,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    // Duration pills
-                    Wrap(
-                      spacing: AppSpacing.xs,
-                      runSpacing: AppSpacing.xxs,
-                      children: guide.durations.map((d) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xs,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: context.palette.surfaceMuted,
-                            borderRadius: AppRadii.pillAll,
-                          ),
-                          child: Text(
-                            l10n.durationLabel(d),
-                            style: context.text.labelSmall?.copyWith(
-                              color: context.palette.textSecondary,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                      const SizedBox(height: AppSpacing.sm),
+                      // Duration pills
+                      Wrap(
+                        spacing: AppSpacing.xs,
+                        runSpacing: AppSpacing.xxs,
+                        children: [
+                          for (final d in guide.durations)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.xs,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.palette.surfaceMuted,
+                                borderRadius: AppRadii.pillAll,
+                              ),
+                              child: Text(
+                                l10n.durationLabel(d),
+                                style: context.text.bodySmall?.copyWith(
+                                  fontSize: 11,
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
