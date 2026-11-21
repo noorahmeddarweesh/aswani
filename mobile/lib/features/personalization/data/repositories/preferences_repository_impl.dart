@@ -1,5 +1,6 @@
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../core/result/guard.dart';
 import '../../../../core/result/result.dart';
 import '../../domain/entities/preferences.dart';
 import '../../domain/repositories/preferences_repository.dart';
@@ -10,6 +11,10 @@ class PreferencesRepositoryImpl implements PreferencesRepository {
   PreferencesRepositoryImpl(this._dataSource);
 
   final PreferencesDataSource _dataSource;
+
+  @override
+  Future<Result<Preferences?>> load() =>
+      guard(() async => (await _dataSource.load())?.toEntity());
 
   @override
   Future<Result<void>> save(Preferences preferences) async {

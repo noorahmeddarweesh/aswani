@@ -1,5 +1,46 @@
-venv/
+# ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env.local
+ENV/
+
+# ── Environment & Secrets ─────────────────────────────────────────────────────
 .env
+# .env.example is committed on purpose
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# ── Testing ───────────────────────────────────────────────────────────────────
 .pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# ── Alembic (keep versions/, ignore auto-generated pycache) ───────────────────
+alembic/versions/__pycache__/
+
+# ── SQLite (dev / test databases) ─────────────────────────────────────────────
+*.db
+*.sqlite3
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log

@@ -11,6 +11,16 @@ class PreferencesRemoteDataSource implements PreferencesDataSource {
   final Dio _client;
 
   @override
+  Future<PreferencesDto?> load() => apiCall(() async {
+    final r = await _client.get<Map<String, dynamic>>('/users/preferences');
+    final body = r.data;
+    if (body == null) return null;
+    // v0.2 wraps every body in `data`; accept the v0.1 shape too.
+    final json = body['data'] as Map<String, dynamic>? ?? body;
+    return PreferencesDto.fromJson(json);
+  });
+
+  @override
   Future<void> save(PreferencesDto preferences) => apiCall(
     () => _client.put<void>('/users/preferences', data: preferences.toJson()),
   );

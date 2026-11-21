@@ -11,6 +11,21 @@ class PreferencesDto {
     required this.language,
   });
 
+  factory PreferencesDto.fromJson(Map<String, dynamic> json) {
+    List<String> list(String key) =>
+        (json[key] as List<dynamic>? ?? const []).cast<String>();
+    return PreferencesDto(
+      persona: json['persona'] as String?,
+      purpose: json['purpose'] as String?,
+      stayLength: json['stay_length'] as String?,
+      interests: list('interests'),
+      travelStyles: list('travel_styles'),
+      companions: json['companions'] as String?,
+      needs: list('needs'),
+      language: json['language'] as String? ?? 'en',
+    );
+  }
+
   final String? persona;
   final String? purpose;
   final String? stayLength;

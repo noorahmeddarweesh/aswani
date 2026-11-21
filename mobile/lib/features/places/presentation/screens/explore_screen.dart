@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
@@ -13,6 +14,7 @@ import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../../domain/entities/place.dart';
 import '../viewmodels/explore_view_model.dart';
+import '../../places_routes.dart';
 import '../widgets/place_list_tile.dart';
 import '../../../../shared/widgets/motion.dart';
 
@@ -174,6 +176,8 @@ class ExploreScreen extends ConsumerWidget {
                         for (final place in places.where((p) => p != pick))
                           PlaceListTile(
                             place: place,
+                            onTap: () =>
+                                context.push(PlacesRoutes.place(place.id)),
                             onBookmark: () => placesVm.toggleBookmark(place.id),
                           ),
                     ],
@@ -264,41 +268,46 @@ class _EditorsPickCard extends StatelessWidget {
     final lang = Localizations.localeOf(context).languageCode;
     final onPhoto = context.colors.onPrimary;
     // Grows with the text (large system font sizes), never shorter than 210.
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 210),
-      child: ClipRRect(
-        borderRadius: AppRadii.xlAll,
-        child: Stack(
-          children: [
-            Positioned.fill(child: AppImage(place.imagePath)),
-            const Positioned.fill(child: PhotoScrim(strength: 0.8)),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 90),
-                  Eyebrow(
-                    context.l10n.exploreEditorsPick,
-                    color: context.palette.accentGoldOnDark,
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    place.name(lang),
-                    style: context.text.displayMedium?.copyWith(color: onPhoto),
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    place.tagline(lang),
-                    style: context.text.bodyMedium?.copyWith(
-                      fontSize: 12,
-                      color: onPhoto.withValues(alpha: 0.85),
+    return GestureDetector(
+      onTap: () => context.push(PlacesRoutes.place(place.id)),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 210),
+        child: ClipRRect(
+          borderRadius: AppRadii.xlAll,
+          child: Stack(
+            children: [
+              Positioned.fill(child: AppImage(place.imagePath)),
+              const Positioned.fill(child: PhotoScrim(strength: 0.8)),
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 90),
+                    Eyebrow(
+                      context.l10n.exploreEditorsPick,
+                      color: context.palette.accentGoldOnDark,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      place.name(lang),
+                      style: context.text.displayMedium?.copyWith(
+                        color: onPhoto,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      place.tagline(lang),
+                      style: context.text.bodyMedium?.copyWith(
+                        fontSize: 12,
+                        color: onPhoto.withValues(alpha: 0.85),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

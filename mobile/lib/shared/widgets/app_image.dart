@@ -1,3 +1,6 @@
+import 'dart:io' show File;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
@@ -38,13 +41,31 @@ class AppImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final network = path.startsWith('http');
-    if (!network && _bundled != null && !_bundled!.contains(path)) {
+    // A photo just picked on this phone (before upload): a file path on
+    // mobile, a `blob:` URL on the web.
+    final picked =
+        path.startsWith('blob:') ||
+        path.startsWith('/') ||
+        path.startsWith('file:') ||
+        RegExp(r'^[A-Za-z]:[\\/]').hasMatch(path);
+    final network = path.startsWith('http') || (kIsWeb && picked);
+    if (!network && !picked && _bundled != null && !_bundled!.contains(path)) {
       const placeholder = _ImagePlaceholder();
       if (borderRadius == null) return placeholder;
       return ClipRRect(borderRadius: borderRadius!, child: placeholder);
     }
-    final image = network
+    final image = picked && !kIsWeb
+        ? Image.file(
+            File(path.replaceFirst('file://', '')),
+            fit: fit,
+            width: double.infinity,
+            height: double.infinity,
+            semanticLabel: semanticLabel,
+            excludeFromSemantics: semanticLabel == null,
+            errorBuilder: (context, error, stackTrace) =>
+                const _ImagePlaceholder(),
+          )
+        : network
         ? Image.network(
             path,
             fit: fit,

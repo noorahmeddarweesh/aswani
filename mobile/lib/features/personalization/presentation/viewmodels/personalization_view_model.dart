@@ -15,6 +15,8 @@ class PersonalizationState {
     this.preferences = const Preferences(),
     this.submitting = false,
     this.failure,
+    this.editing = false,
+    this.saved = false,
   });
 
   static const int stepCount = 8;
@@ -24,6 +26,13 @@ class PersonalizationState {
   final Preferences preferences;
   final bool submitting;
   final Failure? failure;
+
+  /// Opened from Settings > Interests & personalization, with the saved
+  /// answers filled in; saving goes back to Settings.
+  final bool editing;
+
+  /// Editing only: the answers were saved.
+  final bool saved;
 
   bool get isLast => step == stepCount - 1;
 
@@ -45,11 +54,14 @@ class PersonalizationState {
     bool? submitting,
     Failure? failure,
     bool clearFailure = false,
+    bool? saved,
   }) => PersonalizationState(
     step: step ?? this.step,
     preferences: preferences ?? this.preferences,
     submitting: submitting ?? this.submitting,
     failure: clearFailure ? null : failure ?? this.failure,
+    editing: editing,
+    saved: saved ?? this.saved,
   );
 }
 
@@ -60,6 +72,15 @@ class PersonalizationViewModel extends Notifier<PersonalizationState> {
   @override
   PersonalizationState build() => PersonalizationState(
     preferences: Preferences(
+      languageCode: ref.read(localeProvider).languageCode,
+    ),
+  );
+
+  /// Settings > Interests: start from the saved answers, in the app's
+  /// current language.
+  void startEditing(Preferences saved) => state = PersonalizationState(
+    editing: true,
+    preferences: saved.copyWith(
       languageCode: ref.read(localeProvider).languageCode,
     ),
   );
@@ -100,6 +121,8 @@ class PersonalizationViewModel extends Notifier<PersonalizationState> {
     final result = await ref.read(preferencesRepositoryProvider).save(_p);
     if (!ref.mounted) return;
     switch (result) {
+      case Success() when state.editing:
+        state = state.copyWith(submitting: false, saved: true);
       case Success():
         state = state.copyWith(submitting: false);
         ref.read(sessionProvider.notifier).preferencesSaved();

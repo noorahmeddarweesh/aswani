@@ -41,11 +41,11 @@ class Session {
     if (avatarUrl != null) 'avatar_url': avatarUrl,
   };
 
-  Session copyWith({bool? hasPreferences}) => Session(
+  Session copyWith({bool? hasPreferences, String? avatarUrl}) => Session(
     userId: userId,
     displayName: displayName,
     hasPreferences: hasPreferences ?? this.hasPreferences,
-    avatarUrl: avatarUrl,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
   );
 }
 
@@ -67,6 +67,9 @@ class SessionController extends Notifier<Session?> {
   void signedIn(Session session) => _save(session);
 
   void preferencesSaved() => _save(state?.copyWith(hasPreferences: true));
+
+  /// New profile photo (Profile > edit badge), so Home shows it at once.
+  void avatarChanged(String url) => _save(state?.copyWith(avatarUrl: url));
 
   void signOut() {
     _save(null);

@@ -1,0 +1,95 @@
+import 'package:aswani/shared/extensions/context_x.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../places_strings.dart';
+
+/// 3-Step review progress timeline in Step 3 (Report Under Review).
+/// Matches report_done.jpg.
+class ReportTimelineIndicator extends StatelessWidget {
+  const ReportTimelineIndicator({super.key});
+
+  Widget _buildNode(
+    BuildContext context, {
+    required Widget child,
+    required bool isFilled,
+    required Color color,
+  }) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: isFilled ? color : context.colors.surface,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isFilled ? color : context.palette.divider,
+          width: 1.5,
+        ),
+      ),
+      child: Center(child: child),
+    );
+  }
+
+  Widget _buildConnectingLine(BuildContext context) {
+    return Container(height: 1.5, color: context.palette.border);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = PlacesStrings.of(context);
+    final primaryColor = context.palette.ink;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            const Spacer(flex: 2),
+            _buildNode(
+              context,
+              isFilled: true,
+              color: primaryColor,
+              child: Icon(
+                LucideIcons.check,
+                size: 13,
+                color: context.palette.onBrandSurface,
+              ),
+            ),
+            Expanded(flex: 3, child: _buildConnectingLine(context)),
+            _buildNode(
+              context,
+              isFilled: true,
+              color: primaryColor,
+              child: Icon(
+                LucideIcons.clock,
+                size: 13,
+                color: context.palette.onBrandSurface,
+              ),
+            ),
+            Expanded(flex: 3, child: _buildConnectingLine(context)),
+            _buildNode(
+              context,
+              isFilled: false,
+              color: primaryColor,
+              child: Icon(
+                LucideIcons.star,
+                size: 13,
+                color: context.palette.accentGold,
+              ),
+            ),
+            const Spacer(flex: 2),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          strings.reportTimelineCaption,
+          textAlign: TextAlign.center,
+          style: context.text.bodySmall?.copyWith(
+            fontSize: 12,
+            color: context.palette.textSecondary,
+          ),
+        ),
+      ],
+    );
+  }
+}
