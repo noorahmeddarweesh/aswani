@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -10,6 +11,7 @@ import '../../../../shared/widgets/primary_button.dart';
 import '../../domain/entities/guide.dart';
 import '../../domain/entities/guide_enums.dart';
 import '../../domain/entities/guide_request.dart';
+import '../../guides_routes.dart';
 import '../../local_guides_providers.dart';
 import '../local_guides_strings.dart';
 import '../viewmodels/guide_details_view_model.dart';
@@ -148,6 +150,20 @@ class _GuideRequestReviewScreenState
   Widget build(BuildContext context) {
     final l10n = context.guidesL10n;
     final guideAsync = ref.watch(guideDetailsProvider(widget.guideId));
+    // Opened without a filled request (a link, or a page reload on the
+    // web): send the user to the form instead of failing.
+    final form = ref.watch(guideRequestViewModelProvider(widget.guideId));
+    if (widget.requestDraft == null && !form.isValid) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.pushReplacement(GuidesRoutes.request(widget.guideId));
+        }
+      });
+      return Scaffold(
+        backgroundColor: context.colors.surface,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
     final draft = _resolveDraft();
 
     final guide = guideAsync.asData?.value;

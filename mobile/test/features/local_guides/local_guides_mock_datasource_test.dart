@@ -232,7 +232,7 @@ void main() {
         bio: 'Local guide applicant.',
         durations: ['few_hours', 'one_day'],
         contact: '01012345678',
-        profilePhoto: 'assets/images/home/mariam.jpg',
+        profilePhoto: 'assets/images/home/avatar_laila.jpg',
       );
 
       final result = await dataSource.createGuideApplication(app);

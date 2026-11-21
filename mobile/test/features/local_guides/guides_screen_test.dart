@@ -39,7 +39,7 @@ class _MockRepo implements LocalGuidesRepository {
     Guide(
       id: 'mariam',
       fullName: 'Mariam Ahmed',
-      photo: 'assets/images/home/mariam.jpg',
+      photo: 'assets/images/home/avatar_laila.jpg',
       city: 'Aswan',
       tagline: 'Local & family experiences',
       languages: [GuideLanguage.ar],

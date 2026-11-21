@@ -1,3 +1,4 @@
+import '../../../../core/assets/app_images.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../models/guide_application_dto.dart';
@@ -51,7 +52,7 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
     {
       'id': 'mariam-ahmed',
       'full_name': 'Mariam Ahmed',
-      'photo': 'assets/images/home/mariam.jpg',
+      'photo': AppImages.avatarLaila,
       'city': 'Aswan',
       'tagline': 'Local & family experiences',
       'languages': ['ar', 'en'],

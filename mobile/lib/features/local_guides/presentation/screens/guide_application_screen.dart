@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../../core/assets/app_images.dart';
 import '../../../../core/result/result.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
@@ -116,7 +117,7 @@ class _GuideApplicationScreenState
         .read(guideApplicationViewModelProvider)
         .profilePhoto;
     if (currentPhoto == null || currentPhoto.isEmpty) {
-      viewModel.setProfilePhoto('assets/images/home/mariam.jpg');
+      viewModel.setProfilePhoto(AppImages.avatarLaila);
     } else {
       viewModel.setProfilePhoto(null);
     }

@@ -6,6 +6,8 @@ import 'package:aswani/features/community/data/datasources/community_mock_dataso
 import 'package:aswani/features/contributions/contributions_providers.dart';
 import 'package:aswani/features/contributions/data/datasources/contributions_mock_datasource.dart';
 import 'package:aswani/features/culture/culture_providers.dart';
+import 'package:aswani/features/local_guides/data/datasources/local_guides_mock_datasource.dart';
+import 'package:aswani/features/local_guides/local_guides_providers.dart';
 import 'package:aswani/features/places/data/datasources/place_details_mock_datasource.dart';
 import 'package:aswani/features/places/place_details_providers.dart';
 import 'package:aswani/features/profile/data/datasources/profile_mock_datasource.dart';
@@ -49,6 +51,9 @@ List<Override> fastMocks({Stream<bool>? network}) => [
   ),
   placeDetailsDataSourceProvider.overrideWithValue(
     PlaceDetailsMockDataSource(delay: Duration.zero),
+  ),
+  localGuidesDataSourceProvider.overrideWithValue(
+    LocalGuidesMockDataSource(delay: Duration.zero),
   ),
 ];
 
