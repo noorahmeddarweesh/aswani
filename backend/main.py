@@ -60,10 +60,10 @@ def create_app() -> FastAPI:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     # ── CORS ──────────────────────────────────────────────────────────────────
-    origins = settings.cors_origins_list
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins if origins != ["*"] else ["*"],
+        allow_origins=["*"],
+        allow_origin_regex=r"^https?://.*$",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -86,18 +86,24 @@ def create_app() -> FastAPI:
         users,
     )
 
-    app.include_router(auth.router, prefix="/api")
-    app.include_router(users.router, prefix="/api")
-    app.include_router(places.router, prefix="/api")
-    app.include_router(bookmarks.router, prefix="/api")
-    app.include_router(guides.router, prefix="/api")
-    app.include_router(reports.router, prefix="/api")
-    app.include_router(community.router, prefix="/api")
-    app.include_router(culture.router, prefix="/api")
-    app.include_router(contributions.router, prefix="/api")
-    app.include_router(profile.router, prefix="/api")
+    all_routers = [
+        auth.router,
+        users.router,
+        places.router,
+        bookmarks.router,
+        guides.router,
+        reports.router,
+        community.router,
+        culture.router,
+        contributions.router,
+        profile.router,
+    ]
+    for r in all_routers:
+        app.include_router(r, prefix="/api")
+        app.include_router(r)
 
     # ── Health check ──────────────────────────────────────────────────────────
+    @app.get("/health", tags=["System"])
     @app.get("/api/health", tags=["System"], summary="Health check for Render")
     def health(request: Request) -> dict:
         return ok({"status": "ok", "version": app.version, "env": settings.APP_ENV})
