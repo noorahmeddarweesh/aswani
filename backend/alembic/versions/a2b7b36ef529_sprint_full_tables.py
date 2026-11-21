@@ -90,7 +90,7 @@ def upgrade() -> None:
     sa.Column('avatar', sa.String(length=500), nullable=True),
     sa.Column('city', sa.String(length=100), nullable=True),
     sa.Column('bio', sa.String(length=500), nullable=True),
-    sa.Column('notifications_enabled', sa.Boolean(), server_default=sa.text('1'), nullable=False),
+    sa.Column('notifications_enabled', sa.Boolean(), server_default='true', nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_users_identifier'), 'users', ['identifier'], unique=True)
