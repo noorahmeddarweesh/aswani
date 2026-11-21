@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:aswani/app.dart';
+import 'package:aswani/core/config/retry_policy.dart';
 import 'package:aswani/features/community/community_providers.dart';
 import 'package:aswani/features/community/data/datasources/community_mock_datasource.dart';
 import 'package:aswani/features/contributions/contributions_providers.dart';
+import 'package:aswani/features/contributions/data/datasources/contributions_datasource.dart';
 import 'package:aswani/features/contributions/data/datasources/contributions_mock_datasource.dart';
 import 'package:aswani/features/culture/culture_providers.dart';
 import 'package:aswani/features/local_guides/data/datasources/local_guides_mock_datasource.dart';
@@ -27,11 +29,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Mock data sources without network delay, so tests run fast.
 /// [network] drives the online/offline state; default: always online.
-/// [placeDetails] swaps in another place details source (e.g. one that
-/// fails), since a provider can only be overridden once.
+/// [placeDetails] and [contributions] swap in another source (e.g. one
+/// that fails), since a provider can only be overridden once.
 List<Override> fastMocks({
   Stream<bool>? network,
   PlaceDetailsDataSource? placeDetails,
+  ContributionsDataSource? contributions,
 }) => [
   isOnlineProvider.overrideWith((ref) => network ?? Stream.value(true)),
   authDataSourceProvider.overrideWithValue(
@@ -50,7 +53,7 @@ List<Override> fastMocks({
     CultureMockDataSource(delay: Duration.zero),
   ),
   contributionsDataSourceProvider.overrideWithValue(
-    ContributionsMockDataSource(delay: Duration.zero),
+    contributions ?? ContributionsMockDataSource(delay: Duration.zero),
   ),
   profileDataSourceProvider.overrideWithValue(
     ProfileMockDataSource(delay: Duration.zero),
@@ -74,6 +77,7 @@ Future<ProviderContainer> pumpApp(
   addTearDown(tester.view.reset);
   reduceMotion(tester);
   final container = ProviderContainer(
+    retry: noAutoRetry,
     overrides: [...mocks ?? fastMocks(), ...overrides],
   );
   addTearDown(container.dispose);

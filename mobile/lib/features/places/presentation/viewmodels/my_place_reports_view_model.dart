@@ -15,6 +15,4 @@ final myPlaceReportsProvider =
         Success(:final value) => value.data,
         Error(:final failure) => throw failure,
       };
-      // The page has its own "Try again" button, so a failure shows at once
-      // instead of a skeleton while Riverpod retries in the background.
-    }, retry: (_, _) => null);
+    });

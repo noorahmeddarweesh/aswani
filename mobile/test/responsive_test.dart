@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:aswani/app.dart';
+import 'package:aswani/core/config/retry_policy.dart';
 import 'package:aswani/core/router/app_router.dart';
 import 'package:aswani/core/router/app_routes.dart';
 import 'package:aswani/core/session/session_controller.dart';
@@ -68,7 +69,10 @@ void main() {
       reduceMotion(tester);
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
-      final container = ProviderContainer(overrides: fastMocks());
+      final container = ProviderContainer(
+        retry: noAutoRetry,
+        overrides: fastMocks(),
+      );
       addTearDown(container.dispose);
       await tester.pumpWidget(
         UncontrolledProviderScope(

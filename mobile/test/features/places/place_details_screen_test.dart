@@ -1,3 +1,4 @@
+import 'package:aswani/core/config/retry_policy.dart';
 import 'package:aswani/core/errors/app_exception.dart';
 import 'package:aswani/core/errors/failure.dart';
 import 'package:aswani/core/l10n/generated/app_localizations.dart';
@@ -186,6 +187,7 @@ Future<void> pumpScreen(
 
   await tester.pumpWidget(
     ProviderScope(
+      retry: noAutoRetry,
       overrides: [
         placeDetailsRepositoryProvider.overrideWithValue(detailsRepo),
         placesRepositoryProvider.overrideWithValue(placesRepo),
