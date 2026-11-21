@@ -178,76 +178,81 @@ class CuratedPlaceCard extends StatelessWidget {
     super.key,
     required this.place,
     required this.onBookmark,
+    this.onTap,
   });
 
   final Place place;
   final VoidCallback onBookmark;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final lang = Localizations.localeOf(context).languageCode;
     final l10n = context.l10n;
     return PressableScale(
-      child: SizedBox(
-        width: 220,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 1.55,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
-                  PositionedDirectional(
-                    top: AppSpacing.xs,
-                    end: AppSpacing.xs,
-                    child: Material(
-                      color: context.colors.surface,
-                      shape: const CircleBorder(),
-                      child: IconButton(
-                        tooltip: place.isBookmarked
-                            ? l10n.bookmarkRemove
-                            : l10n.bookmarkAdd,
-                        iconSize: 18,
-                        onPressed: () {
-                          Haptics.confirm();
-                          onBookmark();
-                        },
-                        icon: BookmarkIcon(saved: place.isBookmarked),
+      child: GestureDetector(
+        onTap: onTap,
+        child: SizedBox(
+          width: 220,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 1.55,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    AppImage(place.imagePath, borderRadius: AppRadii.lgAll),
+                    PositionedDirectional(
+                      top: AppSpacing.xs,
+                      end: AppSpacing.xs,
+                      child: Material(
+                        color: context.colors.surface,
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          tooltip: place.isBookmarked
+                              ? l10n.bookmarkRemove
+                              : l10n.bookmarkAdd,
+                          iconSize: 18,
+                          onPressed: () {
+                            Haptics.confirm();
+                            onBookmark();
+                          },
+                          icon: BookmarkIcon(saved: place.isBookmarked),
+                        ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                place.name(lang),
+                style: context.text.titleLarge?.copyWith(fontSize: 16),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    LucideIcons.mapPin,
+                    size: 13,
+                    color: context.palette.textSecondary,
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      place.tagline(lang),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.text.bodySmall,
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              place.name(lang),
-              style: context.text.titleLarge?.copyWith(fontSize: 16),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.mapPin,
-                  size: 13,
-                  color: context.palette.textSecondary,
-                ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    place.tagline(lang),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.text.bodySmall,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

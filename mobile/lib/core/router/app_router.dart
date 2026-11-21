@@ -116,6 +116,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
       ...communityRootRoutes,
+      ...placesRootRoutes,
       ...contributeRootRoutes,
       ...profileRootRoutes,
       ...guidesRootRoutes,
