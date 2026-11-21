@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 from typing import Optional
-from sqlalchemy import func, or_, select
+from sqlalchemy import cast, func, or_, select, String
 from sqlalchemy.orm import Session
 
 from app.core.errors import AppError
@@ -42,8 +42,18 @@ def list_guides(
 ) -> tuple[list[dict], int]:
     stmt = select(Guide)
     if specialty:
-        # Check if specialty exists in JSON array
-        stmt = stmt.where(Guide.specialties.contains([specialty]))
+        # Check if specialty exists in JSON array - works across both PostgreSQL and SQLite
+        safe_specialty = (
+            str(specialty)
+            .strip()
+            .replace("\\", "\\\\")
+            .replace("%", "\\%")
+            .replace("_", "\\_")
+            .replace('"', '\\"')
+        )
+        stmt = stmt.where(
+            cast(Guide.specialties, String).like(f'%"{safe_specialty}"%', escape="\\")
+        )
     if q and q.strip():
         safe_q = q.strip().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         like_expr = f"%{safe_q}%"
