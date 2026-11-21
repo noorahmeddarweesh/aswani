@@ -8,6 +8,8 @@ import 'package:aswani/features/local_guides/presentation/viewmodels/guide_appli
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_photos.dart';
+
 void main() {
   group('GuideApplicationViewModel Unit Tests', () {
     late ProviderContainer container;
@@ -142,33 +144,33 @@ void main() {
       );
 
       // Unsupported extension
-      viewModel.setProfilePhoto('photo.gif');
+      viewModel.setProfilePhoto(testPhoto('photo.gif'));
       expect(
         container.read(guideApplicationViewModelProvider).photoError,
         'UNSUPPORTED_FILE_TYPE',
       );
 
       // Oversized photo
-      viewModel.setProfilePhoto('photo_too_large.jpg');
+      viewModel.setProfilePhoto(testPhoto('photo_too_large.jpg'));
       expect(
         container.read(guideApplicationViewModelProvider).photoError,
         'FILE_TOO_LARGE',
       );
 
       // Valid extensions
-      viewModel.setProfilePhoto('photo.jpg');
+      viewModel.setProfilePhoto(testPhoto('photo.jpg'));
       expect(
         container.read(guideApplicationViewModelProvider).photoError,
         isNull,
       );
 
-      viewModel.setProfilePhoto('photo.png');
+      viewModel.setProfilePhoto(testPhoto('photo.png'));
       expect(
         container.read(guideApplicationViewModelProvider).photoError,
         isNull,
       );
 
-      viewModel.setProfilePhoto('photo.webp');
+      viewModel.setProfilePhoto(testPhoto('photo.webp'));
       expect(
         container.read(guideApplicationViewModelProvider).photoError,
         isNull,

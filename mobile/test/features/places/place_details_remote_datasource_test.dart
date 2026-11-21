@@ -6,6 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fake_api.dart';
 
+import '../../helpers/test_photos.dart';
+
 const _mockPlaceDetailsJson = {
   'id': 'philae',
   'category': 'history',
@@ -70,11 +72,11 @@ void main() {
         'data': {'id': 'rep-101', 'status': 'pending', 'points_pending': 25},
       });
 
-      const reportDto = PlaceReportCreateDto(
+      final reportDto = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'incorrect_information',
         details: 'The opening hours listed are outdated. It opens at 09:00.',
-        photo: 'supporting_photo.jpg',
+        photo: testPhoto('supporting_photo.jpg'),
       );
 
       final result = await remote.createPlaceReport(reportDto);

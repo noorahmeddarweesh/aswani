@@ -1,3 +1,4 @@
+import '../../../../core/network/upload.dart';
 import '../../domain/entities/guide_application.dart';
 import '../../domain/entities/guide_enums.dart';
 
@@ -28,7 +29,7 @@ class GuideApplicationFormState {
   final String bio;
   final List<GuideDuration> durations;
   final String contact;
-  final String? profilePhoto;
+  final UploadFile? profilePhoto;
 
   final String? fullNameError;
   final String? languagesError;
@@ -67,7 +68,7 @@ class GuideApplicationFormState {
     String? bio,
     List<GuideDuration>? durations,
     String? contact,
-    String? Function()? profilePhoto,
+    UploadFile? Function()? profilePhoto,
     String? Function()? fullNameError,
     String? Function()? languagesError,
     String? Function()? specialtiesError,

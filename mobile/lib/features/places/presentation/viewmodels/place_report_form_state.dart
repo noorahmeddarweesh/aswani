@@ -1,6 +1,8 @@
 import 'package:aswani/features/places/domain/entities/place_details.dart';
 import 'package:aswani/features/places/domain/entities/place_report.dart';
 
+import '../../../../core/network/upload.dart';
+
 /// Form state for the 3-step Place Report flow.
 class PlaceReportFormState {
   const PlaceReportFormState({
@@ -20,7 +22,7 @@ class PlaceReportFormState {
   final PlaceDetails? place;
   final PlaceReportReason? reason;
   final String details;
-  final String? photo;
+  final UploadFile? photo;
   final String? detailsError;
   final String? photoError;
   final String? serverError;
@@ -42,7 +44,7 @@ class PlaceReportFormState {
     PlaceDetails? Function()? place,
     PlaceReportReason? Function()? reason,
     String? details,
-    String? Function()? photo,
+    UploadFile? Function()? photo,
     String? Function()? detailsError,
     String? Function()? photoError,
     String? Function()? serverError,

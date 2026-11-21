@@ -3,6 +3,7 @@ import 'package:aswani/core/errors/app_exception.dart';
 import 'package:aswani/core/errors/failure.dart';
 import 'package:aswani/features/local_guides/data/models/page_meta_dto.dart';
 
+import '../../../../core/network/upload.dart';
 import '../models/place_details_dto.dart';
 import '../models/place_report_dto.dart';
 import 'place_details_datasource.dart';
@@ -226,8 +227,8 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
     }
 
     // Validate photo if given
-    if (report.photo != null && report.photo!.isNotEmpty) {
-      _validatePhoto(report.photo!, 'photo');
+    if (report.photo case final photo?) {
+      _validatePhoto(photo, 'photo');
     }
 
     final newId = 'rep-${_reports.length + 1}';
@@ -293,29 +294,13 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
     );
   }
 
-  void _validatePhoto(String photoPathOrUrl, String fieldName) {
-    final lower = photoPathOrUrl.toLowerCase();
-    if (lower.contains('too_large') || lower.contains('file_too_large')) {
+  void _validatePhoto(UploadFile photo, String fieldName) {
+    final problem = checkUpload(photo);
+    if (problem != null) {
       throw AppException(
         code: ErrorCodes.validation,
         statusCode: 422,
-        details: {fieldName: 'FILE_TOO_LARGE'},
-        message: 'File size exceeds 5 MB limit',
-      );
-    }
-
-    final hasValidExt =
-        lower.endsWith('.jpg') ||
-        lower.endsWith('.jpeg') ||
-        lower.endsWith('.png') ||
-        lower.endsWith('.webp');
-
-    if (!hasValidExt) {
-      throw AppException(
-        code: ErrorCodes.validation,
-        statusCode: 422,
-        details: {fieldName: 'UNSUPPORTED_FILE_TYPE'},
-        message: 'Only jpg, png, and webp files are supported',
+        details: {fieldName: problem},
       );
     }
   }

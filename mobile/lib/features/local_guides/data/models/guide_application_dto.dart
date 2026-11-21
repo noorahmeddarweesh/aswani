@@ -1,3 +1,5 @@
+import '../../../../core/network/upload.dart';
+
 /// DTO for POST /api/guide-applications multipart form.
 /// Fields: full_name, languages[], specialties[], bio, durations[], contact, profile_photo?.
 class GuideApplicationCreateDto {
@@ -31,7 +33,6 @@ class GuideApplicationCreateDto {
                 .toList() ??
             const [],
         contact: json['contact'] as String,
-        profilePhoto: json['profile_photo'] as String?,
       );
 
   final String fullName;
@@ -40,7 +41,9 @@ class GuideApplicationCreateDto {
   final String bio;
   final List<String> durations;
   final String contact;
-  final String? profilePhoto;
+
+  /// Sent as the multipart file `profile_photo`, never in JSON.
+  final UploadFile? profilePhoto;
 
   Map<String, dynamic> toJson() => {
     'full_name': fullName,
@@ -49,7 +52,6 @@ class GuideApplicationCreateDto {
     'bio': bio,
     'durations': durations,
     'contact': contact,
-    if (profilePhoto != null) 'profile_photo': profilePhoto,
   };
 }
 

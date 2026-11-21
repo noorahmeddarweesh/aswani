@@ -5,6 +5,8 @@ import 'package:aswani/features/local_guides/data/models/guide_application_dto.d
 import 'package:aswani/features/local_guides/data/models/guide_request_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_photos.dart';
+
 void main() {
   late LocalGuidesMockDataSource dataSource;
 
@@ -225,14 +227,14 @@ void main() {
 
   group('LocalGuidesMockDataSource - createGuideApplication', () {
     test('submits valid guide application', () async {
-      const app = GuideApplicationCreateDto(
+      final app = GuideApplicationCreateDto(
         fullName: 'New Guide Candidate',
         languages: ['ar', 'en'],
         specialties: ['nubian_culture'],
         bio: 'Local guide applicant.',
         durations: ['few_hours', 'one_day'],
         contact: '01012345678',
-        profilePhoto: 'assets/images/home/avatar_laila.jpg',
+        profilePhoto: testPhoto('assets/images/home/avatar_laila.jpg'),
       );
 
       final result = await dataSource.createGuideApplication(app);
@@ -288,14 +290,14 @@ void main() {
     });
 
     test('rejects photo exceeding 5 MB with FILE_TOO_LARGE', () async {
-      const app = GuideApplicationCreateDto(
+      final app = GuideApplicationCreateDto(
         fullName: 'Candidate',
         languages: ['ar'],
         specialties: ['nile'],
         bio: 'Bio',
         durations: ['one_day'],
         contact: '01123456789',
-        profilePhoto: 'my_file_too_large.jpg',
+        profilePhoto: testPhoto('my_file_too_large.jpg'),
       );
 
       expect(
@@ -313,14 +315,14 @@ void main() {
     test(
       'rejects unsupported photo file type with UNSUPPORTED_FILE_TYPE',
       () async {
-        const app = GuideApplicationCreateDto(
+        final app = GuideApplicationCreateDto(
           fullName: 'Candidate',
           languages: ['ar'],
           specialties: ['nile'],
           bio: 'Bio',
           durations: ['one_day'],
           contact: '01223456789',
-          profilePhoto: 'resume.pdf',
+          profilePhoto: testPhoto('resume.pdf'),
         );
 
         expect(

@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fake_api.dart';
 
+import '../../helpers/test_photos.dart';
+
 const _mockGuideJson = {
   'id': 'youssef-el-nuby',
   'full_name': 'Youssef El Nuby',
@@ -206,14 +208,14 @@ void main() {
           'data': {'id': 'app-999', 'status': 'pending'},
         });
 
-        const applicationDto = GuideApplicationCreateDto(
+        final applicationDto = GuideApplicationCreateDto(
           fullName: 'Mahmoud Hassan',
           languages: ['ar', 'en'],
           specialties: ['nubian_culture', 'nile'],
           bio: 'Local guide with 10 years experience.',
           durations: ['few_hours', 'one_day'],
           contact: '01012345678',
-          profilePhoto: 'dummy_photo.jpg',
+          profilePhoto: testPhoto('dummy_photo.jpg'),
         );
 
         final result = await remote.createGuideApplication(applicationDto);

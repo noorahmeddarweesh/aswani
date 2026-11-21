@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:aswani/core/network/api_client.dart';
 import 'package:aswani/features/local_guides/data/models/page_meta_dto.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/upload.dart';
 import '../models/place_details_dto.dart';
 import '../models/place_report_dto.dart';
 import 'place_details_datasource.dart';
@@ -27,32 +26,16 @@ class PlaceDetailsRemoteDataSource implements PlaceDetailsDataSource {
   @override
   Future<PlaceReportResultDto> createPlaceReport(PlaceReportCreateDto report) =>
       apiCall(() async {
-        final formData = FormData();
-        formData.fields.add(MapEntry('place_id', report.placeId));
-        formData.fields.add(MapEntry('reason', report.reason));
-        formData.fields.add(MapEntry('details', report.details));
-
-        if (report.photo != null && report.photo!.isNotEmpty) {
-          final photoPath = report.photo!;
-          final file = File(photoPath);
-          final filename = photoPath.split(RegExp(r'[\\/]')).last;
-          if (file.existsSync()) {
-            formData.files.add(
-              MapEntry(
-                'photo',
-                await MultipartFile.fromFile(photoPath, filename: filename),
-              ),
-            );
-          } else {
-            formData.files.add(
-              MapEntry(
-                'photo',
-                MultipartFile.fromString(photoPath, filename: filename),
-              ),
-            );
-          }
-        }
-
+        // Bytes, not a file path, so it works on the web too.
+        final formData = buildFormData(
+          fields: {
+            'place_id': report.placeId,
+            'reason': report.reason,
+            'details': report.details,
+          },
+          filesField: 'photo',
+          files: [?report.photo],
+        );
         final response = await _client.post<Map<String, dynamic>>(
           '/place-reports',
           data: formData,

@@ -1,3 +1,4 @@
+import 'package:aswani/core/network/upload.dart';
 import 'package:aswani/core/l10n/generated/app_localizations.dart';
 import 'package:aswani/core/theme/app_theme.dart';
 import 'package:aswani/features/local_guides/data/datasources/local_guides_mock_datasource.dart';
@@ -23,7 +24,7 @@ void main() {
   Widget buildSubject({
     Locale locale = const Locale('en'),
     ValueChanged<GuideApplicationResult>? onSubmittedSuccess,
-    Future<String?> Function()? onPickPhoto,
+    Future<UploadFile?> Function()? onPickPhoto,
     ProviderContainer? container,
   }) {
     final app = MaterialApp(

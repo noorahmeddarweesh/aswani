@@ -1,5 +1,7 @@
 import 'guide_enums.dart';
 
+import '../../../../core/network/upload.dart';
+
 /// Form entity for applying to become a local guide.
 class GuideApplicationCreate {
   const GuideApplicationCreate({
@@ -18,7 +20,7 @@ class GuideApplicationCreate {
   final String bio;
   final List<GuideDuration> durations;
   final String contact;
-  final String? profilePhoto;
+  final UploadFile? profilePhoto;
 }
 
 /// Result returned after submitting a guide application.

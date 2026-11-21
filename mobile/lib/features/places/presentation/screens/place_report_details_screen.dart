@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../shared/widgets/photo_picker_field.dart';
 import '../places_strings.dart';
 import '../viewmodels/place_report_view_model.dart';
 import '../widgets/report_photo_picker_box.dart';
@@ -190,15 +191,14 @@ class _PlaceReportDetailsScreenState
 
                       // Supporting Photo Box
                       ReportPhotoPickerBox(
-                        photoPath: formState.photo,
+                        photoPath: formState.photo?.path,
                         errorText: photoError,
-                        onTap: () {
-                          // In tests/mock mode, simulates picking a sample photo
+                        onTap: () async {
+                          final picked = await ref.read(pickPhotosProvider)(1);
+                          if (picked.isEmpty) return;
                           ref
                               .read(placeReportViewModelProvider.notifier)
-                              .setPhoto(
-                                'assets/images/places/philae_temple.jpg',
-                              );
+                              .setPhoto(picked.first);
                         },
                         onRemove: () {
                           ref

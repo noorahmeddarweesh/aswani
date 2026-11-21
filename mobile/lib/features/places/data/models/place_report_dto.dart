@@ -1,3 +1,5 @@
+import '../../../../core/network/upload.dart';
+
 /// DTO for POST /api/place-reports multipart form.
 /// Fields: place_id, reason, details, photo?.
 class PlaceReportCreateDto {
@@ -13,19 +15,19 @@ class PlaceReportCreateDto {
         placeId: json['place_id'] as String,
         reason: json['reason'] as String,
         details: json['details'] as String,
-        photo: json['photo'] as String?,
       );
 
   final String placeId;
   final String reason;
   final String details;
-  final String? photo;
+
+  /// Sent as the multipart file `photo`, never in JSON.
+  final UploadFile? photo;
 
   Map<String, dynamic> toJson() => {
     'place_id': placeId,
     'reason': reason,
     'details': details,
-    if (photo != null) 'photo': photo,
   };
 }
 

@@ -2,13 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/assets/app_images.dart';
 import '../../../../core/result/result.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/network/upload.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 import '../../../../shared/widgets/circle_icon_button.dart';
 import '../../../../shared/widgets/labeled_field.dart';
+import '../../../../shared/widgets/photo_picker_field.dart';
 import '../../../../shared/widgets/primary_button.dart';
 import '../../domain/entities/guide_application.dart';
 import '../../domain/entities/guide_enums.dart';
@@ -27,8 +28,8 @@ class GuideApplicationScreen extends ConsumerStatefulWidget {
 
   final ValueChanged<GuideApplicationResult>? onSubmittedSuccess;
 
-  /// Injectable photo picker callback (since image_picker is not in pubspec.yaml).
-  final Future<String?> Function()? onPickPhoto;
+  /// Replaces the gallery picker (tests).
+  final Future<UploadFile?> Function()? onPickPhoto;
 
   @override
   ConsumerState<GuideApplicationScreen> createState() =>
@@ -103,24 +104,11 @@ class _GuideApplicationScreenState
 
   Future<void> _handlePhotoPick() async {
     final viewModel = ref.read(guideApplicationViewModelProvider.notifier);
-
-    if (widget.onPickPhoto != null) {
-      final path = await widget.onPickPhoto!();
-      viewModel.setProfilePhoto(path);
-      return;
-    }
-
-    // Default mock behavior if no external picker is injected.
-    // In demo/test environment without image_picker plugin,
-    // toggles a sample mock image asset.
-    final currentPhoto = ref
-        .read(guideApplicationViewModelProvider)
-        .profilePhoto;
-    if (currentPhoto == null || currentPhoto.isEmpty) {
-      viewModel.setProfilePhoto(AppImages.avatarLaila);
-    } else {
-      viewModel.setProfilePhoto(null);
-    }
+    final photo = widget.onPickPhoto != null
+        ? await widget.onPickPhoto!()
+        : (await ref.read(pickPhotosProvider)(1)).firstOrNull;
+    if (!mounted || photo == null) return;
+    viewModel.setProfilePhoto(photo);
   }
 
   Future<void> _handleSubmit() async {
@@ -214,7 +202,7 @@ class _GuideApplicationScreenState
 
                     // Profile photo picker
                     GuidePhotoPickerTile(
-                      photoPath: state.profilePhoto,
+                      photoPath: state.profilePhoto?.path,
                       onTap: _handlePhotoPick,
                       onRemove: state.profilePhoto != null
                           ? () => viewModel.setProfilePhoto(null)

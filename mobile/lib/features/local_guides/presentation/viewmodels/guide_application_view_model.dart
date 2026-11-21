@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/network/upload.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/result/result.dart';
 import '../../domain/entities/guide_application.dart';
@@ -98,27 +99,11 @@ class GuideApplicationViewModel extends Notifier<GuideApplicationFormState> {
     );
   }
 
-  void setProfilePhoto(String? path) {
-    String? photoError;
-    if (path != null && path.isNotEmpty) {
-      final lower = path.toLowerCase();
-      final hasValidExt =
-          lower.endsWith('.jpg') ||
-          lower.endsWith('.jpeg') ||
-          lower.endsWith('.png') ||
-          lower.endsWith('.webp');
-
-      if (!hasValidExt) {
-        photoError = 'UNSUPPORTED_FILE_TYPE';
-      } else if (lower.contains('too_large') ||
-          lower.contains('file_too_large')) {
-        photoError = 'FILE_TOO_LARGE';
-      }
-    }
-
+  void setProfilePhoto(UploadFile? photo) {
     state = state.copyWith(
-      profilePhoto: () => path,
-      photoError: () => photoError,
+      profilePhoto: () => photo,
+      // UNSUPPORTED_FILE_TYPE or FILE_TOO_LARGE, checked before sending.
+      photoError: () => photo == null ? null : checkUpload(photo),
       serverError: () => null,
     );
   }

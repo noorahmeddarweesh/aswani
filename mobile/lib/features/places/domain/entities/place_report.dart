@@ -1,3 +1,5 @@
+import '../../../../core/network/upload.dart';
+
 enum PlaceReportReason {
   notExist('not_exist'),
   permanentlyClosed('permanently_closed'),
@@ -28,7 +30,9 @@ class PlaceReportCreate {
   final String placeId;
   final PlaceReportReason reason;
   final String details;
-  final String? photo;
+
+  /// Optional supporting photo (jpg, png or webp, up to 5 MB).
+  final UploadFile? photo;
 }
 
 /// Result returned from submitting a place report.

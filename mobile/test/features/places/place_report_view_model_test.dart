@@ -11,6 +11,8 @@ import 'package:aswani/features/places/presentation/viewmodels/place_report_view
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_photos.dart';
+
 class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
   _FakePlaceDetailsRepo()
     : failWithValidation = false,
@@ -165,18 +167,18 @@ void main() {
       final notifier = container.read(placeReportViewModelProvider.notifier);
 
       // Valid extension
-      notifier.setPhoto('photo.jpg');
+      notifier.setPhoto(testPhoto('photo.jpg'));
       var state = container.read(placeReportViewModelProvider);
-      expect(state.photo, 'photo.jpg');
+      expect(state.photo?.name, 'photo.jpg');
       expect(state.photoError, isNull);
 
       // Unsupported extension
-      notifier.setPhoto('photo.pdf');
+      notifier.setPhoto(testPhoto('photo.pdf'));
       state = container.read(placeReportViewModelProvider);
       expect(state.photoError, 'UNSUPPORTED_FILE_TYPE');
 
       // File too large
-      notifier.setPhoto('my_too_large_photo.png');
+      notifier.setPhoto(testPhoto('my_too_large_photo.png'));
       state = container.read(placeReportViewModelProvider);
       expect(state.photoError, 'FILE_TOO_LARGE');
 

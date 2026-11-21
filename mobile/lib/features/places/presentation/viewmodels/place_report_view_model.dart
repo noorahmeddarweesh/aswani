@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'place_report_form_state.dart';
 
+import '../../../../core/network/upload.dart';
+
 /// ViewModel managing state, validation, and submission for the 3-step Place Report flow.
 class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
   @override
@@ -48,27 +50,11 @@ class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
   }
 
   /// Sets or removes a supporting photo with client-side file validation.
-  void setPhoto(String? path) {
-    String? photoError;
-    if (path != null && path.isNotEmpty) {
-      final lower = path.toLowerCase();
-      final hasValidExt =
-          lower.endsWith('.jpg') ||
-          lower.endsWith('.jpeg') ||
-          lower.endsWith('.png') ||
-          lower.endsWith('.webp');
-
-      if (!hasValidExt) {
-        photoError = 'UNSUPPORTED_FILE_TYPE';
-      } else if (lower.contains('too_large') ||
-          lower.contains('file_too_large')) {
-        photoError = 'FILE_TOO_LARGE';
-      }
-    }
-
+  void setPhoto(UploadFile? photo) {
     state = state.copyWith(
-      photo: () => path,
-      photoError: () => photoError,
+      photo: () => photo,
+      // UNSUPPORTED_FILE_TYPE or FILE_TOO_LARGE, checked before sending.
+      photoError: () => photo == null ? null : checkUpload(photo),
       serverError: () => null,
     );
   }

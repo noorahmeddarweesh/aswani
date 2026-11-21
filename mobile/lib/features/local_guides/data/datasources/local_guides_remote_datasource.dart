@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/upload.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/guide_application_dto.dart';
 import '../models/guide_dto.dart';
@@ -89,42 +88,19 @@ class LocalGuidesRemoteDataSource implements LocalGuidesDataSource {
   Future<GuideApplicationResultDto> createGuideApplication(
     GuideApplicationCreateDto application,
   ) => apiCall(() async {
-    final formData = FormData();
-    formData.fields.add(MapEntry('full_name', application.fullName));
-    formData.fields.add(MapEntry('bio', application.bio));
-    formData.fields.add(MapEntry('contact', application.contact));
-
-    for (final lang in application.languages) {
-      formData.fields.add(MapEntry('languages', lang));
-    }
-    for (final spec in application.specialties) {
-      formData.fields.add(MapEntry('specialties', spec));
-    }
-    for (final dur in application.durations) {
-      formData.fields.add(MapEntry('durations', dur));
-    }
-
-    if (application.profilePhoto != null &&
-        application.profilePhoto!.isNotEmpty) {
-      final photoPath = application.profilePhoto!;
-      final file = File(photoPath);
-      final filename = photoPath.split(RegExp(r'[\\/]')).last;
-      if (file.existsSync()) {
-        formData.files.add(
-          MapEntry(
-            'profile_photo',
-            await MultipartFile.fromFile(photoPath, filename: filename),
-          ),
-        );
-      } else {
-        formData.files.add(
-          MapEntry(
-            'profile_photo',
-            MultipartFile.fromString(photoPath, filename: filename),
-          ),
-        );
-      }
-    }
+    // Lists repeat the field (contract v0.2); bytes work on the web too.
+    final formData = buildFormData(
+      fields: {
+        'full_name': application.fullName,
+        'bio': application.bio,
+        'contact': application.contact,
+        'languages': application.languages,
+        'specialties': application.specialties,
+        'durations': application.durations,
+      },
+      filesField: 'profile_photo',
+      files: [?application.profilePhoto],
+    );
 
     final response = await _client.post<Map<String, dynamic>>(
       '/guide-applications',

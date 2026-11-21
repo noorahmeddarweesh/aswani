@@ -4,6 +4,8 @@ import 'package:aswani/features/places/data/datasources/place_details_mock_datas
 import 'package:aswani/features/places/data/models/place_report_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/test_photos.dart';
+
 void main() {
   late PlaceDetailsMockDataSource dataSource;
 
@@ -38,11 +40,11 @@ void main() {
 
   group('PlaceDetailsMockDataSource - createPlaceReport', () {
     test('submits valid place report returning 25 points_pending', () async {
-      const report = PlaceReportCreateDto(
+      final report = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'incorrect_information',
         details: 'Visiting hours are now from 8 AM to 5 PM.',
-        photo: 'supporting_photo.jpg',
+        photo: testPhoto('supporting_photo.jpg'),
       );
 
       final result = await dataSource.createPlaceReport(report);
@@ -113,11 +115,11 @@ void main() {
     });
 
     test('rejects photo exceeding 5 MB with FILE_TOO_LARGE', () async {
-      const report = PlaceReportCreateDto(
+      final report = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'incorrect_information',
         details: 'Valid details note',
-        photo: 'my_camera_file_too_large.jpg',
+        photo: testPhoto('my_camera_file_too_large.jpg'),
       );
 
       expect(
@@ -135,11 +137,11 @@ void main() {
     test(
       'rejects unsupported photo extension with UNSUPPORTED_FILE_TYPE',
       () async {
-        const report = PlaceReportCreateDto(
+        final report = PlaceReportCreateDto(
           placeId: 'philae',
           reason: 'incorrect_information',
           details: 'Valid details note',
-          photo: 'proof.gif',
+          photo: testPhoto('proof.gif'),
         );
 
         expect(

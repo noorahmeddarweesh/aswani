@@ -152,7 +152,6 @@ void main() {
         'bio': 'Passionate explorer.',
         'durations': ['few_hours', 'one_day'],
         'contact': '01012345678',
-        'profile_photo': 'path/to/photo.jpg',
       };
 
       final dto = GuideApplicationCreateDto.fromJson(json);

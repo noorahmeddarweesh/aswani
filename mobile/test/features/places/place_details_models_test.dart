@@ -74,12 +74,12 @@ void main() {
   });
 
   group('PlaceReport DTO serialization', () {
+    // The photo is a multipart file, so it is not part of the JSON fields.
     test('PlaceReportCreateDto serializes multipart fields', () {
       final json = {
         'place_id': 'philae',
         'reason': 'incorrect_information',
         'details': 'Opening hours have changed recently.',
-        'photo': 'evidence.jpg',
       };
 
       final dto = PlaceReportCreateDto.fromJson(json);

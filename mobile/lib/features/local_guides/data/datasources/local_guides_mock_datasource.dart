@@ -1,3 +1,4 @@
+import '../../../../core/network/upload.dart';
 import '../../../../core/assets/app_images.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
@@ -353,9 +354,8 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
     }
 
     // Validate photo if given
-    if (application.profilePhoto != null &&
-        application.profilePhoto!.isNotEmpty) {
-      _validatePhoto(application.profilePhoto!, 'profile_photo');
+    if (application.profilePhoto case final photo?) {
+      _validatePhoto(photo, 'profile_photo');
     }
 
     _appliedContacts.add(digits);
@@ -363,30 +363,13 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
     return GuideApplicationResultDto(id: id, status: 'pending');
   }
 
-  void _validatePhoto(String photoPathOrUrl, String fieldName) {
-    final lower = photoPathOrUrl.toLowerCase();
-    // Simulate size limit check (file naming test convention: _too_large or > 5MB)
-    if (lower.contains('too_large') || lower.contains('file_too_large')) {
+  void _validatePhoto(UploadFile photo, String fieldName) {
+    final problem = checkUpload(photo);
+    if (problem != null) {
       throw AppException(
         code: ErrorCodes.validation,
         statusCode: 422,
-        details: {fieldName: 'FILE_TOO_LARGE'},
-        message: 'File size exceeds 5 MB limit',
-      );
-    }
-
-    final hasValidExt =
-        lower.endsWith('.jpg') ||
-        lower.endsWith('.jpeg') ||
-        lower.endsWith('.png') ||
-        lower.endsWith('.webp');
-
-    if (!hasValidExt) {
-      throw AppException(
-        code: ErrorCodes.validation,
-        statusCode: 422,
-        details: {fieldName: 'UNSUPPORTED_FILE_TYPE'},
-        message: 'Only jpg, png, and webp files are supported',
+        details: {fieldName: problem},
       );
     }
   }
