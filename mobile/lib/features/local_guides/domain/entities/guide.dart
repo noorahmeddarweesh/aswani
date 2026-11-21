@@ -31,11 +31,7 @@ class Guide {
 
 /// Minimal summary of a guide used in request items.
 class GuideSummary {
-  const GuideSummary({
-    required this.id,
-    required this.fullName,
-    this.photo,
-  });
+  const GuideSummary({required this.id, required this.fullName, this.photo});
 
   final String id;
   final String fullName;

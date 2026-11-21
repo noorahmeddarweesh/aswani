@@ -12,16 +12,16 @@ extension GuideRequestCreateMapper on GuideRequestCreate {
     startTime: startTime,
     groupSize: groupSize,
     language: language.value,
-    interests: interests.isNotEmpty ? interests.map((e) => e.value).toList() : null,
+    interests: interests.isNotEmpty
+        ? interests.map((e) => e.value).toList()
+        : null,
     notes: notes,
   );
 }
 
 extension GuideRequestResultMapper on GuideRequestResultDto {
-  GuideRequestResult toEntity() => GuideRequestResult(
-    id: id,
-    status: RequestStatus.fromValue(status),
-  );
+  GuideRequestResult toEntity() =>
+      GuideRequestResult(id: id, status: RequestStatus.fromValue(status));
 }
 
 extension GuideRequestItemMapper on GuideRequestItemDto {

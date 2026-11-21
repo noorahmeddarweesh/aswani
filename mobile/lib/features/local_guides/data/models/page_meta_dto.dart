@@ -29,10 +29,7 @@ class PageMetaDto {
 
 /// Generic wrapper for `{ "data": [...], "meta": {...} }`.
 class PagedListDto<T> {
-  const PagedListDto({
-    required this.data,
-    required this.meta,
-  });
+  const PagedListDto({required this.data, required this.meta});
 
   factory PagedListDto.fromJson(
     Map<String, dynamic> json,
@@ -40,7 +37,9 @@ class PagedListDto<T> {
   ) {
     final list = (json['data'] as List<dynamic>?) ?? const [];
     return PagedListDto(
-      data: list.map((item) => itemFromJson(item as Map<String, dynamic>)).toList(),
+      data: list
+          .map((item) => itemFromJson(item as Map<String, dynamic>))
+          .toList(),
       meta: json['meta'] is Map<String, dynamic>
           ? PageMetaDto.fromJson(json['meta'] as Map<String, dynamic>)
           : const PageMetaDto(page: 1, limit: 20, total: 0, totalPages: 1),

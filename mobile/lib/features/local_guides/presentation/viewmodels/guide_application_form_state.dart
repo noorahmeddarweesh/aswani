@@ -51,14 +51,14 @@ class GuideApplicationFormState {
       photoError != null;
 
   GuideApplicationCreate toEntity() => GuideApplicationCreate(
-        fullName: fullName.trim(),
-        languages: languages,
-        specialties: specialties,
-        bio: bio.trim(),
-        durations: durations,
-        contact: contact.trim(),
-        profilePhoto: profilePhoto,
-      );
+    fullName: fullName.trim(),
+    languages: languages,
+    specialties: specialties,
+    bio: bio.trim(),
+    durations: durations,
+    contact: contact.trim(),
+    profilePhoto: profilePhoto,
+  );
 
   GuideApplicationFormState copyWith({
     String? fullName,
@@ -85,19 +85,21 @@ class GuideApplicationFormState {
       bio: bio ?? this.bio,
       durations: durations ?? this.durations,
       contact: contact ?? this.contact,
-      profilePhoto:
-          profilePhoto != null ? profilePhoto() : this.profilePhoto,
-      fullNameError:
-          fullNameError != null ? fullNameError() : this.fullNameError,
-      languagesError:
-          languagesError != null ? languagesError() : this.languagesError,
-      specialtiesError:
-          specialtiesError != null ? specialtiesError() : this.specialtiesError,
+      profilePhoto: profilePhoto != null ? profilePhoto() : this.profilePhoto,
+      fullNameError: fullNameError != null
+          ? fullNameError()
+          : this.fullNameError,
+      languagesError: languagesError != null
+          ? languagesError()
+          : this.languagesError,
+      specialtiesError: specialtiesError != null
+          ? specialtiesError()
+          : this.specialtiesError,
       bioError: bioError != null ? bioError() : this.bioError,
-      durationsError:
-          durationsError != null ? durationsError() : this.durationsError,
-      contactError:
-          contactError != null ? contactError() : this.contactError,
+      durationsError: durationsError != null
+          ? durationsError()
+          : this.durationsError,
+      contactError: contactError != null ? contactError() : this.contactError,
       photoError: photoError != null ? photoError() : this.photoError,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       serverError: serverError != null ? serverError() : this.serverError,

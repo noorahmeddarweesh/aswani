@@ -139,9 +139,7 @@ class GuideRequestSubmittedScreen extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.screen),
               decoration: BoxDecoration(
                 color: context.colors.surface,
-                border: Border(
-                  top: BorderSide(color: context.palette.border),
-                ),
+                border: Border(top: BorderSide(color: context.palette.border)),
               ),
               child: PrimaryButton(
                 key: const Key('submitted_back_to_home_button'),

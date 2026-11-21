@@ -33,7 +33,9 @@ void main() {
       expect(nileGuides.data.length, 1);
       expect(nileGuides.data.first.fullName, 'Ahmed Salem');
 
-      final nubianGuides = await dataSource.getGuides(specialty: 'nubian_culture');
+      final nubianGuides = await dataSource.getGuides(
+        specialty: 'nubian_culture',
+      );
       expect(nubianGuides.data.length, 2);
     });
 
@@ -176,7 +178,11 @@ void main() {
           isA<AppException>()
               .having((e) => e.code, 'code', ErrorCodes.validation)
               .having((e) => e.statusCode, 'status', 422)
-              .having((e) => e.details['duration_hours'], 'details', 'VALIDATION_ERROR'),
+              .having(
+                (e) => e.details['duration_hours'],
+                'details',
+                'VALIDATION_ERROR',
+              ),
         ),
       );
 
@@ -207,8 +213,11 @@ void main() {
       expect(
         () => dataSource.createGuideRequest(req),
         throwsA(
-          isA<AppException>()
-              .having((e) => e.details['group_size'], 'group_size', 'VALIDATION_ERROR'),
+          isA<AppException>().having(
+            (e) => e.details['group_size'],
+            'group_size',
+            'VALIDATION_ERROR',
+          ),
         ),
       );
     });
@@ -231,27 +240,30 @@ void main() {
       expect(result.id, startsWith('app-'));
     });
 
-    test('second application with same contact throws 409 ALREADY_APPLIED', () async {
-      final app = GuideApplicationCreateDto(
-        fullName: 'Candidate One',
-        languages: ['ar'],
-        specialties: ['nile'],
-        bio: 'Bio',
-        durations: ['one_day'],
-        contact: '+201099998888',
-      );
+    test(
+      'second application with same contact throws 409 ALREADY_APPLIED',
+      () async {
+        final app = GuideApplicationCreateDto(
+          fullName: 'Candidate One',
+          languages: ['ar'],
+          specialties: ['nile'],
+          bio: 'Bio',
+          durations: ['one_day'],
+          contact: '+201099998888',
+        );
 
-      await dataSource.createGuideApplication(app);
+        await dataSource.createGuideApplication(app);
 
-      expect(
-        () => dataSource.createGuideApplication(app),
-        throwsA(
-          isA<AppException>()
-              .having((e) => e.code, 'code', 'ALREADY_APPLIED')
-              .having((e) => e.statusCode, 'status', 409),
-        ),
-      );
-    });
+        expect(
+          () => dataSource.createGuideApplication(app),
+          throwsA(
+            isA<AppException>()
+                .having((e) => e.code, 'code', 'ALREADY_APPLIED')
+                .having((e) => e.statusCode, 'status', 409),
+          ),
+        );
+      },
+    );
 
     test('rejects invalid Egyptian contact number with 422', () async {
       final app = GuideApplicationCreateDto(
@@ -266,8 +278,11 @@ void main() {
       expect(
         () => dataSource.createGuideApplication(app),
         throwsA(
-          isA<AppException>()
-              .having((e) => e.details['contact'], 'contact', 'VALIDATION_ERROR'),
+          isA<AppException>().having(
+            (e) => e.details['contact'],
+            'contact',
+            'VALIDATION_ERROR',
+          ),
         ),
       );
     });
@@ -286,30 +301,39 @@ void main() {
       expect(
         () => dataSource.createGuideApplication(app),
         throwsA(
-          isA<AppException>()
-              .having((e) => e.details['profile_photo'], 'photo', 'FILE_TOO_LARGE'),
+          isA<AppException>().having(
+            (e) => e.details['profile_photo'],
+            'photo',
+            'FILE_TOO_LARGE',
+          ),
         ),
       );
     });
 
-    test('rejects unsupported photo file type with UNSUPPORTED_FILE_TYPE', () async {
-      final app = GuideApplicationCreateDto(
-        fullName: 'Candidate',
-        languages: ['ar'],
-        specialties: ['nile'],
-        bio: 'Bio',
-        durations: ['one_day'],
-        contact: '01223456789',
-        profilePhoto: 'resume.pdf',
-      );
+    test(
+      'rejects unsupported photo file type with UNSUPPORTED_FILE_TYPE',
+      () async {
+        final app = GuideApplicationCreateDto(
+          fullName: 'Candidate',
+          languages: ['ar'],
+          specialties: ['nile'],
+          bio: 'Bio',
+          durations: ['one_day'],
+          contact: '01223456789',
+          profilePhoto: 'resume.pdf',
+        );
 
-      expect(
-        () => dataSource.createGuideApplication(app),
-        throwsA(
-          isA<AppException>()
-              .having((e) => e.details['profile_photo'], 'photo', 'UNSUPPORTED_FILE_TYPE'),
-        ),
-      );
-    });
+        expect(
+          () => dataSource.createGuideApplication(app),
+          throwsA(
+            isA<AppException>().having(
+              (e) => e.details['profile_photo'],
+              'photo',
+              'UNSUPPORTED_FILE_TYPE',
+            ),
+          ),
+        );
+      },
+    );
   });
 }

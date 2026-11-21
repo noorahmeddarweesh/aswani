@@ -75,10 +75,8 @@ class _MockDetailsRepo implements PlaceDetailsRepository {
         place: samplePlace,
         locationEn: 'Agilkia Island, Aswan',
         locationAr: 'جزيرة أجيليكيا، أسوان',
-        aboutEn:
-            'An archaeological complex on an island in the Nile. This prototype summary is illustrative.',
-        aboutAr:
-            'مجمع أثري على جزيرة في النيل. هذا الملخص النموذجي توضيحي.',
+        aboutEn: 'An archaeological complex on an island in the Nile. This prototype summary is illustrative.',
+        aboutAr: 'مجمع أثري على جزيرة في النيل. هذا الملخص النموذجي توضيحي.',
         images: emptyImages
             ? const []
             : const [
@@ -104,12 +102,17 @@ class _MockDetailsRepo implements PlaceDetailsRepository {
   }
 
   @override
-  Future<Result<PlaceReportResult>> createPlaceReport(PlaceReportCreate report) async {
+  Future<Result<PlaceReportResult>> createPlaceReport(
+    PlaceReportCreate report,
+  ) async {
     throw UnimplementedError();
   }
 
   @override
-  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({int page = 1, int limit = 20}) async {
+  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({
+    int page = 1,
+    int limit = 20,
+  }) async {
     throw UnimplementedError();
   }
 }
@@ -125,7 +128,10 @@ class _MockPlacesRepo implements PlacesRepository {
   Future<Result<List<Place>>> getCurated() async => const Result.success([]);
 
   @override
-  Future<Result<Place>> setBookmark(String placeId, {required bool saved}) async {
+  Future<Result<Place>> setBookmark(
+    String placeId, {
+    required bool saved,
+  }) async {
     isBookmarked = saved;
     final updated = _MockDetailsRepo.samplePlace.copyWith(isBookmarked: saved);
     return Result.success(updated);
@@ -206,50 +212,56 @@ Future<void> pumpScreen(
 
 void main() {
   group('PlaceDetailsScreen', () {
-    testWidgets('renders all screen sections and content matching design spec', (
-      tester,
-    ) async {
-      await pumpScreen(tester);
-      await tester.pumpAndSettle();
+    testWidgets(
+      'renders all screen sections and content matching design spec',
+      (tester) async {
+        await pumpScreen(tester);
+        await tester.pumpAndSettle();
 
-      // Hero carousel and counter
-      expect(find.byType(PlaceHeroCarousel), findsOneWidget);
-      expect(find.text('1 / 2'), findsOneWidget);
+        // Hero carousel and counter
+        expect(find.byType(PlaceHeroCarousel), findsOneWidget);
+        expect(find.text('1 / 2'), findsOneWidget);
 
-      // Gold Eyebrow & Title
-      expect(find.text('HISTORICAL PLACE'), findsOneWidget);
-      expect(find.text('Philae Temple'), findsOneWidget);
+        // Gold Eyebrow & Title
+        expect(find.text('HISTORICAL PLACE'), findsOneWidget);
+        expect(find.text('Philae Temple'), findsOneWidget);
 
-      // Location Row
-      expect(find.byIcon(LucideIcons.mapPin), findsOneWidget);
-      expect(find.text('Agilkia Island, Aswan'), findsOneWidget);
+        // Location Row
+        expect(find.byIcon(LucideIcons.mapPin), findsOneWidget);
+        expect(find.text('Agilkia Island, Aswan'), findsOneWidget);
 
-      // Key Fact Cards
-      expect(find.byType(PlaceFactCard), findsNWidgets(2));
-      expect(find.text('Boat access'), findsOneWidget);
-      expect(find.text('Check before visiting'), findsOneWidget);
-      expect(find.byIcon(LucideIcons.map), findsOneWidget);
-      expect(find.byIcon(LucideIcons.clock), findsOneWidget);
+        // Key Fact Cards
+        expect(find.byType(PlaceFactCard), findsNWidgets(2));
+        expect(find.text('Boat access'), findsOneWidget);
+        expect(find.text('Check before visiting'), findsOneWidget);
+        expect(find.byIcon(LucideIcons.map), findsOneWidget);
+        expect(find.byIcon(LucideIcons.clock), findsOneWidget);
 
-      // About Section
-      expect(find.text('About this place'), findsOneWidget);
-      expect(
-        find.textContaining('An archaeological complex on an island in the Nile'),
-        findsOneWidget,
-      );
+        // About Section
+        expect(find.text('About this place'), findsOneWidget);
+        expect(
+          find.textContaining(
+            'An archaeological complex on an island in the Nile',
+          ),
+          findsOneWidget,
+        );
 
-      // Visiting Information Card
-      expect(find.byType(PlaceVisitingInfoCard), findsOneWidget);
-      expect(find.text('Visiting information'), findsOneWidget);
-      expect(
-        find.text('Unverified hours and prices are intentionally not shown.'),
-        findsOneWidget,
-      );
+        // Visiting Information Card
+        expect(find.byType(PlaceVisitingInfoCard), findsOneWidget);
+        expect(find.text('Visiting information'), findsOneWidget);
+        expect(
+          find.text('Unverified hours and prices are intentionally not shown.'),
+          findsOneWidget,
+        );
 
-      // Report Tile
-      expect(find.byType(PlaceReportTile), findsOneWidget);
-      expect(find.text('See something inaccurate? Report it.'), findsOneWidget);
-    });
+        // Report Tile
+        expect(find.byType(PlaceReportTile), findsOneWidget);
+        expect(
+          find.text('See something inaccurate? Report it.'),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets('tap callbacks for back, share, bookmark, and report trigger', (
       tester,
@@ -286,7 +298,11 @@ void main() {
         of: find.byType(SingleChildScrollView),
         matching: find.byType(Scrollable),
       );
-      await tester.scrollUntilVisible(find.byType(PlaceReportTile), 200, scrollable: scrollable);
+      await tester.scrollUntilVisible(
+        find.byType(PlaceReportTile),
+        200,
+        scrollable: scrollable,
+      );
       await tester.tap(find.byType(PlaceReportTile));
       await tester.pumpAndSettle();
       expect(reportTapped, isTrue);
@@ -295,11 +311,7 @@ void main() {
     testWidgets('empty facts and empty images are handled gracefully', (
       tester,
     ) async {
-      await pumpScreen(
-        tester,
-        emptyFacts: true,
-        emptyImages: true,
-      );
+      await pumpScreen(tester, emptyFacts: true, emptyImages: true);
       await tester.pumpAndSettle();
 
       // Should not crash, fact cards omitted
@@ -339,7 +351,11 @@ void main() {
         of: find.byType(SingleChildScrollView),
         matching: find.byType(Scrollable),
       );
-      await tester.scrollUntilVisible(find.byType(PlaceReportTile), 200, scrollable: scrollable);
+      await tester.scrollUntilVisible(
+        find.byType(PlaceReportTile),
+        200,
+        scrollable: scrollable,
+      );
       expect(find.text('هل ترى معلومات غير دقيقة؟ أبلغ عنها.'), findsOneWidget);
     });
   });

@@ -64,7 +64,9 @@ class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
   }
 
   @override
-  Future<Result<PlaceReportResult>> createPlaceReport(PlaceReportCreate report) async {
+  Future<Result<PlaceReportResult>> createPlaceReport(
+    PlaceReportCreate report,
+  ) async {
     if (failWithNotFound) {
       return Result.failure(
         Failure.fromException(
@@ -89,16 +91,15 @@ class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
       );
     }
     return const Result.success(
-      PlaceReportResult(
-        id: 'rep-123',
-        status: 'pending',
-        pointsPending: 25,
-      ),
+      PlaceReportResult(id: 'rep-123', status: 'pending', pointsPending: 25),
     );
   }
 
   @override
-  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({int page = 1, int limit = 20}) async {
+  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({
+    int page = 1,
+    int limit = 20,
+  }) async {
     throw UnimplementedError();
   }
 }
@@ -111,9 +112,7 @@ void main() {
     setUp(() {
       repo = _FakePlaceDetailsRepo();
       container = ProviderContainer(
-        overrides: [
-          placeDetailsRepositoryProvider.overrideWithValue(repo),
-        ],
+        overrides: [placeDetailsRepositoryProvider.overrideWithValue(repo)],
       );
     });
 

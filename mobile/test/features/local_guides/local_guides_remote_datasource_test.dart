@@ -131,7 +131,8 @@ void main() {
     });
 
     test('surfaces 422 DATE_IN_PAST validation error', () async {
-      api.handler = (_) => reply(422, apiError('VALIDATION_ERROR', {'date': 'DATE_IN_PAST'}));
+      api.handler = (_) =>
+          reply(422, apiError('VALIDATION_ERROR', {'date': 'DATE_IN_PAST'}));
 
       const requestDto = GuideRequestCreateDto(
         guideId: 'youssef-el-nuby',
@@ -147,7 +148,11 @@ void main() {
         throwsA(
           isA<AppException>()
               .having((e) => e.code, 'code', 'VALIDATION_ERROR')
-              .having((e) => e.details?['date'], 'date details', 'DATE_IN_PAST'),
+              .having(
+                (e) => e.details?['date'],
+                'date details',
+                'DATE_IN_PAST',
+              ),
         ),
       );
     });
@@ -173,7 +178,7 @@ void main() {
             'interests': ['nubian_culture'],
             'status': 'pending',
             'created_at': '2026-11-21T00:00:00Z',
-          }
+          },
         ],
         'meta': {'page': 1, 'limit': 20, 'total': 1, 'total_pages': 1},
       });
@@ -189,70 +194,79 @@ void main() {
       final item = result.data.first;
       expect(item.id, 'req-123');
       expect(item.guide.fullName, 'Youssef El Nuby');
-      expect(item.guide.photo, 'https://api.aswani.app/images/guides/youssef.jpg');
+      expect(
+        item.guide.photo,
+        'https://api.aswani.app/images/guides/youssef.jpg',
+      );
       expect(item.status, 'pending');
     });
   });
 
   group('LocalGuidesRemoteDataSource - POST /api/guide-applications', () {
-    test('sends multipart/form-data with repeated lists and parses 201 response', () async {
-      api.handler = (_) => reply(201, {
-        'data': {'id': 'app-999', 'status': 'pending'},
-      });
+    test(
+      'sends multipart/form-data with repeated lists and parses 201 response',
+      () async {
+        api.handler = (_) => reply(201, {
+          'data': {'id': 'app-999', 'status': 'pending'},
+        });
 
-      const applicationDto = GuideApplicationCreateDto(
-        fullName: 'Mahmoud Hassan',
-        languages: ['ar', 'en'],
-        specialties: ['nubian_culture', 'nile'],
-        bio: 'Local guide with 10 years experience.',
-        durations: ['few_hours', 'one_day'],
-        contact: '01012345678',
-        profilePhoto: 'dummy_photo.jpg',
-      );
+        const applicationDto = GuideApplicationCreateDto(
+          fullName: 'Mahmoud Hassan',
+          languages: ['ar', 'en'],
+          specialties: ['nubian_culture', 'nile'],
+          bio: 'Local guide with 10 years experience.',
+          durations: ['few_hours', 'one_day'],
+          contact: '01012345678',
+          profilePhoto: 'dummy_photo.jpg',
+        );
 
-      final result = await remote.createGuideApplication(applicationDto);
+        final result = await remote.createGuideApplication(applicationDto);
 
-      final req = api.requests.single;
-      expect(req.method, 'POST');
-      expect(req.path, '/guide-applications');
-      expect(req.data, isA<FormData>());
+        final req = api.requests.single;
+        expect(req.method, 'POST');
+        expect(req.path, '/guide-applications');
+        expect(req.data, isA<FormData>());
 
-      final formData = req.data as FormData;
-      final fieldKeys = formData.fields.map((e) => e.key).toList();
-      expect(fieldKeys, contains('full_name'));
-      expect(fieldKeys, contains('bio'));
-      expect(fieldKeys, contains('contact'));
-      expect(formData.fields.where((e) => e.key == 'languages').length, 2);
-      expect(formData.fields.where((e) => e.key == 'specialties').length, 2);
-      expect(formData.fields.where((e) => e.key == 'durations').length, 2);
+        final formData = req.data as FormData;
+        final fieldKeys = formData.fields.map((e) => e.key).toList();
+        expect(fieldKeys, contains('full_name'));
+        expect(fieldKeys, contains('bio'));
+        expect(fieldKeys, contains('contact'));
+        expect(formData.fields.where((e) => e.key == 'languages').length, 2);
+        expect(formData.fields.where((e) => e.key == 'specialties').length, 2);
+        expect(formData.fields.where((e) => e.key == 'durations').length, 2);
 
-      final fileKeys = formData.files.map((e) => e.key).toList();
-      expect(fileKeys, contains('profile_photo'));
+        final fileKeys = formData.files.map((e) => e.key).toList();
+        expect(fileKeys, contains('profile_photo'));
 
-      expect(result.id, 'app-999');
-      expect(result.status, 'pending');
-    });
+        expect(result.id, 'app-999');
+        expect(result.status, 'pending');
+      },
+    );
 
-    test('surfaces 409 ALREADY_APPLIED when contact number is duplicated', () async {
-      api.handler = (_) => reply(409, apiError('ALREADY_APPLIED'));
+    test(
+      'surfaces 409 ALREADY_APPLIED when contact number is duplicated',
+      () async {
+        api.handler = (_) => reply(409, apiError('ALREADY_APPLIED'));
 
-      const applicationDto = GuideApplicationCreateDto(
-        fullName: 'Duplicate Applicant',
-        languages: ['ar'],
-        specialties: ['nile'],
-        bio: 'Explorer',
-        durations: ['few_hours'],
-        contact: '01012345678',
-      );
+        const applicationDto = GuideApplicationCreateDto(
+          fullName: 'Duplicate Applicant',
+          languages: ['ar'],
+          specialties: ['nile'],
+          bio: 'Explorer',
+          durations: ['few_hours'],
+          contact: '01012345678',
+        );
 
-      expect(
-        () => remote.createGuideApplication(applicationDto),
-        throwsA(
-          isA<AppException>()
-              .having((e) => e.code, 'code', 'ALREADY_APPLIED')
-              .having((e) => e.statusCode, 'statusCode', 409),
-        ),
-      );
-    });
+        expect(
+          () => remote.createGuideApplication(applicationDto),
+          throwsA(
+            isA<AppException>()
+                .having((e) => e.code, 'code', 'ALREADY_APPLIED')
+                .having((e) => e.statusCode, 'statusCode', 409),
+          ),
+        );
+      },
+    );
   });
 }

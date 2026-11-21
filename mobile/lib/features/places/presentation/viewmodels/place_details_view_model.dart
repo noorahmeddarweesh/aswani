@@ -49,25 +49,25 @@ class PlaceDetailsViewModel extends AsyncNotifier<PlaceDetails> {
 
     return switch (result) {
       Success(:final value) => () {
-          state = AsyncValue.data(
-            PlaceDetails(
-              place: value,
-              locationEn: current.locationEn,
-              locationAr: current.locationAr,
-              aboutEn: current.aboutEn,
-              aboutAr: current.aboutAr,
-              images: current.images,
-              facts: current.facts,
-            ),
-          );
-          return true;
-        }(),
+        state = AsyncValue.data(
+          PlaceDetails(
+            place: value,
+            locationEn: current.locationEn,
+            locationAr: current.locationAr,
+            aboutEn: current.aboutEn,
+            aboutAr: current.aboutAr,
+            images: current.images,
+            facts: current.facts,
+          ),
+        );
+        return true;
+      }(),
       Error() => false, // Preserve previous state on failure
     };
   }
 }
 
-final placeDetailsViewModelProvider = AsyncNotifierProvider.autoDispose.family<
-    PlaceDetailsViewModel, PlaceDetails, String>(
-  PlaceDetailsViewModel.new,
-);
+final placeDetailsViewModelProvider = AsyncNotifierProvider.autoDispose
+    .family<PlaceDetailsViewModel, PlaceDetails, String>(
+      PlaceDetailsViewModel.new,
+    );

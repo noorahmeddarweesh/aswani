@@ -82,12 +82,16 @@ class PlaceDetailsScreen extends ConsumerWidget {
               right: 0,
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: _buildCircleButton(
                       tooltip: strings.back,
-                      onPressed: onBackTap ?? () => Navigator.of(context).maybePop(),
+                      onPressed:
+                          onBackTap ?? () => Navigator.of(context).maybePop(),
                       child: Icon(
                         LucideIcons.chevronLeftDir,
                         size: 20,
@@ -101,11 +105,13 @@ class PlaceDetailsScreen extends ConsumerWidget {
           ],
         ),
         error: (error, _) {
-          final isNotFound = error is Failure &&
+          final isNotFound =
+              error is Failure &&
               (error.code == ErrorCodes.placeNotFound ||
                   error.code == 'PLACE_NOT_FOUND');
-          final message =
-              isNotFound ? strings.placeNotFound : strings.placeGenericError;
+          final message = isNotFound
+              ? strings.placeNotFound
+              : strings.placeGenericError;
 
           return SafeArea(
             child: Padding(
@@ -115,7 +121,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
                 children: [
                   IconButton(
                     tooltip: strings.back,
-                    onPressed: onBackTap ?? () => Navigator.of(context).maybePop(),
+                    onPressed:
+                        onBackTap ?? () => Navigator.of(context).maybePop(),
                     icon: Icon(
                       LucideIcons.chevronLeftDir,
                       color: context.colors.primary,
@@ -144,7 +151,10 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         FilledButton(
                           onPressed: () {
                             ref
-                                .read(placeDetailsViewModelProvider(placeId).notifier)
+                                .read(
+                                  placeDetailsViewModelProvider(placeId)
+                                      .notifier,
+                                )
                                 .retry();
                           },
                           child: Text(strings.retry),
@@ -248,7 +258,11 @@ class PlaceDetailsScreen extends ConsumerWidget {
                           if (place.facts.isNotEmpty) ...[
                             Row(
                               children: [
-                                for (int i = 0; i < place.facts.length; i++) ...[
+                                for (
+                                  int i = 0;
+                                  i < place.facts.length;
+                                  i++
+                                ) ...[
                                   Expanded(
                                     child: PlaceFactCard(fact: place.facts[i]),
                                   ),
@@ -311,7 +325,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         // Start: White circular back button
                         _buildCircleButton(
                           tooltip: strings.back,
-                          onPressed: onBackTap ??
+                          onPressed:
+                              onBackTap ??
                               () => Navigator.of(context).maybePop(),
                           child: Icon(
                             LucideIcons.chevronLeftDir,
@@ -323,7 +338,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         // End: Share button
                         _buildCircleButton(
                           tooltip: strings.share,
-                          onPressed: onShareTap ??
+                          onPressed:
+                              onShareTap ??
                               () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -347,7 +363,10 @@ class PlaceDetailsScreen extends ConsumerWidget {
                           onPressed: () {
                             Haptics.confirm();
                             ref
-                                .read(placeDetailsViewModelProvider(placeId).notifier)
+                                .read(
+                                  placeDetailsViewModelProvider(placeId)
+                                      .notifier,
+                                )
                                 .toggleBookmark();
                           },
                           child: BookmarkIcon(

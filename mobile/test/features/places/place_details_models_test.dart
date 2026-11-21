@@ -65,7 +65,10 @@ void main() {
       expect(entity.name('ar'), 'معبد فيلة');
       expect(entity.location('en'), 'Agilkia Island, Aswan');
       expect(entity.location('ar'), 'جزيرة أجيليكيا، أسوان');
-      expect(entity.about('en'), 'An archaeological complex on an island in the Nile.');
+      expect(
+        entity.about('en'),
+        'An archaeological complex on an island in the Nile.',
+      );
       expect(entity.facts.first.label('ar'), 'الوصول بالقارب');
     });
   });
@@ -87,11 +90,7 @@ void main() {
     });
 
     test('PlaceReportResultDto parses 201 response with 25 points_pending', () {
-      final json = {
-        'id': 'rep-1',
-        'status': 'pending',
-        'points_pending': 25,
-      };
+      final json = {'id': 'rep-1', 'status': 'pending', 'points_pending': 25};
 
       final dto = PlaceReportResultDto.fromJson(json);
       expect(dto.id, 'rep-1');

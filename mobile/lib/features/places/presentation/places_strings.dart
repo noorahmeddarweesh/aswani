@@ -10,7 +10,8 @@ class PlacesStrings {
 
   static PlacesStrings of(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    final isArabic = locale.languageCode == 'ar' ||
+    final isArabic =
+        locale.languageCode == 'ar' ||
         Directionality.of(context) == TextDirection.rtl;
     return PlacesStrings._(isArabic: isArabic);
   }
@@ -41,7 +42,8 @@ class PlacesStrings {
   String get visitingInfoSubtitle => placeVisitingInfoSubtitle;
 
   /// 404 error message
-  String get placeNotFound => isArabic ? 'المكان غير موجود.' : 'Place not found.';
+  String get placeNotFound =>
+      isArabic ? 'المكان غير موجود.' : 'Place not found.';
 
   /// Generic error message
   String get placeGenericError => isArabic
@@ -69,7 +71,8 @@ class PlacesStrings {
   String get bookmarkAdd => placeBookmarkAdd;
 
   /// Bookmark action tooltip (remove)
-  String get placeBookmarkRemove => isArabic ? 'إزالة الحفظ' : 'Remove bookmark';
+  String get placeBookmarkRemove =>
+      isArabic ? 'إزالة الحفظ' : 'Remove bookmark';
   String get bookmarkRemove => placeBookmarkRemove;
 
   // --- Place Report Flow (report_ prefix) ---
@@ -110,7 +113,8 @@ class PlacesStrings {
   String get reportContinue => isArabic ? 'متابعة' : 'Continue';
 
   // Screen 10: Report Details
-  String get reportDetailsTitle => isArabic ? 'تفاصيل البلاغ' : 'Report details';
+  String get reportDetailsTitle =>
+      isArabic ? 'تفاصيل البلاغ' : 'Report details';
   String get reportSelectedPlace =>
       isArabic ? 'المكان المحدد' : 'SELECTED PLACE';
   String get reportTellUs =>
@@ -153,8 +157,7 @@ class PlacesStrings {
       ? 'تقريرك لدى فريق المراجعة. تُمنح النقاط فقط في حال قبول المعلومات.'
       : 'Your report is with the review team. Points are awarded only if the information is accepted.';
   String get reportPointsValue => '+25';
-  String get reportPointsPending =>
-      isArabic ? 'نقطة معلقة' : 'points pending';
+  String get reportPointsPending => isArabic ? 'نقطة معلقة' : 'points pending';
   String get reportPendingReview =>
       isArabic ? 'قيد المراجعة' : 'Pending review';
 

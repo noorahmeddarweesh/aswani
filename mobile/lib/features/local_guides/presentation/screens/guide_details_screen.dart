@@ -125,210 +125,205 @@ class _GuideDetailsScreenState extends ConsumerState<GuideDetailsScreen> {
     }
 
     return Scaffold(
-          body: MaxWidthBox(
-            child: Stack(
+      body: MaxWidthBox(
+        child: Stack(
+          children: [
+            // Scrollable content
+            ListView(
+              padding: const EdgeInsets.only(bottom: 100),
               children: [
-                // Scrollable content
-                ListView(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  children: [
-                    // Hero Image
-                    SizedBox(
-                      height: 320,
-                      width: double.infinity,
-                      child: AppImage(
-                        guide.photo ?? '',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-
-                    // Content Sheet (overlapping slightly with rounded top)
-                    Transform.translate(
-                      offset: const Offset(0, -24),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: context.colors.surface,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(24),
-                          ),
-                        ),
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.screen,
-                          AppSpacing.xl,
-                          AppSpacing.screen,
-                          AppSpacing.xl,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Eyebrow (SAMPLE PROFILE • NOT VERIFIED when not verified)
-                            if (!guide.isVerified) ...[
-                              Text(
-                                l10n.sampleProfileNotVerified,
-                                style: context.text.labelSmall?.copyWith(
-                                  color: context.palette.accentGold,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.4,
-                                ),
-                              ),
-                              const SizedBox(height: AppSpacing.xxs),
-                            ],
-
-                            // Guide Name
-                            Text(
-                              guide.fullName,
-                              style: context.text.headlineLarge?.copyWith(
-                                fontSize: 28,
-                                height: 1.2,
-                                fontWeight: FontWeight.w600,
-                                color: context.palette.ink,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.xs),
-
-                            // Location and Languages line
-                            Row(
-                              children: [
-                                Icon(
-                                  LucideIcons.mapPin,
-                                  size: 15,
-                                  color: context.palette.textSecondary,
-                                ),
-                                const SizedBox(width: AppSpacing.xxs),
-                                Expanded(
-                                  child: Text(
-                                    '${guide.city} • ${l10n.languagesFormatted(guide.languages)}',
-                                    style: context.text.bodyMedium?.copyWith(
-                                      color: context.palette.textSecondary,
-                                      fontSize: 13,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-
-                            // Bio
-                            Text(
-                              guide.bio,
-                              style: context.text.bodyMedium?.copyWith(
-                                color: context.palette.textSecondary,
-                                fontSize: 14,
-                                height: 1.5,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.xl),
-
-                            // Specialties Section
-                            Text(
-                              l10n.specialtiesHeader,
-                              style: context.text.titleMedium?.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: context.palette.ink,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            Wrap(
-                              spacing: AppSpacing.xs,
-                              runSpacing: AppSpacing.xs,
-                              children: guide.specialties.map((s) {
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: context.palette.surfaceMuted,
-                                    borderRadius: AppRadii.pillAll,
-                                  ),
-                                  child: Text(
-                                    l10n.detailsSpecialtyLabel(s),
-                                    style: context.text.labelMedium?.copyWith(
-                                      color: context.palette.ink,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                            const SizedBox(height: AppSpacing.xl),
-
-                            // Available Tour Durations Section
-                            Text(
-                              l10n.availableDurationsHeader,
-                              style: context.text.titleMedium?.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: context.palette.ink,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            GuideDurationTilesRow(
-                              durations: guide.durations,
-                            ),
-                            const SizedBox(height: AppSpacing.xl),
-
-                            // Notice Banner
-                            const GuideNoticeBanner(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                // Hero Image
+                SizedBox(
+                  height: 320,
+                  width: double.infinity,
+                  child: AppImage(guide.photo ?? '', fit: BoxFit.cover),
                 ),
 
-                // Floating Action Bar on top of Hero Image
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                        vertical: AppSpacing.xs,
+                // Content Sheet (overlapping slightly with rounded top)
+                Transform.translate(
+                  offset: const Offset(0, -24),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: context.colors.surface,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(24),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleIconButton.back(
-                            tooltip: l10n.back,
-                            onPressed: _handleBack,
+                    ),
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.screen,
+                      AppSpacing.xl,
+                      AppSpacing.screen,
+                      AppSpacing.xl,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Eyebrow (SAMPLE PROFILE • NOT VERIFIED when not verified)
+                        if (!guide.isVerified) ...[
+                          Text(
+                            l10n.sampleProfileNotVerified,
+                            style: context.text.labelSmall?.copyWith(
+                              color: context.palette.accentGold,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.4,
+                            ),
                           ),
-                          CircleIconButton(
-                            icon: LucideIcons.share2,
-                            tooltip: l10n.share,
-                            onPressed: widget.onSharePressed ?? () {},
-                          ),
+                          const SizedBox(height: AppSpacing.xxs),
                         ],
-                      ),
+
+                        // Guide Name
+                        Text(
+                          guide.fullName,
+                          style: context.text.headlineLarge?.copyWith(
+                            fontSize: 28,
+                            height: 1.2,
+                            fontWeight: FontWeight.w600,
+                            color: context.palette.ink,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xs),
+
+                        // Location and Languages line
+                        Row(
+                          children: [
+                            Icon(
+                              LucideIcons.mapPin,
+                              size: 15,
+                              color: context.palette.textSecondary,
+                            ),
+                            const SizedBox(width: AppSpacing.xxs),
+                            Expanded(
+                              child: Text(
+                                '${guide.city} • ${l10n.languagesFormatted(guide.languages)}',
+                                style: context.text.bodyMedium?.copyWith(
+                                  color: context.palette.textSecondary,
+                                  fontSize: 13,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+
+                        // Bio
+                        Text(
+                          guide.bio,
+                          style: context.text.bodyMedium?.copyWith(
+                            color: context.palette.textSecondary,
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // Specialties Section
+                        Text(
+                          l10n.specialtiesHeader,
+                          style: context.text.titleMedium?.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: context.palette.ink,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Wrap(
+                          spacing: AppSpacing.xs,
+                          runSpacing: AppSpacing.xs,
+                          children: guide.specialties.map((s) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.palette.surfaceMuted,
+                                borderRadius: AppRadii.pillAll,
+                              ),
+                              child: Text(
+                                l10n.detailsSpecialtyLabel(s),
+                                style: context.text.labelMedium?.copyWith(
+                                  color: context.palette.ink,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // Available Tour Durations Section
+                        Text(
+                          l10n.availableDurationsHeader,
+                          style: context.text.titleMedium?.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: context.palette.ink,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        GuideDurationTilesRow(durations: guide.durations),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // Notice Banner
+                        const GuideNoticeBanner(),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-          ),
 
-          // Pinned Bottom CTA Button
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.screen,
-                AppSpacing.xs,
-                AppSpacing.screen,
-                AppSpacing.md,
-              ),
-              child: PrimaryButton(
-                label: l10n.requestThisGuide,
-                onPressed: widget.onRequestPressed,
+            // Floating Action Bar on top of Hero Image
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleIconButton.back(
+                        tooltip: l10n.back,
+                        onPressed: _handleBack,
+                      ),
+                      CircleIconButton(
+                        icon: LucideIcons.share2,
+                        tooltip: l10n.share,
+                        onPressed: widget.onSharePressed ?? () {},
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
+          ],
+        ),
+      ),
+
+      // Pinned Bottom CTA Button
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen,
+            AppSpacing.xs,
+            AppSpacing.screen,
+            AppSpacing.md,
           ),
-        );
+          child: PrimaryButton(
+            label: l10n.requestThisGuide,
+            onPressed: widget.onRequestPressed,
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -345,10 +340,7 @@ class _LoadingDetailsView extends StatelessWidget {
           const SingleChildScrollView(
             child: Column(
               children: [
-                SkeletonBox(
-                  width: double.infinity,
-                  height: 300,
-                ),
+                SkeletonBox(width: double.infinity, height: 300),
                 Padding(
                   padding: EdgeInsets.all(AppSpacing.screen),
                   child: Column(

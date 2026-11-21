@@ -23,10 +23,7 @@ class GuideApplicationCreate {
 
 /// Result returned after submitting a guide application.
 class GuideApplicationResult {
-  const GuideApplicationResult({
-    required this.id,
-    required this.status,
-  });
+  const GuideApplicationResult({required this.id, required this.status});
 
   final String id;
   final RequestStatus status;

@@ -9,11 +9,7 @@ import '../widgets/report_timeline_indicator.dart';
 /// Screen 11: Report Under Review (Place Report - Step 3 / Confirmation) matching report_done.jpg.
 /// Route: /places/:id/report/submitted
 class PlaceReportSubmittedScreen extends StatelessWidget {
-  const PlaceReportSubmittedScreen({
-    super.key,
-    this.result,
-    this.onDoneTap,
-  });
+  const PlaceReportSubmittedScreen({super.key, this.result, this.onDoneTap});
 
   final PlaceReportResult? result;
   final VoidCallback? onDoneTap;
@@ -178,7 +174,8 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
               SizedBox(
                 height: 52,
                 child: FilledButton(
-                  onPressed: onDoneTap ?? () => Navigator.of(context).maybePop(),
+                  onPressed:
+                      onDoneTap ?? () => Navigator.of(context).maybePop(),
                   style: FilledButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),

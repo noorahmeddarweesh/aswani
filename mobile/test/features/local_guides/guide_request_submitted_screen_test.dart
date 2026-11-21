@@ -28,46 +28,54 @@ void main() {
   }
 
   group('GuideRequestSubmittedScreen Widget Tests', () {
-    testWidgets('renders all screen sections and elements matching guide_request_done.jpg', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+    testWidgets(
+      'renders all screen sections and elements matching guide_request_done.jpg',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 1000));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(buildSubject());
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(buildSubject());
+        await tester.pumpAndSettle();
 
-      // Squircle check tile
-      expect(find.byKey(const Key('submitted_check_tile')), findsOneWidget);
-      expect(find.byIcon(LucideIcons.check), findsOneWidget);
+        // Squircle check tile
+        expect(find.byKey(const Key('submitted_check_tile')), findsOneWidget);
+        expect(find.byIcon(LucideIcons.check), findsOneWidget);
 
-      // Title
-      expect(find.byKey(const Key('submitted_title')), findsOneWidget);
-      expect(find.text('Request submitted'), findsOneWidget);
+        // Title
+        expect(find.byKey(const Key('submitted_title')), findsOneWidget);
+        expect(find.text('Request submitted'), findsOneWidget);
 
-      // Body text
-      expect(find.byKey(const Key('submitted_body')), findsOneWidget);
-      expect(
-        find.text(
-          "Your request is under review. It is not a confirmed booking yet; we'll notify you when the guide responds.",
-        ),
-        findsOneWidget,
-      );
+        // Body text
+        expect(find.byKey(const Key('submitted_body')), findsOneWidget);
+        expect(
+          find.text(
+            "Your request is under review. It is not a confirmed booking yet; we'll notify you when the guide responds.",
+          ),
+          findsOneWidget,
+        );
 
-      // 3 status dots
-      expect(find.byKey(const Key('submitted_status_dots')), findsOneWidget);
+        // 3 status dots
+        expect(find.byKey(const Key('submitted_status_dots')), findsOneWidget);
 
-      // Pinned Back to home CTA
-      expect(find.byKey(const Key('submitted_back_to_home_button')), findsOneWidget);
-      expect(find.text('Back to home'), findsOneWidget);
-    });
+        // Pinned Back to home CTA
+        expect(
+          find.byKey(const Key('submitted_back_to_home_button')),
+          findsOneWidget,
+        );
+        expect(find.text('Back to home'), findsOneWidget);
+      },
+    );
 
-    testWidgets('tapping Back to home triggers onHomePressed callback', (tester) async {
+    testWidgets('tapping Back to home triggers onHomePressed callback', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       var homePressed = false;
-      await tester.pumpWidget(buildSubject(
-        onHomePressed: () => homePressed = true,
-      ));
+      await tester.pumpWidget(
+        buildSubject(onHomePressed: () => homePressed = true),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('submitted_back_to_home_button')));
@@ -76,7 +84,9 @@ void main() {
       expect(homePressed, isTrue);
     });
 
-    testWidgets('renders Arabic strings and RTL layout in Arabic locale', (tester) async {
+    testWidgets('renders Arabic strings and RTL layout in Arabic locale', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 

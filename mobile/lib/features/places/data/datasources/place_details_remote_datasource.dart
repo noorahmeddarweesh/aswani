@@ -25,44 +25,43 @@ class PlaceDetailsRemoteDataSource implements PlaceDetailsDataSource {
   });
 
   @override
-  Future<PlaceReportResultDto> createPlaceReport(
-    PlaceReportCreateDto report,
-  ) => apiCall(() async {
-    final formData = FormData();
-    formData.fields.add(MapEntry('place_id', report.placeId));
-    formData.fields.add(MapEntry('reason', report.reason));
-    formData.fields.add(MapEntry('details', report.details));
+  Future<PlaceReportResultDto> createPlaceReport(PlaceReportCreateDto report) =>
+      apiCall(() async {
+        final formData = FormData();
+        formData.fields.add(MapEntry('place_id', report.placeId));
+        formData.fields.add(MapEntry('reason', report.reason));
+        formData.fields.add(MapEntry('details', report.details));
 
-    if (report.photo != null && report.photo!.isNotEmpty) {
-      final photoPath = report.photo!;
-      final file = File(photoPath);
-      final filename = photoPath.split(RegExp(r'[\\/]')).last;
-      if (file.existsSync()) {
-        formData.files.add(
-          MapEntry(
-            'photo',
-            await MultipartFile.fromFile(photoPath, filename: filename),
-          ),
+        if (report.photo != null && report.photo!.isNotEmpty) {
+          final photoPath = report.photo!;
+          final file = File(photoPath);
+          final filename = photoPath.split(RegExp(r'[\\/]')).last;
+          if (file.existsSync()) {
+            formData.files.add(
+              MapEntry(
+                'photo',
+                await MultipartFile.fromFile(photoPath, filename: filename),
+              ),
+            );
+          } else {
+            formData.files.add(
+              MapEntry(
+                'photo',
+                MultipartFile.fromString(photoPath, filename: filename),
+              ),
+            );
+          }
+        }
+
+        final response = await _client.post<Map<String, dynamic>>(
+          '/place-reports',
+          data: formData,
         );
-      } else {
-        formData.files.add(
-          MapEntry(
-            'photo',
-            MultipartFile.fromString(photoPath, filename: filename),
-          ),
+
+        return PlaceReportResultDto.fromJson(
+          response.data!['data'] as Map<String, dynamic>,
         );
-      }
-    }
-
-    final response = await _client.post<Map<String, dynamic>>(
-      '/place-reports',
-      data: formData,
-    );
-
-    return PlaceReportResultDto.fromJson(
-      response.data!['data'] as Map<String, dynamic>,
-    );
-  });
+      });
 
   @override
   Future<PagedListDto<PlaceReportItemDto>> getPlaceReportsMine({

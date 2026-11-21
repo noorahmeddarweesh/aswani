@@ -62,11 +62,8 @@ enum GuideLanguage {
   const GuideLanguage(this.value);
   final String value;
 
-  static GuideLanguage fromValue(String value) =>
-      GuideLanguage.values.firstWhere(
-        (e) => e.value == value,
-        orElse: () => GuideLanguage.ar,
-      );
+  static GuideLanguage fromValue(String value) => GuideLanguage.values
+      .firstWhere((e) => e.value == value, orElse: () => GuideLanguage.ar);
 }
 
 enum RequestStatus {
@@ -77,9 +74,6 @@ enum RequestStatus {
   const RequestStatus(this.value);
   final String value;
 
-  static RequestStatus fromValue(String value) =>
-      RequestStatus.values.firstWhere(
-        (e) => e.value == value,
-        orElse: () => RequestStatus.pending,
-      );
+  static RequestStatus fromValue(String value) => RequestStatus.values
+      .firstWhere((e) => e.value == value, orElse: () => RequestStatus.pending);
 }

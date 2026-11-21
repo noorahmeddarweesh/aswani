@@ -22,11 +22,7 @@ class PlaceVisitingInfoCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            LucideIcons.shieldCheck,
-            size: 20,
-            color: context.palette.link,
-          ),
+          Icon(LucideIcons.shieldCheck, size: 20, color: context.palette.link),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

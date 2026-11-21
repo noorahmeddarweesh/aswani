@@ -11,15 +11,17 @@ class LocalGuidesStrings {
 
   static LocalGuidesStrings of(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    final isArabic = locale.languageCode == 'ar' ||
+    final isArabic =
+        locale.languageCode == 'ar' ||
         Directionality.of(context) == TextDirection.rtl;
     return LocalGuidesStrings._(isArabic: isArabic);
   }
 
   // Screen header
   String get eyebrow => isArabic ? 'معرفة محلية' : 'LOCAL KNOWLEDGE';
-  String get title =>
-      isArabic ? 'استكشف أسوان مع مرشد محلي' : 'Explore Aswan with a local guide';
+  String get title => isArabic
+      ? 'استكشف أسوان مع مرشد محلي'
+      : 'Explore Aswan with a local guide';
   String get subtitle => isArabic
       ? 'اعثر على من يعرف قصصها وثقافتها وأماكنها الخفية.'
       : 'Find someone who knows its stories, culture, and hidden places.';
@@ -72,8 +74,9 @@ class LocalGuidesStrings {
       isArabic ? 'قدّم لتقديم خدمات الإرشاد' : 'Apply to offer guide services';
 
   // States
-  String get emptySearch =>
-      isArabic ? 'لا يوجد مرشدون يطابقون بحثك.' : 'No guides match your search.';
+  String get emptySearch => isArabic
+      ? 'لا يوجد مرشدون يطابقون بحثك.'
+      : 'No guides match your search.';
   String get emptyFilter => isArabic
       ? 'لا يوجد مرشدون متاحون لهذا التخصص.'
       : 'No guides available for this specialty.';
@@ -94,8 +97,9 @@ class LocalGuidesStrings {
       isArabic ? 'مدد الجولات المتاحة' : 'Available tour durations';
   String get availableDurationsHeader => guidesAvailableTourDurations;
 
-  String get guidesNoticeTitle =>
-      isArabic ? 'طلب إرشاد، وليس حجزًا مؤكدًا' : 'A request, not a confirmed booking';
+  String get guidesNoticeTitle => isArabic
+      ? 'طلب إرشاد، وليس حجزًا مؤكدًا'
+      : 'A request, not a confirmed booking';
   String get noticeTitle => guidesNoticeTitle;
 
   String get guidesNoticeSubtitle => isArabic
@@ -200,13 +204,15 @@ class LocalGuidesStrings {
   String get requestNotesHint => isArabic
       ? 'أخبر المرشد بما يهمك...'
       : 'Tell the guide what matters to you...';
-  String get requestReviewButton => isArabic ? 'مراجعة الطلب' : 'Review request';
+  String get requestReviewButton =>
+      isArabic ? 'مراجعة الطلب' : 'Review request';
 
   // Validation & Helpers
   String get requestDateRequired =>
       isArabic ? 'التاريخ مطلوب' : 'Date is required';
-  String get requestDateInPast =>
-      isArabic ? 'لا يمكن أن يكون التاريخ في الماضي' : 'Date cannot be in the past';
+  String get requestDateInPast => isArabic
+      ? 'لا يمكن أن يكون التاريخ في الماضي'
+      : 'Date cannot be in the past';
   String get requestCustomHoursRequired => isArabic
       ? 'يجب أن تكون الساعات بين 1 و 12'
       : 'Custom duration must be between 1 and 12 hours';
@@ -226,8 +232,7 @@ class LocalGuidesStrings {
   String get reviewScreenTitle => isArabic ? 'مراجعة الطلب' : 'Review request';
   String get selectedGuideEyebrow =>
       isArabic ? 'المرشد المحدد' : 'SELECTED GUIDE';
-  String get reviewSampleProfile =>
-      isArabic ? 'ملف تجريبي' : 'Sample profile';
+  String get reviewSampleProfile => isArabic ? 'ملف تجريبي' : 'Sample profile';
   String get reviewDateLabel => isArabic ? 'التاريخ' : 'Date';
   String get reviewDurationLabel => isArabic ? 'المدة' : 'Duration';
   String get reviewGroupLabel => isArabic ? 'المجموعة' : 'Group';
@@ -263,7 +268,7 @@ class LocalGuidesStrings {
       'Thursday',
       'Friday',
       'Saturday',
-      'Sunday'
+      'Sunday',
     ];
     const arDays = [
       'الإثنين',
@@ -272,7 +277,7 @@ class LocalGuidesStrings {
       'الخميس',
       'الجمعة',
       'السبت',
-      'الأحد'
+      'الأحد',
     ];
 
     const enMonths = [
@@ -287,7 +292,7 @@ class LocalGuidesStrings {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ];
     const arMonths = [
       'يناير',
@@ -301,13 +306,15 @@ class LocalGuidesStrings {
       'سبتمبر',
       'أكتوبر',
       'نوفمبر',
-      'ديسمبر'
+      'ديسمبر',
     ];
 
-    final weekdayName =
-        isArabic ? arDays[parsed.weekday - 1] : enDays[parsed.weekday - 1];
-    final monthName =
-        isArabic ? arMonths[parsed.month - 1] : enMonths[parsed.month - 1];
+    final weekdayName = isArabic
+        ? arDays[parsed.weekday - 1]
+        : enDays[parsed.weekday - 1];
+    final monthName = isArabic
+        ? arMonths[parsed.month - 1]
+        : enMonths[parsed.month - 1];
     final dayNum = parsed.day;
 
     return isArabic
@@ -344,24 +351,20 @@ class LocalGuidesStrings {
       isArabic ? 'صورة الملف الشخصي' : 'Profile photo';
   String get profilePhoto => guidesProfilePhoto;
 
-  String get guidesChangePhoto =>
-      isArabic ? 'تغيير الصورة' : 'Change photo';
+  String get guidesChangePhoto => isArabic ? 'تغيير الصورة' : 'Change photo';
   String get changePhoto => guidesChangePhoto;
 
-  String get guidesRemovePhoto =>
-      isArabic ? 'إزالة الصورة' : 'Remove photo';
+  String get guidesRemovePhoto => isArabic ? 'إزالة الصورة' : 'Remove photo';
   String get removePhoto => guidesRemovePhoto;
 
-  String get guidesFullNameLabel =>
-      isArabic ? 'الاسم الكامل *' : 'Full name *';
+  String get guidesFullNameLabel => isArabic ? 'الاسم الكامل *' : 'Full name *';
   String get fullNameLabel => guidesFullNameLabel;
 
   String get guidesFullNameHint =>
       isArabic ? 'الاسم الظاهر للزوار' : 'Name shown to visitors';
   String get fullNameHint => guidesFullNameHint;
 
-  String get guidesLanguagesLabel =>
-      isArabic ? 'اللغات *' : 'Languages *';
+  String get guidesLanguagesLabel => isArabic ? 'اللغات *' : 'Languages *';
   String get languagesLabel => guidesLanguagesLabel;
 
   String get guidesLanguagesHint =>
@@ -442,8 +445,9 @@ class LocalGuidesStrings {
       isArabic ? 'هذا الحقل مطلوب' : 'This field is required';
   String get fieldRequired => guidesFieldRequired;
 
-  String get guidesSelectAtLeastOne =>
-      isArabic ? 'يرجى اختيار خيار واحد على الأقل' : 'Please select at least one option';
+  String get guidesSelectAtLeastOne => isArabic
+      ? 'يرجى اختيار خيار واحد على الأقل'
+      : 'Please select at least one option';
   String get selectAtLeastOne => guidesSelectAtLeastOne;
 
   String get guidesInvalidPhone => isArabic

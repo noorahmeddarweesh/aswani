@@ -17,26 +17,17 @@ class GuideRequestViewModel extends Notifier<GuideRequestFormState> {
   /// Updates preferred date and performs Cairo calendar validation.
   void setDate(String? dateStr) {
     if (dateStr == null || dateStr.trim().isEmpty) {
-      state = state.copyWith(
-        clearDate: true,
-        dateError: 'REQUIRED',
-      );
+      state = state.copyWith(clearDate: true, dateError: 'REQUIRED');
       return;
     }
 
     final trimmed = dateStr.trim();
     if (!isCairoDateTodayOrFuture(trimmed)) {
-      state = state.copyWith(
-        date: trimmed,
-        dateError: 'DATE_IN_PAST',
-      );
+      state = state.copyWith(date: trimmed, dateError: 'DATE_IN_PAST');
       return;
     }
 
-    state = state.copyWith(
-      date: trimmed,
-      clearDateError: true,
-    );
+    state = state.copyWith(date: trimmed, clearDateError: true);
   }
 
   /// Sets the selected duration. Enforces:
@@ -51,7 +42,8 @@ class GuideRequestViewModel extends Notifier<GuideRequestFormState> {
         clearCustomHoursError: true,
       );
     } else if (duration == RequestDuration.custom) {
-      final hours = (state.durationHours != null &&
+      final hours =
+          (state.durationHours != null &&
               state.durationHours! >= 1 &&
               state.durationHours! <= 12)
           ? state.durationHours
@@ -80,10 +72,7 @@ class GuideRequestViewModel extends Notifier<GuideRequestFormState> {
       return;
     }
 
-    state = state.copyWith(
-      durationHours: hours,
-      clearCustomHoursError: true,
-    );
+    state = state.copyWith(durationHours: hours, clearCustomHoursError: true);
   }
 
   /// Sets start time in HH:mm 24-hr format.
@@ -144,5 +133,5 @@ class GuideRequestViewModel extends Notifier<GuideRequestFormState> {
 /// Riverpod family provider for [GuideRequestViewModel].
 final guideRequestViewModelProvider = NotifierProvider.autoDispose
     .family<GuideRequestViewModel, GuideRequestFormState, String>(
-  GuideRequestViewModel.new,
-);
+      GuideRequestViewModel.new,
+    );

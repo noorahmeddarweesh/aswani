@@ -30,10 +30,7 @@ class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
 
   /// Sets the selected reason in Step 1 (What Needs Updating).
   void selectReason(PlaceReportReason reason) {
-    state = state.copyWith(
-      reason: () => reason,
-      serverError: () => null,
-    );
+    state = state.copyWith(reason: () => reason, serverError: () => null);
   }
 
   /// Updates details text in Step 2.
@@ -55,7 +52,8 @@ class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
     String? photoError;
     if (path != null && path.isNotEmpty) {
       final lower = path.toLowerCase();
-      final hasValidExt = lower.endsWith('.jpg') ||
+      final hasValidExt =
+          lower.endsWith('.jpg') ||
           lower.endsWith('.jpeg') ||
           lower.endsWith('.png') ||
           lower.endsWith('.webp');
@@ -117,21 +115,18 @@ class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
 
     return switch (result) {
       Success(:final value) => () {
-          state = state.copyWith(
-            isSubmitting: false,
-            result: () => value,
-          );
-          return true;
-        }(),
+        state = state.copyWith(isSubmitting: false, result: () => value);
+        return true;
+      }(),
       Error(:final failure) => () {
-          state = state.copyWith(
-            isSubmitting: false,
-            serverError: () => failure.code,
-            detailsError: () => failure.fieldErrors['details'],
-            photoError: () => failure.fieldErrors['photo'],
-          );
-          return false;
-        }(),
+        state = state.copyWith(
+          isSubmitting: false,
+          serverError: () => failure.code,
+          detailsError: () => failure.fieldErrors['details'],
+          photoError: () => failure.fieldErrors['photo'],
+        );
+        return false;
+      }(),
     };
   }
 
@@ -143,5 +138,5 @@ class PlaceReportViewModel extends Notifier<PlaceReportFormState> {
 
 final placeReportViewModelProvider =
     NotifierProvider.autoDispose<PlaceReportViewModel, PlaceReportFormState>(
-  PlaceReportViewModel.new,
-);
+      PlaceReportViewModel.new,
+    );

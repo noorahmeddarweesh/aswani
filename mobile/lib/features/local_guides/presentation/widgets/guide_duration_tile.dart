@@ -9,10 +9,7 @@ import '../local_guides_strings.dart';
 /// Tile displaying an offered tour duration matching guide_details.jpg:
 /// Soft gray background, rounded 16dp, Lucide icon in primary blue, and duration label.
 class GuideDurationTile extends StatelessWidget {
-  const GuideDurationTile({
-    super.key,
-    required this.duration,
-  });
+  const GuideDurationTile({super.key, required this.duration});
 
   final GuideDuration duration;
 
@@ -45,11 +42,7 @@ class GuideDurationTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            _icon,
-            size: 20,
-            color: context.colors.primary,
-          ),
+          Icon(_icon, size: 20, color: context.colors.primary),
           const SizedBox(height: 6),
           Text(
             l10n.detailsDurationLabel(duration),
@@ -70,10 +63,7 @@ class GuideDurationTile extends StatelessWidget {
 
 /// Row of duration tiles matching the 3-tile grid in guide_details.jpg.
 class GuideDurationTilesRow extends StatelessWidget {
-  const GuideDurationTilesRow({
-    super.key,
-    required this.durations,
-  });
+  const GuideDurationTilesRow({super.key, required this.durations});
 
   final List<GuideDuration> durations;
 
@@ -83,9 +73,7 @@ class GuideDurationTilesRow extends StatelessWidget {
       children: [
         for (var i = 0; i < durations.length; i++) ...[
           if (i > 0) const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: GuideDurationTile(duration: durations[i]),
-          ),
+          Expanded(child: GuideDurationTile(duration: durations[i])),
         ],
       ],
     );

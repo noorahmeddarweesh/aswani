@@ -2,6 +2,7 @@ import 'package:aswani/core/assets/app_images.dart';
 import 'package:aswani/core/errors/app_exception.dart';
 import 'package:aswani/core/errors/failure.dart';
 import 'package:aswani/features/local_guides/data/models/page_meta_dto.dart';
+
 import '../models/place_details_dto.dart';
 import '../models/place_report_dto.dart';
 import 'place_details_datasource.dart';
@@ -81,12 +82,8 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
       'about_en':
           'Vibrant Nubian community known for brightly colored homes, handcrafted goods, '
           'and warm Nile hospitality. Prototype summary.',
-      'about_ar':
-          'مجتمع نوبي نابض بالحياة يشتهر بالمنازل الملونة والمشغولات اليدوية وكرم ضيافة النيل. ملخص توضيحي.',
-      'images': [
-        AppImages.nubianVillage,
-        AppImages.nubianVillage,
-      ],
+      'about_ar': 'مجتمع نوبي نابض بالحياة يشتهر بالمنازل الملونة والمشغولات اليدوية وكرم ضيافة النيل. ملخص توضيحي.',
+      'images': [AppImages.nubianVillage, AppImages.nubianVillage],
       'facts': [
         {
           'type': 'access',
@@ -120,22 +117,15 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
       'about_en':
           'An island steeped in ancient Egyptian history, home to ancient nilometers, '
           'lush gardens, and Nubian hamlets. Prototype summary.',
-      'about_ar':
-          'جزيرة عريقة في التاريخ المصري القديم، تضم مقاييس نيلية قديمة وحدائق وقرى نوبية هادئة. ملخص توضيحي.',
-      'images': [
-        AppImages.elephantineIsland,
-      ],
+      'about_ar': 'جزيرة عريقة في التاريخ المصري القديم، تضم مقاييس نيلية قديمة وحدائق وقرى نوبية هادئة. ملخص توضيحي.',
+      'images': [AppImages.elephantineIsland],
       'facts': [
         {
           'type': 'access',
           'label_en': 'Local public ferry',
           'label_ar': 'معدية عامة محلية',
         },
-        {
-          'type': 'hours',
-          'label_en': 'Open daily',
-          'label_ar': 'مفتوح يوميًا',
-        },
+        {'type': 'hours', 'label_en': 'Open daily', 'label_ar': 'مفتوح يوميًا'},
       ],
     },
     'nubian-museum': {
@@ -158,11 +148,8 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
       'about_en':
           'Showcasing monuments and artifacts salvaged from Nubian civilization during '
           'the building of the Aswan Dam. Prototype summary.',
-      'about_ar':
-          'يعرض الآثار والقطع التي تم إنقاذها من الحضارة النوبية أثناء بناء سد أسوان. ملخص توضيحي.',
-      'images': [
-        AppImages.nubianMuseum,
-      ],
+      'about_ar': 'يعرض الآثار والقطع التي تم إنقاذها من الحضارة النوبية أثناء بناء سد أسوان. ملخص توضيحي.',
+      'images': [AppImages.nubianMuseum],
       'facts': [
         {
           'type': 'access',
@@ -289,10 +276,10 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
 
     final items = startIndex < total
         ? _reports
-            .skip(startIndex)
-            .take(limit)
-            .map(PlaceReportItemDto.fromJson)
-            .toList()
+              .skip(startIndex)
+              .take(limit)
+              .map(PlaceReportItemDto.fromJson)
+              .toList()
         : <PlaceReportItemDto>[];
 
     return PagedListDto<PlaceReportItemDto>(
@@ -317,7 +304,8 @@ class PlaceDetailsMockDataSource implements PlaceDetailsDataSource {
       );
     }
 
-    final hasValidExt = lower.endsWith('.jpg') ||
+    final hasValidExt =
+        lower.endsWith('.jpg') ||
         lower.endsWith('.jpeg') ||
         lower.endsWith('.png') ||
         lower.endsWith('.webp');

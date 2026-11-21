@@ -20,9 +20,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../helpers/pump_app.dart';
 
 class _MockRepo implements LocalGuidesRepository {
-  _MockRepo({
-    this.failWithNotFound = false,
-  });
+  _MockRepo({this.failWithNotFound = false});
 
   final bool failWithNotFound;
 
@@ -38,8 +36,7 @@ class _MockRepo implements LocalGuidesRepository {
       GuideSpecialty.historicalSites,
       GuideSpecialty.localExperiences,
     ],
-    bio:
-        'Passionate about local stories, Nubian architecture, and Nile experiences. Details on this profile are illustrative and do not indicate official credentials.',
+    bio: 'Passionate about local stories, Nubian architecture, and Nile experiences. Details on this profile are illustrative and do not indicate official credentials.',
     durations: [
       GuideDuration.fewHours,
       GuideDuration.oneDay,
@@ -71,27 +68,23 @@ class _MockRepo implements LocalGuidesRepository {
     String? query,
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideRequestResult>> createGuideRequest(
     GuideRequestCreate request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<Result<PagedList<GuideRequestItem>>> getGuideRequestsMine({
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideApplicationResult>> createGuideApplication(
     GuideApplicationCreate application,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -170,10 +163,7 @@ void main() {
 
       // 6. Notice Banner
       expect(find.byType(GuideNoticeBanner), findsOneWidget);
-      expect(
-        find.text('A request, not a confirmed booking'),
-        findsOneWidget,
-      );
+      expect(find.text('A request, not a confirmed booking'), findsOneWidget);
       expect(
         find.text('The guide reviews details before any time is confirmed.'),
         findsOneWidget,
@@ -190,9 +180,7 @@ void main() {
       var requestTapped = false;
 
       await tester.pumpWidget(
-        buildSubject(
-          onRequestPressed: () => requestTapped = true,
-        ),
+        buildSubject(onRequestPressed: () => requestTapped = true),
       );
       await tester.pumpAndSettle();
 
@@ -260,11 +248,7 @@ void main() {
       tester.view.devicePixelRatio = 3;
       addTearDown(tester.view.reset);
 
-      await tester.pumpWidget(
-        buildSubject(
-          locale: const Locale('ar'),
-        ),
-      );
+      await tester.pumpWidget(buildSubject(locale: const Locale('ar')));
       await tester.pumpAndSettle();
 
       expect(find.text('ملف تجريبي • غير موثق'), findsOneWidget);

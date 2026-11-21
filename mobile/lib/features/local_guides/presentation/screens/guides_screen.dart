@@ -255,9 +255,7 @@ class _GuidesScreenState extends ConsumerState<GuidesScreen> {
                           const SizedBox(height: AppSpacing.md),
 
                           // CTA Card
-                          BecomeGuideCtaCard(
-                            onTap: _handleApplyTap,
-                          ),
+                          BecomeGuideCtaCard(onTap: _handleApplyTap),
                         ],
                       );
                     },

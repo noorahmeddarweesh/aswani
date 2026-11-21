@@ -119,10 +119,7 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
               },
               itemBuilder: (context, index) {
                 return SizedBox.expand(
-                  child: AppImage(
-                    effectiveImages[index],
-                    fit: BoxFit.cover,
-                  ),
+                  child: AppImage(effectiveImages[index], fit: BoxFit.cover),
                 );
               },
             )
@@ -170,7 +167,8 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
                       // Start: White circular back button
                       _buildCircleButton(
                         tooltip: strings.back,
-                        onPressed: widget.onBackTap ??
+                        onPressed:
+                            widget.onBackTap ??
                             () => Navigator.of(context).maybePop(),
                         child: Icon(
                           LucideIcons.chevronLeftDir,
@@ -182,7 +180,8 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
                       // End: Share button
                       _buildCircleButton(
                         tooltip: strings.share,
-                        onPressed: widget.onShareTap ??
+                        onPressed:
+                            widget.onShareTap ??
                             () {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

@@ -8,13 +8,13 @@ import '../../local_guides_providers.dart';
 import 'guide_application_form_state.dart';
 
 /// Riverpod provider for GuideApplicationViewModel.
-final guideApplicationViewModelProvider = NotifierProvider.autoDispose<
-    GuideApplicationViewModel, GuideApplicationFormState>(
-  GuideApplicationViewModel.new,
-);
+final guideApplicationViewModelProvider =
+    NotifierProvider.autoDispose<
+      GuideApplicationViewModel,
+      GuideApplicationFormState
+    >(GuideApplicationViewModel.new);
 
-class GuideApplicationViewModel
-    extends Notifier<GuideApplicationFormState> {
+class GuideApplicationViewModel extends Notifier<GuideApplicationFormState> {
   static final RegExp _egyptPhone = RegExp(r'^(\+20|0020|0)?1[0125]\d{8}$');
 
   @override
@@ -102,7 +102,8 @@ class GuideApplicationViewModel
     String? photoError;
     if (path != null && path.isNotEmpty) {
       final lower = path.toLowerCase();
-      final hasValidExt = lower.endsWith('.jpg') ||
+      final hasValidExt =
+          lower.endsWith('.jpg') ||
           lower.endsWith('.jpeg') ||
           lower.endsWith('.png') ||
           lower.endsWith('.webp');
@@ -192,15 +193,10 @@ class GuideApplicationViewModel
 
   Future<Result<GuideApplicationResult>> submit() async {
     if (!validate()) {
-      return const Result.failure(
-        Failure(ErrorCodes.validation),
-      );
+      return const Result.failure(Failure(ErrorCodes.validation));
     }
 
-    state = state.copyWith(
-      isSubmitting: true,
-      serverError: () => null,
-    );
+    state = state.copyWith(isSubmitting: true, serverError: () => null);
 
     final repository = ref.read(localGuidesRepositoryProvider);
     final result = await repository.createGuideApplication(state.toEntity());

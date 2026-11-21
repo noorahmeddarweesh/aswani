@@ -17,7 +17,9 @@ abstract interface class LocalGuidesDataSource {
   Future<GuideDto> getGuide(String id);
 
   /// POST /api/guide-requests
-  Future<GuideRequestResultDto> createGuideRequest(GuideRequestCreateDto request);
+  Future<GuideRequestResultDto> createGuideRequest(
+    GuideRequestCreateDto request,
+  );
 
   /// GET /api/guide-requests/mine ?page&limit
   Future<PagedListDto<GuideRequestItemDto>> getGuideRequestsMine({

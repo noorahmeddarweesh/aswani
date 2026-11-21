@@ -43,44 +43,59 @@ void main() {
     });
 
     test('field setters and toggles update state correctly', () {
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       viewModel.setFullName('Fatima Hassan');
-      expect(container.read(guideApplicationViewModelProvider).fullName,
-          'Fatima Hassan');
+      expect(
+        container.read(guideApplicationViewModelProvider).fullName,
+        'Fatima Hassan',
+      );
 
       viewModel.toggleLanguage(GuideLanguage.ar);
       viewModel.toggleLanguage(GuideLanguage.en);
-      expect(container.read(guideApplicationViewModelProvider).languages,
-          [GuideLanguage.ar, GuideLanguage.en]);
+      expect(container.read(guideApplicationViewModelProvider).languages, [
+        GuideLanguage.ar,
+        GuideLanguage.en,
+      ]);
 
       viewModel.toggleLanguage(GuideLanguage.en);
-      expect(container.read(guideApplicationViewModelProvider).languages,
-          [GuideLanguage.ar]);
+      expect(container.read(guideApplicationViewModelProvider).languages, [
+        GuideLanguage.ar,
+      ]);
 
       viewModel.toggleSpecialty(GuideSpecialty.nubianCulture);
       viewModel.toggleSpecialty(GuideSpecialty.nile);
-      expect(container.read(guideApplicationViewModelProvider).specialties,
-          [GuideSpecialty.nubianCulture, GuideSpecialty.nile]);
+      expect(container.read(guideApplicationViewModelProvider).specialties, [
+        GuideSpecialty.nubianCulture,
+        GuideSpecialty.nile,
+      ]);
 
       viewModel.setBio('Experienced guide with 10 years of Nile journeys.');
-      expect(container.read(guideApplicationViewModelProvider).bio,
-          'Experienced guide with 10 years of Nile journeys.');
+      expect(
+        container.read(guideApplicationViewModelProvider).bio,
+        'Experienced guide with 10 years of Nile journeys.',
+      );
 
       viewModel.toggleDuration(GuideDuration.fewHours);
       viewModel.toggleDuration(GuideDuration.oneDay);
-      expect(container.read(guideApplicationViewModelProvider).durations,
-          [GuideDuration.fewHours, GuideDuration.oneDay]);
+      expect(container.read(guideApplicationViewModelProvider).durations, [
+        GuideDuration.fewHours,
+        GuideDuration.oneDay,
+      ]);
 
       viewModel.setContact('01012345678');
-      expect(container.read(guideApplicationViewModelProvider).contact,
-          '01012345678');
+      expect(
+        container.read(guideApplicationViewModelProvider).contact,
+        '01012345678',
+      );
     });
 
     test('validates required fields and reports field errors', () {
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       expect(viewModel.validate(), isFalse);
       var state = container.read(guideApplicationViewModelProvider);
@@ -92,22 +107,28 @@ void main() {
 
       viewModel.setFullName('A');
       expect(viewModel.validate(), isFalse);
-      expect(container.read(guideApplicationViewModelProvider).fullNameError,
-          'TOO_SHORT');
+      expect(
+        container.read(guideApplicationViewModelProvider).fullNameError,
+        'TOO_SHORT',
+      );
 
       viewModel.setFullName('Ali Hassan');
       viewModel.setLanguages([GuideLanguage.ar]);
       viewModel.setSpecialties([GuideSpecialty.historicalSites]);
       viewModel.setBio('Too short');
       expect(viewModel.validate(), isFalse);
-      expect(container.read(guideApplicationViewModelProvider).bioError,
-          'TOO_SHORT');
+      expect(
+        container.read(guideApplicationViewModelProvider).bioError,
+        'TOO_SHORT',
+      );
 
       viewModel.setBio('Valid bio text with sufficient characters.');
       viewModel.setContact('12345'); // Invalid phone
       expect(viewModel.validate(), isFalse);
-      expect(container.read(guideApplicationViewModelProvider).contactError,
-          'INVALID_PHONE');
+      expect(
+        container.read(guideApplicationViewModelProvider).contactError,
+        'INVALID_PHONE',
+      );
 
       viewModel.setContact('01012345678'); // Valid Egyptian phone
       expect(viewModel.validate(), isTrue);
@@ -116,43 +137,57 @@ void main() {
     });
 
     test('validates photo extension and size limit', () {
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       // Unsupported extension
       viewModel.setProfilePhoto('photo.gif');
-      expect(container.read(guideApplicationViewModelProvider).photoError,
-          'UNSUPPORTED_FILE_TYPE');
+      expect(
+        container.read(guideApplicationViewModelProvider).photoError,
+        'UNSUPPORTED_FILE_TYPE',
+      );
 
       // Oversized photo
       viewModel.setProfilePhoto('photo_too_large.jpg');
-      expect(container.read(guideApplicationViewModelProvider).photoError,
-          'FILE_TOO_LARGE');
+      expect(
+        container.read(guideApplicationViewModelProvider).photoError,
+        'FILE_TOO_LARGE',
+      );
 
       // Valid extensions
       viewModel.setProfilePhoto('photo.jpg');
-      expect(container.read(guideApplicationViewModelProvider).photoError,
-          isNull);
+      expect(
+        container.read(guideApplicationViewModelProvider).photoError,
+        isNull,
+      );
 
       viewModel.setProfilePhoto('photo.png');
-      expect(container.read(guideApplicationViewModelProvider).photoError,
-          isNull);
+      expect(
+        container.read(guideApplicationViewModelProvider).photoError,
+        isNull,
+      );
 
       viewModel.setProfilePhoto('photo.webp');
-      expect(container.read(guideApplicationViewModelProvider).photoError,
-          isNull);
+      expect(
+        container.read(guideApplicationViewModelProvider).photoError,
+        isNull,
+      );
     });
 
     test('submits valid form successfully and returns 201 pending', () async {
       container.listen(guideApplicationViewModelProvider, (_, _) {});
 
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       viewModel.setFullName('Kareem Nader');
       viewModel.setLanguages([GuideLanguage.ar, GuideLanguage.en]);
       viewModel.setSpecialties([GuideSpecialty.nile]);
-      viewModel.setBio('Passionate local guide showing true Aswan hospitality.');
+      viewModel.setBio(
+        'Passionate local guide showing true Aswan hospitality.',
+      );
       viewModel.setDurations([GuideDuration.oneDay]);
       viewModel.setContact('01123456789');
 
@@ -168,8 +203,9 @@ void main() {
     test('handles 409 ALREADY_APPLIED and preserves form draft', () async {
       container.listen(guideApplicationViewModelProvider, (_, _) {});
 
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       viewModel.setFullName('Sameh Zaki');
       viewModel.setLanguages([GuideLanguage.ar]);
@@ -194,8 +230,9 @@ void main() {
     });
 
     test('reset clears all fields back to initial state', () {
-      final viewModel =
-          container.read(guideApplicationViewModelProvider.notifier);
+      final viewModel = container.read(
+        guideApplicationViewModelProvider.notifier,
+      );
 
       viewModel.setFullName('Ahmad');
       viewModel.setContact('01012345678');

@@ -54,10 +54,7 @@ class ReportPhotoPickerBox extends StatelessWidget {
                         child: SizedBox(
                           height: 72,
                           width: 100,
-                          child: AppImage(
-                            photoPath!,
-                            fit: BoxFit.cover,
-                          ),
+                          child: AppImage(photoPath!, fit: BoxFit.cover),
                         ),
                       ),
                       Positioned(

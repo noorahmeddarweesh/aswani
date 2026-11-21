@@ -11,11 +11,8 @@ extension PlaceReportCreateMapper on PlaceReportCreate {
 }
 
 extension PlaceReportResultMapper on PlaceReportResultDto {
-  PlaceReportResult toEntity() => PlaceReportResult(
-    id: id,
-    status: status,
-    pointsPending: pointsPending,
-  );
+  PlaceReportResult toEntity() =>
+      PlaceReportResult(id: id, status: status, pointsPending: pointsPending);
 }
 
 extension PlaceReportPlaceSummaryMapper on PlaceReportPlaceSummaryDto {

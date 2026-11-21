@@ -8,10 +8,7 @@ import '../local_guides_strings.dart';
 /// Dark navy promotional CTA banner matching tour_guides.jpg:
 /// "Know Aswan by heart?" / "Apply to offer guide services" with user icon and arrow.
 class BecomeGuideCtaCard extends StatelessWidget {
-  const BecomeGuideCtaCard({
-    super.key,
-    this.onTap,
-  });
+  const BecomeGuideCtaCard({super.key, this.onTap});
 
   final VoidCallback? onTap;
 

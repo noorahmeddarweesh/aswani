@@ -9,10 +9,7 @@ import 'package:material_ui/material_ui.dart';
 /// - access -> LucideIcons.map
 /// - hours -> LucideIcons.clock
 class PlaceFactCard extends StatelessWidget {
-  const PlaceFactCard({
-    super.key,
-    required this.fact,
-  });
+  const PlaceFactCard({super.key, required this.fact});
 
   final PlaceFact fact;
 
@@ -41,11 +38,7 @@ class PlaceFactCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 18,
-            color: context.palette.link,
-          ),
+          Icon(icon, size: 18, color: context.palette.link),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

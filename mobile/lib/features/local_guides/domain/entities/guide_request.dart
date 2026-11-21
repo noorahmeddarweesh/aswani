@@ -28,10 +28,7 @@ class GuideRequestCreate {
 
 /// Result returned after submitting a guide request.
 class GuideRequestResult {
-  const GuideRequestResult({
-    required this.id,
-    required this.status,
-  });
+  const GuideRequestResult({required this.id, required this.status});
 
   final String id;
   final RequestStatus status;

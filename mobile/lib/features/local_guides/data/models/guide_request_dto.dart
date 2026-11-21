@@ -56,10 +56,7 @@ class GuideRequestCreateDto {
 
 /// DTO for POST /api/guide-requests response: { "id", "status": "pending" }.
 class GuideRequestResultDto {
-  const GuideRequestResultDto({
-    required this.id,
-    required this.status,
-  });
+  const GuideRequestResultDto({required this.id, required this.status});
 
   factory GuideRequestResultDto.fromJson(Map<String, dynamic> json) =>
       GuideRequestResultDto(
@@ -70,10 +67,7 @@ class GuideRequestResultDto {
   final String id;
   final String status;
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'status': status,
-  };
+  Map<String, dynamic> toJson() => {'id': id, 'status': status};
 }
 
 /// DTO for items returned in GET /api/guide-requests/mine.
@@ -104,7 +98,8 @@ class GuideRequestItemDto {
         startTime: json['start_time'] as String,
         groupSize: json['group_size'] as int,
         language: json['language'] as String,
-        interests: (json['interests'] as List<dynamic>?)
+        interests:
+            (json['interests'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             const [],

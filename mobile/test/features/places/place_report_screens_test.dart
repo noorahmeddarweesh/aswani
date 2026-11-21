@@ -53,18 +53,17 @@ class _FakeReportRepo implements PlaceDetailsRepository {
       const Result.success(sampleDetails);
 
   @override
-  Future<Result<PlaceReportResult>> createPlaceReport(PlaceReportCreate report) async =>
-      const Result.success(
-        PlaceReportResult(
-          id: 'rep-456',
-          status: 'pending',
-          pointsPending: 25,
-        ),
-      );
+  Future<Result<PlaceReportResult>> createPlaceReport(
+    PlaceReportCreate report,
+  ) async => const Result.success(
+    PlaceReportResult(id: 'rep-456', status: 'pending', pointsPending: 25),
+  );
 
   @override
-  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({int page = 1, int limit = 20}) async =>
-      throw UnimplementedError();
+  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({
+    int page = 1,
+    int limit = 20,
+  }) async => throw UnimplementedError();
 }
 
 Widget buildTestApp({
@@ -90,7 +89,9 @@ Widget buildTestApp({
 
 void main() {
   group('PlaceReportReasonScreen (Screen 9)', () {
-    testWidgets('renders all reasons and selects option to continue', (tester) async {
+    testWidgets('renders all reasons and selects option to continue', (
+      tester,
+    ) async {
       reduceMotion(tester);
       tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
       tester.view.devicePixelRatio = 3;
@@ -146,7 +147,9 @@ void main() {
   });
 
   group('PlaceReportDetailsScreen (Screen 10)', () {
-    testWidgets('renders summary, handles input and submits report', (tester) async {
+    testWidgets('renders summary, handles input and submits report', (
+      tester,
+    ) async {
       reduceMotion(tester);
       tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
       tester.view.devicePixelRatio = 3;
@@ -177,7 +180,10 @@ void main() {
       expect(find.byType(ReportPhotoPickerBox), findsOneWidget);
       expect(find.text('Add supporting photo'), findsOneWidget);
       expect(find.text('Every report is reviewed'), findsOneWidget);
-      expect(find.text('Points are awarded only after acceptance.'), findsOneWidget);
+      expect(
+        find.text('Points are awarded only after acceptance.'),
+        findsOneWidget,
+      );
 
       // Enter Details text
       await tester.enterText(
@@ -197,104 +203,110 @@ void main() {
   });
 
   group('PlaceReportSubmittedScreen (Screen 11)', () {
-    testWidgets('renders confirmation, points card, timeline, and done button', (tester) async {
-      reduceMotion(tester);
-      tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
-      tester.view.devicePixelRatio = 3;
-      addTearDown(tester.view.reset);
+    testWidgets(
+      'renders confirmation, points card, timeline, and done button',
+      (tester) async {
+        reduceMotion(tester);
+        tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
+        tester.view.devicePixelRatio = 3;
+        addTearDown(tester.view.reset);
 
-      var doneTapped = false;
+        var doneTapped = false;
 
-      await tester.pumpWidget(
-        buildTestApp(
-          child: PlaceReportSubmittedScreen(
-            result: const PlaceReportResult(
-              id: 'rep-456',
-              status: 'pending',
-              pointsPending: 25,
+        await tester.pumpWidget(
+          buildTestApp(
+            child: PlaceReportSubmittedScreen(
+              result: const PlaceReportResult(
+                id: 'rep-456',
+                status: 'pending',
+                pointsPending: 25,
+              ),
+              onDoneTap: () => doneTapped = true,
             ),
-            onDoneTap: () => doneTapped = true,
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      // Header
-      expect(find.text('UNDER REVIEW'), findsOneWidget);
-      expect(
-        find.text('Thank you for helping keep ASWANI accurate'),
-        findsOneWidget,
-      );
-      expect(
-        find.text(
-          'Your report is with the review team. Points are awarded only if the information is accepted.',
-        ),
-        findsOneWidget,
-      );
-
-      // Points card
-      expect(find.text('+25'), findsOneWidget);
-      expect(find.text('points pending'), findsOneWidget);
-      expect(find.text('Pending review'), findsOneWidget);
-
-      // Timeline
-      expect(find.byType(ReportTimelineIndicator), findsOneWidget);
-      expect(
-        find.text('Submitted • Under review • Points after acceptance'),
-        findsOneWidget,
-      );
-
-      // Tap Done
-      await tester.tap(find.text('Done'));
-      await tester.pumpAndSettle();
-      expect(doneTapped, isTrue);
-    });
-
-    testWidgets('Arabic RTL renders Arabic copy correctly across report screens', (tester) async {
-      reduceMotion(tester);
-      tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
-      tester.view.devicePixelRatio = 3;
-      addTearDown(tester.view.reset);
-
-      // Screen 9 in Arabic
-      await tester.pumpWidget(
-        buildTestApp(
-          locale: const Locale('ar'),
-          child: const PlaceReportReasonScreen(
-            placeId: 'philae',
-            place: _FakeReportRepo.sampleDetails,
+        // Header
+        expect(find.text('UNDER REVIEW'), findsOneWidget);
+        expect(
+          find.text('Thank you for helping keep ASWANI accurate'),
+          findsOneWidget,
+        );
+        expect(
+          find.text(
+            'Your report is with the review team. Points are awarded only if the information is accepted.',
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+          findsOneWidget,
+        );
 
-      expect(find.text('الإبلاغ عن مكان'), findsOneWidget);
-      expect(find.text('ساعد في تحسين الدليل'), findsOneWidget);
-      expect(find.text('ما الذي يحتاج إلى تحديث؟'), findsOneWidget);
-      expect(find.text('المعلومات غير صحيحة'), findsOneWidget);
-      expect(find.text('الموقع غير صحيح'), findsOneWidget);
-      expect(find.text('متابعة'), findsOneWidget);
+        // Points card
+        expect(find.text('+25'), findsOneWidget);
+        expect(find.text('points pending'), findsOneWidget);
+        expect(find.text('Pending review'), findsOneWidget);
 
-      // Screen 11 in Arabic
-      await tester.pumpWidget(
-        buildTestApp(
-          locale: const Locale('ar'),
-          child: const PlaceReportSubmittedScreen(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Timeline
+        expect(find.byType(ReportTimelineIndicator), findsOneWidget);
+        expect(
+          find.text('Submitted • Under review • Points after acceptance'),
+          findsOneWidget,
+        );
 
-      expect(find.text('قيد المراجعة'), findsNWidgets(2)); // eyebrow + badge
-      expect(
-        find.text('شكرًا لمساعدتك في الحفاظ على دقة أسواني'),
-        findsOneWidget,
-      );
-      expect(find.text('نقطة معلقة'), findsOneWidget);
-      expect(
-        find.text('تم الإرسال • قيد المراجعة • نقاط بعد القبول'),
-        findsOneWidget,
-      );
-      expect(find.text('تم'), findsOneWidget);
-    });
+        // Tap Done
+        await tester.tap(find.text('Done'));
+        await tester.pumpAndSettle();
+        expect(doneTapped, isTrue);
+      },
+    );
+
+    testWidgets(
+      'Arabic RTL renders Arabic copy correctly across report screens',
+      (tester) async {
+        reduceMotion(tester);
+        tester.view.physicalSize = const Size(390 * 3, 1000 * 3);
+        tester.view.devicePixelRatio = 3;
+        addTearDown(tester.view.reset);
+
+        // Screen 9 in Arabic
+        await tester.pumpWidget(
+          buildTestApp(
+            locale: const Locale('ar'),
+            child: const PlaceReportReasonScreen(
+              placeId: 'philae',
+              place: _FakeReportRepo.sampleDetails,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('الإبلاغ عن مكان'), findsOneWidget);
+        expect(find.text('ساعد في تحسين الدليل'), findsOneWidget);
+        expect(find.text('ما الذي يحتاج إلى تحديث؟'), findsOneWidget);
+        expect(find.text('المعلومات غير صحيحة'), findsOneWidget);
+        expect(find.text('الموقع غير صحيح'), findsOneWidget);
+        expect(find.text('متابعة'), findsOneWidget);
+
+        // Screen 11 in Arabic
+        await tester.pumpWidget(
+          buildTestApp(
+            locale: const Locale('ar'),
+            child: const PlaceReportSubmittedScreen(),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('قيد المراجعة'), findsNWidgets(2)); // eyebrow + badge
+        expect(
+          find.text('شكرًا لمساعدتك في الحفاظ على دقة أسواني'),
+          findsOneWidget,
+        );
+        expect(find.text('نقطة معلقة'), findsOneWidget);
+        expect(
+          find.text('تم الإرسال • قيد المراجعة • نقاط بعد القبول'),
+          findsOneWidget,
+        );
+        expect(find.text('تم'), findsOneWidget);
+      },
+    );
   });
 }

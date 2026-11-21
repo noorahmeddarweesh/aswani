@@ -145,8 +145,10 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                     return InkWell(
                       onTap: () {
                         ref
-                            .read(guideRequestViewModelProvider(widget.guideId)
-                                .notifier)
+                            .read(
+                              guideRequestViewModelProvider(widget.guideId)
+                                  .notifier,
+                            )
                             .setGroupSize(size);
                         Navigator.of(ctx).pop();
                       },
@@ -221,8 +223,9 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                     title: Text(
                       l10n.languageLabel(lang),
                       style: context.text.bodyMedium?.copyWith(
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.w400,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.w400,
                         color: context.palette.ink,
                       ),
                     ),
@@ -235,8 +238,10 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                         : null,
                     onTap: () {
                       ref
-                          .read(guideRequestViewModelProvider(widget.guideId)
-                              .notifier)
+                          .read(
+                            guideRequestViewModelProvider(widget.guideId)
+                                .notifier,
+                          )
                           .setLanguage(lang);
                       Navigator.of(ctx).pop();
                     },
@@ -251,12 +256,12 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
   }
 
   void _onSubmit() {
-    final viewModel =
-        ref.read(guideRequestViewModelProvider(widget.guideId).notifier);
+    final viewModel = ref.read(
+      guideRequestViewModelProvider(widget.guideId).notifier,
+    );
     final isValid = viewModel.validate();
     if (isValid) {
-      final state =
-          ref.read(guideRequestViewModelProvider(widget.guideId));
+      final state = ref.read(guideRequestViewModelProvider(widget.guideId));
       final payload = state.toCreatePayload();
       widget.onReviewPressed?.call(payload);
     }
@@ -265,10 +270,10 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.guidesL10n;
-    final state =
-        ref.watch(guideRequestViewModelProvider(widget.guideId));
-    final viewModel =
-        ref.read(guideRequestViewModelProvider(widget.guideId).notifier);
+    final state = ref.watch(guideRequestViewModelProvider(widget.guideId));
+    final viewModel = ref.read(
+      guideRequestViewModelProvider(widget.guideId).notifier,
+    );
 
     return Scaffold(
       backgroundColor: context.colors.surface,
@@ -445,8 +450,9 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                             duration: RequestDuration.threeDays,
                             isSelected:
                                 state.duration == RequestDuration.threeDays,
-                            onTap: () => viewModel
-                                .setDuration(RequestDuration.threeDays),
+                            onTap: () => viewModel.setDuration(
+                              RequestDuration.threeDays,
+                            ),
                           ),
                         ),
                       ],
@@ -507,11 +513,14 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                                   child: IconButton(
                                     key: const Key('custom_hours_decrement'),
                                     padding: EdgeInsets.zero,
-                                    icon: const Icon(LucideIcons.minus, size: 18),
+                                    icon: const Icon(
+                                      LucideIcons.minus,
+                                      size: 18,
+                                    ),
                                     onPressed: (state.durationHours ?? 4) > 1
                                         ? () => viewModel.setCustomHours(
-                                              (state.durationHours ?? 4) - 1,
-                                            )
+                                            (state.durationHours ?? 4) - 1,
+                                          )
                                         : null,
                                   ),
                                 ),
@@ -538,11 +547,14 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                                   child: IconButton(
                                     key: const Key('custom_hours_increment'),
                                     padding: EdgeInsets.zero,
-                                    icon: const Icon(LucideIcons.plus, size: 18),
+                                    icon: const Icon(
+                                      LucideIcons.plus,
+                                      size: 18,
+                                    ),
                                     onPressed: (state.durationHours ?? 4) < 12
                                         ? () => viewModel.setCustomHours(
-                                              (state.durationHours ?? 4) + 1,
-                                            )
+                                            (state.durationHours ?? 4) + 1,
+                                          )
                                         : null,
                                   ),
                                 ),
@@ -609,11 +621,11 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                                       const SizedBox(width: AppSpacing.xs),
                                       Text(
                                         state.startTime,
-                                        style:
-                                            context.text.bodyMedium?.copyWith(
-                                          fontSize: 14,
-                                          color: context.palette.ink,
-                                        ),
+                                        style: context.text.bodyMedium
+                                            ?.copyWith(
+                                              fontSize: 14,
+                                              color: context.palette.ink,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -669,11 +681,11 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                                           ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style:
-                                              context.text.bodyMedium?.copyWith(
-                                            fontSize: 14,
-                                            color: context.palette.ink,
-                                          ),
+                                          style: context.text.bodyMedium
+                                              ?.copyWith(
+                                                fontSize: 14,
+                                                color: context.palette.ink,
+                                              ),
                                         ),
                                       ),
                                     ],
@@ -759,9 +771,7 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                         contentPadding: const EdgeInsets.all(AppSpacing.md),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: AppRadii.mdAll,
-                          borderSide: BorderSide(
-                            color: context.palette.border,
-                          ),
+                          borderSide: BorderSide(color: context.palette.border),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: AppRadii.mdAll,
@@ -783,9 +793,7 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
               padding: const EdgeInsets.all(AppSpacing.screen),
               decoration: BoxDecoration(
                 color: context.colors.surface,
-                border: Border(
-                  top: BorderSide(color: context.palette.border),
-                ),
+                border: Border(top: BorderSide(color: context.palette.border)),
               ),
               child: PrimaryButton(
                 key: const Key('request_review_button'),

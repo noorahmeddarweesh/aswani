@@ -50,8 +50,16 @@ class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
       'assets/images/places/philae_temple.jpg',
     ],
     facts: [
-      PlaceFact(type: 'access', labelEn: 'Boat access', labelAr: 'الوصول بالقارب'),
-      PlaceFact(type: 'hours', labelEn: 'Check before visiting', labelAr: 'تحقق قبل الزيارة'),
+      PlaceFact(
+        type: 'access',
+        labelEn: 'Boat access',
+        labelAr: 'الوصول بالقارب',
+      ),
+      PlaceFact(
+        type: 'hours',
+        labelEn: 'Check before visiting',
+        labelAr: 'تحقق قبل الزيارة',
+      ),
     ],
   );
 
@@ -75,12 +83,17 @@ class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
   }
 
   @override
-  Future<Result<PlaceReportResult>> createPlaceReport(PlaceReportCreate report) async {
+  Future<Result<PlaceReportResult>> createPlaceReport(
+    PlaceReportCreate report,
+  ) async {
     throw UnimplementedError();
   }
 
   @override
-  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({int page = 1, int limit = 20}) async {
+  Future<Result<PagedList<PlaceReportItem>>> getPlaceReportsMine({
+    int page = 1,
+    int limit = 20,
+  }) async {
     throw UnimplementedError();
   }
 }
@@ -99,12 +112,17 @@ class _FakePlacesRepo implements PlacesRepository {
   Future<Result<List<Place>>> getCurated() async => const Result.success([]);
 
   @override
-  Future<Result<Place>> setBookmark(String placeId, {required bool saved}) async {
+  Future<Result<Place>> setBookmark(
+    String placeId, {
+    required bool saved,
+  }) async {
     if (failBookmark) {
       return const Result.failure(Failure(ErrorCodes.noConnection));
     }
     lastSavedState = saved;
-    final updated = _FakePlaceDetailsRepo.samplePlace.copyWith(isBookmarked: saved);
+    final updated = _FakePlaceDetailsRepo.samplePlace.copyWith(
+      isBookmarked: saved,
+    );
     return Result.success(updated);
   }
 }
@@ -205,22 +223,29 @@ void main() {
 
       expect(success, isTrue);
       expect(placesRepo.lastSavedState, isTrue);
-      final current = container.read(placeDetailsViewModelProvider('philae')).value;
+      final current = container
+          .read(placeDetailsViewModelProvider('philae'))
+          .value;
       expect(current?.isBookmarked, isTrue);
     });
 
-    test('toggleBookmark preserves previous state on repository failure', () async {
-      container.listen(placeDetailsViewModelProvider('philae'), (_, _) {});
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'toggleBookmark preserves previous state on repository failure',
+      () async {
+        container.listen(placeDetailsViewModelProvider('philae'), (_, _) {});
+        await Future<void>.delayed(Duration.zero);
 
-      placesRepo.failBookmark = true;
-      final success = await container
-          .read(placeDetailsViewModelProvider('philae').notifier)
-          .toggleBookmark();
+        placesRepo.failBookmark = true;
+        final success = await container
+            .read(placeDetailsViewModelProvider('philae').notifier)
+            .toggleBookmark();
 
-      expect(success, isFalse);
-      final current = container.read(placeDetailsViewModelProvider('philae')).value;
-      expect(current?.isBookmarked, isFalse); // Preserved!
-    });
+        expect(success, isFalse);
+        final current = container
+            .read(placeDetailsViewModelProvider('philae'))
+            .value;
+        expect(current?.isBookmarked, isFalse); // Preserved!
+      },
+    );
   });
 }

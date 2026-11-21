@@ -3,11 +3,8 @@ import '../models/place_details_dto.dart';
 import 'place_mapper.dart';
 
 extension PlaceFactMapper on PlaceFactDto {
-  PlaceFact toEntity() => PlaceFact(
-    type: type,
-    labelEn: labelEn,
-    labelAr: labelAr,
-  );
+  PlaceFact toEntity() =>
+      PlaceFact(type: type, labelEn: labelEn, labelAr: labelAr);
 }
 
 extension PlaceDetailsMapper on PlaceDetailsDto {

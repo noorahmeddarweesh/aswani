@@ -7,10 +7,7 @@ import '../places_strings.dart';
 /// Report inaccuracy navigation tile with divider, document icon, and RTL chevron.
 /// Matches selected_place.jpg.
 class PlaceReportTile extends StatelessWidget {
-  const PlaceReportTile({
-    super.key,
-    this.onReportTap,
-  });
+  const PlaceReportTile({super.key, this.onReportTap});
 
   final VoidCallback? onReportTap;
 
@@ -21,11 +18,7 @@ class PlaceReportTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Divider(
-          height: 1,
-          thickness: 1,
-          color: context.palette.surfaceMuted,
-        ),
+        Divider(height: 1, thickness: 1, color: context.palette.surfaceMuted),
         const SizedBox(height: 16),
         InkWell(
           onTap: onReportTap,

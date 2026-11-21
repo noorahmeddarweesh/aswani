@@ -8,10 +8,7 @@ import '../places_strings.dart';
 /// Selected Place summary card displayed in Step 2 (Report Details).
 /// Matches report_details.jpg.
 class ReportPlaceSummaryCard extends StatelessWidget {
-  const ReportPlaceSummaryCard({
-    super.key,
-    required this.place,
-  });
+  const ReportPlaceSummaryCard({super.key, required this.place});
 
   final PlaceDetails? place;
 
@@ -38,10 +35,7 @@ class ReportPlaceSummaryCard extends StatelessWidget {
               width: 48,
               height: 48,
               child: imagePath.isNotEmpty
-                  ? AppImage(
-                      imagePath,
-                      fit: BoxFit.cover,
-                    )
+                  ? AppImage(imagePath, fit: BoxFit.cover)
                   : Container(color: context.palette.surfaceMuted),
             ),
           ),

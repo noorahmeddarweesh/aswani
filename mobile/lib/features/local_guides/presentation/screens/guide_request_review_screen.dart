@@ -60,10 +60,15 @@ class _GuideRequestReviewScreenState
     if (widget.requestDraft != null) {
       return widget.requestDraft!;
     }
-    return ref.read(guideRequestViewModelProvider(widget.guideId)).toCreatePayload();
+    return ref
+        .read(guideRequestViewModelProvider(widget.guideId))
+        .toCreatePayload();
   }
 
-  List<GuideSpecialty> _resolveInterests(Guide? guide, GuideRequestCreate draft) {
+  List<GuideSpecialty> _resolveInterests(
+    Guide? guide,
+    GuideRequestCreate draft,
+  ) {
     // 1. If draft already has explicit non-empty interests, use them.
     if (draft.interests.isNotEmpty) {
       return draft.interests;
@@ -106,7 +111,9 @@ class _GuideRequestReviewScreenState
     switch (result) {
       case Success(:final value):
         // Reset form state ONLY on confirmed 201 success
-        ref.read(guideRequestViewModelProvider(widget.guideId).notifier).reset();
+        ref
+            .read(guideRequestViewModelProvider(widget.guideId).notifier)
+            .reset();
         setState(() => _isSubmitting = false);
 
         if (widget.onConfirmSuccess != null) {
@@ -310,9 +317,7 @@ class _GuideRequestReviewScreenState
               padding: const EdgeInsets.all(AppSpacing.screen),
               decoration: BoxDecoration(
                 color: context.colors.surface,
-                border: Border(
-                  top: BorderSide(color: context.palette.border),
-                ),
+                border: Border(top: BorderSide(color: context.palette.border)),
               ),
               child: PrimaryButton(
                 key: const Key('review_confirm_button'),

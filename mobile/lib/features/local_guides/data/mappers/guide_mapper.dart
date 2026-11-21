@@ -21,18 +21,11 @@ extension GuideMapper on GuideDto {
 }
 
 extension GuideSummaryMapper on GuideSummaryDto {
-  GuideSummary toEntity() => GuideSummary(
-    id: id,
-    fullName: fullName,
-    photo: photo,
-  );
+  GuideSummary toEntity() =>
+      GuideSummary(id: id, fullName: fullName, photo: photo);
 }
 
 extension PageMetaMapper on PageMetaDto {
-  PageMeta toEntity() => PageMeta(
-    page: page,
-    limit: limit,
-    total: total,
-    totalPages: totalPages,
-  );
+  PageMeta toEntity() =>
+      PageMeta(page: page, limit: limit, total: total, totalPages: totalPages);
 }

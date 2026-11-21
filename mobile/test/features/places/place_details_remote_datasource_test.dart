@@ -27,11 +27,7 @@ const _mockPlaceDetailsJson = {
   'about_ar': 'مجمع أثري على جزيرة في النيل.',
   'images': ['https://api.test/images/places/philae.jpg'],
   'facts': [
-    {
-      'type': 'access',
-      'label_en': 'Boat access',
-      'label_ar': 'الوصول بالقارب',
-    },
+    {'type': 'access', 'label_en': 'Boat access', 'label_ar': 'الوصول بالقارب'},
     {
       'type': 'hours',
       'label_en': 'Check before visiting',
@@ -71,11 +67,7 @@ void main() {
   group('PlaceDetailsRemoteDataSource - POST /api/place-reports', () {
     test('sends multipart FormData and parses 201 pending response with points_pending', () async {
       api.handler = (_) => reply(201, {
-        'data': {
-          'id': 'rep-101',
-          'status': 'pending',
-          'points_pending': 25,
-        },
+        'data': {'id': 'rep-101', 'status': 'pending', 'points_pending': 25},
       });
 
       const reportDto = PlaceReportCreateDto(
@@ -110,11 +102,7 @@ void main() {
 
     test('handles report submission without photo', () async {
       api.handler = (_) => reply(201, {
-        'data': {
-          'id': 'rep-102',
-          'status': 'pending',
-          'points_pending': 25,
-        },
+        'data': {'id': 'rep-102', 'status': 'pending', 'points_pending': 25},
       });
 
       const reportDto = PlaceReportCreateDto(
@@ -133,27 +121,33 @@ void main() {
       expect(result.id, 'rep-102');
     });
 
-    test('surfaces 404 PLACE_NOT_FOUND error when place does not exist', () async {
-      api.handler = (_) => reply(404, apiError('PLACE_NOT_FOUND'));
+    test(
+      'surfaces 404 PLACE_NOT_FOUND error when place does not exist',
+      () async {
+        api.handler = (_) => reply(404, apiError('PLACE_NOT_FOUND'));
 
-      const reportDto = PlaceReportCreateDto(
-        placeId: 'unknown-place',
-        reason: 'not_exist',
-        details: 'Cannot find this place anywhere.',
-      );
+        const reportDto = PlaceReportCreateDto(
+          placeId: 'unknown-place',
+          reason: 'not_exist',
+          details: 'Cannot find this place anywhere.',
+        );
 
-      expect(
-        () => remote.createPlaceReport(reportDto),
-        throwsA(
-          isA<AppException>()
-              .having((e) => e.code, 'code', 'PLACE_NOT_FOUND')
-              .having((e) => e.statusCode, 'statusCode', 404),
-        ),
-      );
-    });
+        expect(
+          () => remote.createPlaceReport(reportDto),
+          throwsA(
+            isA<AppException>()
+                .having((e) => e.code, 'code', 'PLACE_NOT_FOUND')
+                .having((e) => e.statusCode, 'statusCode', 404),
+          ),
+        );
+      },
+    );
 
     test('surfaces 422 VALIDATION_ERROR for invalid report inputs', () async {
-      api.handler = (_) => reply(422, apiError('VALIDATION_ERROR', {'details': 'VALIDATION_ERROR'}));
+      api.handler = (_) => reply(
+        422,
+        apiError('VALIDATION_ERROR', {'details': 'VALIDATION_ERROR'}),
+      );
 
       const reportDto = PlaceReportCreateDto(
         placeId: 'philae',
@@ -166,7 +160,11 @@ void main() {
         throwsA(
           isA<AppException>()
               .having((e) => e.code, 'code', 'VALIDATION_ERROR')
-              .having((e) => e.details?['details'], 'details error', 'VALIDATION_ERROR'),
+              .having(
+                (e) => e.details?['details'],
+                'details error',
+                'VALIDATION_ERROR',
+              ),
         ),
       );
     });

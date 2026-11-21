@@ -22,16 +22,19 @@ class GuideDto {
     photo: json['photo'] as String?,
     city: json['city'] as String,
     tagline: json['tagline'] as String,
-    languages: (json['languages'] as List<dynamic>?)
+    languages:
+        (json['languages'] as List<dynamic>?)
             ?.map((e) => e.toString())
             .toList() ??
         const [],
-    specialties: (json['specialties'] as List<dynamic>?)
+    specialties:
+        (json['specialties'] as List<dynamic>?)
             ?.map((e) => e.toString())
             .toList() ??
         const [],
     bio: json['bio'] as String,
-    durations: (json['durations'] as List<dynamic>?)
+    durations:
+        (json['durations'] as List<dynamic>?)
             ?.map((e) => e.toString())
             .toList() ??
         const [],
@@ -68,17 +71,14 @@ class GuideDto {
 
 /// Minimal guide summary DTO in guide requests.
 class GuideSummaryDto {
-  const GuideSummaryDto({
-    required this.id,
-    required this.fullName,
-    this.photo,
-  });
+  const GuideSummaryDto({required this.id, required this.fullName, this.photo});
 
-  factory GuideSummaryDto.fromJson(Map<String, dynamic> json) => GuideSummaryDto(
-    id: json['id'] as String,
-    fullName: json['full_name'] as String,
-    photo: json['photo'] as String?,
-  );
+  factory GuideSummaryDto.fromJson(Map<String, dynamic> json) =>
+      GuideSummaryDto(
+        id: json['id'] as String,
+        fullName: json['full_name'] as String,
+        photo: json['photo'] as String?,
+      );
 
   final String id;
   final String fullName;

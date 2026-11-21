@@ -10,11 +10,7 @@ import '../local_guides_strings.dart';
 /// Row item for suggested (non-featured) guides matching tour_guides.jpg:
 /// Rounded thumbnail (64x64), full name, tagline, gold 'Illustrative information' label, and chevron.
 class SuggestedGuideCard extends StatelessWidget {
-  const SuggestedGuideCard({
-    super.key,
-    required this.guide,
-    this.onTap,
-  });
+  const SuggestedGuideCard({super.key, required this.guide, this.onTap});
 
   final Guide guide;
   final VoidCallback? onTap;
@@ -44,10 +40,7 @@ class SuggestedGuideCard extends StatelessWidget {
                 child: SizedBox(
                   width: 64,
                   height: 64,
-                  child: AppImage(
-                    guide.photo ?? '',
-                    fit: BoxFit.cover,
-                  ),
+                  child: AppImage(guide.photo ?? '', fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

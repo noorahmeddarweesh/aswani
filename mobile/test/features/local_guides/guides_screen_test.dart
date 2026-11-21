@@ -80,21 +80,18 @@ class _MockRepo implements LocalGuidesRepository {
   @override
   Future<Result<GuideRequestResult>> createGuideRequest(
     GuideRequestCreate request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<Result<PagedList<GuideRequestItem>>> getGuideRequestsMine({
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideApplicationResult>> createGuideApplication(
     GuideApplicationCreate application,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -180,9 +177,7 @@ void main() {
     Guide? tappedGuide;
 
     await tester.pumpWidget(
-      buildSubject(
-        onGuideSelected: (guide) => tappedGuide = guide,
-      ),
+      buildSubject(onGuideSelected: (guide) => tappedGuide = guide),
     );
     await tester.pumpAndSettle();
 
@@ -206,9 +201,7 @@ void main() {
     var applyTapped = false;
 
     await tester.pumpWidget(
-      buildSubject(
-        onApplyPressed: () => applyTapped = true,
-      ),
+      buildSubject(onApplyPressed: () => applyTapped = true),
     );
     await tester.pumpAndSettle();
 

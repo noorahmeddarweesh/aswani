@@ -88,7 +88,11 @@ void main() {
           isA<AppException>()
               .having((e) => e.code, 'code', ErrorCodes.validation)
               .having((e) => e.statusCode, 'status', 422)
-              .having((e) => e.details['details'], 'details', 'VALIDATION_ERROR'),
+              .having(
+                (e) => e.details['details'],
+                'details',
+                'VALIDATION_ERROR',
+              ),
         ),
       );
 
@@ -119,27 +123,36 @@ void main() {
       expect(
         () => dataSource.createPlaceReport(report),
         throwsA(
-          isA<AppException>()
-              .having((e) => e.details['photo'], 'photo', 'FILE_TOO_LARGE'),
+          isA<AppException>().having(
+            (e) => e.details['photo'],
+            'photo',
+            'FILE_TOO_LARGE',
+          ),
         ),
       );
     });
 
-    test('rejects unsupported photo extension with UNSUPPORTED_FILE_TYPE', () async {
-      final report = PlaceReportCreateDto(
-        placeId: 'philae',
-        reason: 'incorrect_information',
-        details: 'Valid details note',
-        photo: 'proof.gif',
-      );
+    test(
+      'rejects unsupported photo extension with UNSUPPORTED_FILE_TYPE',
+      () async {
+        final report = PlaceReportCreateDto(
+          placeId: 'philae',
+          reason: 'incorrect_information',
+          details: 'Valid details note',
+          photo: 'proof.gif',
+        );
 
-      expect(
-        () => dataSource.createPlaceReport(report),
-        throwsA(
-          isA<AppException>()
-              .having((e) => e.details['photo'], 'photo', 'UNSUPPORTED_FILE_TYPE'),
-        ),
-      );
-    });
+        expect(
+          () => dataSource.createPlaceReport(report),
+          throwsA(
+            isA<AppException>().having(
+              (e) => e.details['photo'],
+              'photo',
+              'UNSUPPORTED_FILE_TYPE',
+            ),
+          ),
+        );
+      },
+    );
   });
 }

@@ -51,7 +51,9 @@ class ReportReasonOptionCard extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isSelected ? context.palette.link : Colors.transparent,
                 border: Border.all(
-                  color: isSelected ? context.palette.link : const Color(0xFFD2DCE2),
+                  color: isSelected
+                      ? context.palette.link
+                      : const Color(0xFFD2DCE2),
                   width: 1.5,
                 ),
               ),

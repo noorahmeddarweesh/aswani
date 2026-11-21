@@ -29,7 +29,10 @@ class GuidesSearchBar extends StatelessWidget {
         color: context.palette.surfaceMuted,
         borderRadius: AppRadii.mdAll,
       ),
-      padding: const EdgeInsetsDirectional.only(start: AppSpacing.sm, end: AppSpacing.xxs),
+      padding: const EdgeInsetsDirectional.only(
+        start: AppSpacing.sm,
+        end: AppSpacing.xxs,
+      ),
       child: Row(
         children: [
           Icon(
@@ -53,7 +56,9 @@ class GuidesSearchBar extends StatelessWidget {
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 fillColor: Colors.transparent,
-                contentPadding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: AppSpacing.sm,
+                ),
               ),
             ),
           ),

@@ -41,10 +41,7 @@ void main() {
     );
 
     if (container != null) {
-      return UncontrolledProviderScope(
-        container: container,
-        child: app,
-      );
+      return UncontrolledProviderScope(container: container, child: app);
     }
 
     return ProviderScope(
@@ -57,8 +54,9 @@ void main() {
   }
 
   group('GuideApplicationScreen Widget Tests', () {
-    testWidgets('renders all screen elements matching guide_application.jpg',
-        (tester) async {
+    testWidgets('renders all screen elements matching guide_application.jpg', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -91,7 +89,10 @@ void main() {
       expect(find.text('Nubian culture, Nile...'), findsOneWidget);
 
       expect(find.text('Short biography *'), findsOneWidget);
-      expect(find.text('Share your experience and interests...'), findsOneWidget);
+      expect(
+        find.text('Share your experience and interests...'),
+        findsOneWidget,
+      );
 
       expect(find.text('Available durations'), findsOneWidget);
       expect(find.text('Few hours, full day'), findsOneWidget);
@@ -103,8 +104,9 @@ void main() {
       expect(find.text('Submit application'), findsOneWidget);
     });
 
-    testWidgets('multi-select bottom sheets open and update selections',
-        (tester) async {
+    testWidgets('multi-select bottom sheets open and update selections', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -145,8 +147,9 @@ void main() {
       expect(find.text('Nubian culture'), findsOneWidget);
     });
 
-    testWidgets('validation errors show when submitting empty form',
-        (tester) async {
+    testWidgets('validation errors show when submitting empty form', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -183,22 +186,24 @@ void main() {
       );
     });
 
-    testWidgets('submitting valid application succeeds and invokes callback',
-        (tester) async {
+    testWidgets('submitting valid application succeeds and invokes callback', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       GuideApplicationResult? result;
 
       await tester.pumpWidget(
-        buildSubject(
-          onSubmittedSuccess: (res) => result = res,
-        ),
+        buildSubject(onSubmittedSuccess: (res) => result = res),
       );
       await tester.pumpAndSettle();
 
       // Fill full name
-      final nameField = find.widgetWithText(TextFormField, 'Name shown to visitors');
+      final nameField = find.widgetWithText(
+        TextFormField,
+        'Name shown to visitors',
+      );
       await tester.enterText(nameField, 'Mahmoud Bilal');
 
       // Select languages
@@ -217,8 +222,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Fill biography
-      final bioField =
-          find.widgetWithText(TextFormField, 'Share your experience and interests...');
+      final bioField = find.widgetWithText(
+        TextFormField,
+        'Share your experience and interests...',
+      );
       await tester.enterText(
         bioField,
         'Local guide passionate about Nubian heritage and Nile explorations.',
@@ -243,8 +250,9 @@ void main() {
       expect(result!.status, RequestStatus.pending);
     });
 
-    testWidgets('handles 409 ALREADY_APPLIED and shows error banner',
-        (tester) async {
+    testWidgets('handles 409 ALREADY_APPLIED and shows error banner', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(390, 844));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -264,7 +272,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Fill same contact
-      final nameField = find.widgetWithText(TextFormField, 'Name shown to visitors');
+      final nameField = find.widgetWithText(
+        TextFormField,
+        'Name shown to visitors',
+      );
       await tester.enterText(nameField, 'Second Attempt');
 
       await tester.tap(find.text('Arabic, English'));
@@ -279,8 +290,10 @@ void main() {
       await tester.tap(find.text('Done'));
       await tester.pumpAndSettle();
 
-      final bioField =
-          find.widgetWithText(TextFormField, 'Share your experience and interests...');
+      final bioField = find.widgetWithText(
+        TextFormField,
+        'Share your experience and interests...',
+      );
       await tester.enterText(
         bioField,
         'Another guide application with valid length.',
@@ -299,25 +312,29 @@ void main() {
       );
     });
 
-    testWidgets('renders Arabic strings and RTL directionality in Arabic locale',
-        (tester) async {
-      await tester.binding.setSurfaceSize(const Size(390, 844));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+    testWidgets(
+      'renders Arabic strings and RTL directionality in Arabic locale',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 844));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(buildSubject(locale: const Locale('ar')));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(buildSubject(locale: const Locale('ar')));
+        await tester.pumpAndSettle();
 
-      expect(find.text('كن مرشدًا'), findsOneWidget);
-      expect(find.text('الاسم الكامل *'), findsOneWidget);
-      expect(find.text('اللغات *'), findsOneWidget);
-      expect(find.text('تخصصات الجولات *'), findsOneWidget);
-      expect(find.text('نبذة شخصية قصيرة *'), findsOneWidget);
-      expect(find.text('المدد المتاحة'), findsOneWidget);
-      expect(find.text('بيانات التواصل *'), findsOneWidget);
-      expect(find.text('إرسال الطلب'), findsOneWidget);
+        expect(find.text('كن مرشدًا'), findsOneWidget);
+        expect(find.text('الاسم الكامل *'), findsOneWidget);
+        expect(find.text('اللغات *'), findsOneWidget);
+        expect(find.text('تخصصات الجولات *'), findsOneWidget);
+        expect(find.text('نبذة شخصية قصيرة *'), findsOneWidget);
+        expect(find.text('المدد المتاحة'), findsOneWidget);
+        expect(find.text('بيانات التواصل *'), findsOneWidget);
+        expect(find.text('إرسال الطلب'), findsOneWidget);
 
-      final textDirection = Directionality.of(tester.element(find.byType(Scaffold)));
-      expect(textDirection, TextDirection.rtl);
-    });
+        final textDirection = Directionality.of(
+          tester.element(find.byType(Scaffold)),
+        );
+        expect(textDirection, TextDirection.rtl);
+      },
+    );
   });
 }

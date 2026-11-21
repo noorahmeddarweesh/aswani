@@ -30,10 +30,7 @@ class ReportTimelineIndicator extends StatelessWidget {
   }
 
   Widget _buildConnectingLine() {
-    return Container(
-      height: 1.5,
-      color: const Color(0xFFE2EAF0),
-    );
+    return Container(height: 1.5, color: const Color(0xFFE2EAF0));
   }
 
   @override

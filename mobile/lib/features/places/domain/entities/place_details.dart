@@ -13,8 +13,7 @@ class PlaceFact {
   final String labelEn;
   final String labelAr;
 
-  String label(String languageCode) =>
-      languageCode == 'ar' ? labelAr : labelEn;
+  String label(String languageCode) => languageCode == 'ar' ? labelAr : labelEn;
 }
 
 /// Place details entity extending Sprint 1 Place without modifying it.
@@ -63,6 +62,5 @@ class PlaceDetails {
   String city(String languageCode) => place.city(languageCode);
   String location(String languageCode) =>
       languageCode == 'ar' ? locationAr : locationEn;
-  String about(String languageCode) =>
-      languageCode == 'ar' ? aboutAr : aboutEn;
+  String about(String languageCode) => languageCode == 'ar' ? aboutAr : aboutEn;
 }

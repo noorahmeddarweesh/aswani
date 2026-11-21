@@ -14,16 +14,19 @@ class GuideApplicationCreateDto {
   factory GuideApplicationCreateDto.fromJson(Map<String, dynamic> json) =>
       GuideApplicationCreateDto(
         fullName: json['full_name'] as String,
-        languages: (json['languages'] as List<dynamic>?)
+        languages:
+            (json['languages'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             const [],
-        specialties: (json['specialties'] as List<dynamic>?)
+        specialties:
+            (json['specialties'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             const [],
         bio: json['bio'] as String,
-        durations: (json['durations'] as List<dynamic>?)
+        durations:
+            (json['durations'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             const [],
@@ -52,10 +55,7 @@ class GuideApplicationCreateDto {
 
 /// DTO for POST /api/guide-applications response: { "id", "status": "pending" }.
 class GuideApplicationResultDto {
-  const GuideApplicationResultDto({
-    required this.id,
-    required this.status,
-  });
+  const GuideApplicationResultDto({required this.id, required this.status});
 
   factory GuideApplicationResultDto.fromJson(Map<String, dynamic> json) =>
       GuideApplicationResultDto(
@@ -66,8 +66,5 @@ class GuideApplicationResultDto {
   final String id;
   final String status;
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'status': status,
-  };
+  Map<String, dynamic> toJson() => {'id': id, 'status': status};
 }

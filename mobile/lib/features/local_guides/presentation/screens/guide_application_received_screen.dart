@@ -10,10 +10,7 @@ import '../local_guides_strings.dart';
 /// Screen displayed after a guide application has been submitted,
 /// matching guide_application-1.jpg.
 class GuideApplicationReceivedScreen extends StatelessWidget {
-  const GuideApplicationReceivedScreen({
-    super.key,
-    this.onBackToGuidesPressed,
-  });
+  const GuideApplicationReceivedScreen({super.key, this.onBackToGuidesPressed});
 
   final VoidCallback? onBackToGuidesPressed;
 

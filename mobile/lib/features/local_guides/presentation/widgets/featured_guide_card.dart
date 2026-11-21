@@ -11,11 +11,7 @@ import '../local_guides_strings.dart';
 /// White container, subtle border, rounded photo, gold SAMPLE PROFILE eyebrow,
 /// full name, tagline, and duration pills.
 class FeaturedGuideCard extends StatelessWidget {
-  const FeaturedGuideCard({
-    super.key,
-    required this.guide,
-    this.onTap,
-  });
+  const FeaturedGuideCard({super.key, required this.guide, this.onTap});
 
   final Guide guide;
   final VoidCallback? onTap;
@@ -45,10 +41,7 @@ class FeaturedGuideCard extends StatelessWidget {
                 child: SizedBox(
                   width: 120,
                   height: 160,
-                  child: AppImage(
-                    guide.photo ?? '',
-                    fit: BoxFit.cover,
-                  ),
+                  child: AppImage(guide.photo ?? '', fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

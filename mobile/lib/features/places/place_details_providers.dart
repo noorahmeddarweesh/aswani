@@ -15,5 +15,6 @@ final placeDetailsDataSourceProvider = Provider<PlaceDetailsDataSource>(
 );
 
 final placeDetailsRepositoryProvider = Provider<PlaceDetailsRepository>(
-  (ref) => PlaceDetailsRepositoryImpl(ref.watch(placeDetailsDataSourceProvider)),
+  (ref) =>
+      PlaceDetailsRepositoryImpl(ref.watch(placeDetailsDataSourceProvider)),
 );

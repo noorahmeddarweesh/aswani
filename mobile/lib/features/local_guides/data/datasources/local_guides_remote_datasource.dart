@@ -24,10 +24,7 @@ class LocalGuidesRemoteDataSource implements LocalGuidesDataSource {
     int page = 1,
     int limit = 20,
   }) => apiCall(() async {
-    final query = <String, dynamic>{
-      'page': page,
-      'limit': limit,
-    };
+    final query = <String, dynamic>{'page': page, 'limit': limit};
     if (specialty != null && specialty.isNotEmpty) {
       query['specialty'] = specialty;
     }

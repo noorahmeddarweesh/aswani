@@ -52,10 +52,7 @@ class GuidePhotoPickerTile extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: AppRadii.lgAll,
-                          child: AppImage(
-                            photoPath!,
-                            fit: BoxFit.cover,
-                          ),
+                          child: AppImage(photoPath!, fit: BoxFit.cover),
                         ),
                       ),
                     ),

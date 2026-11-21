@@ -110,8 +110,9 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
       if (q != null && q.trim().isNotEmpty) {
         final query = q.trim().toLowerCase();
         final name = (g['full_name'] as String? ?? '').toLowerCase();
-        final specs = ((g['specialties'] as List<dynamic>?) ?? [])
-            .map((e) => e.toString().toLowerCase());
+        final specs = ((g['specialties'] as List<dynamic>?) ?? []).map(
+          (e) => e.toString().toLowerCase(),
+        );
         final matchesName = name.contains(query);
         final matchesSpec = specs.any((s) => s.contains(query));
         if (!matchesName && !matchesSpec) return false;
@@ -142,8 +143,7 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
   Future<GuideDto> getGuide(String id) async {
     if (delay > Duration.zero) await Future<void>.delayed(delay);
 
-    final guideJson =
-        _seedGuides.where((g) => g['id'] == id).firstOrNull;
+    final guideJson = _seedGuides.where((g) => g['id'] == id).firstOrNull;
     if (guideJson == null) {
       throw AppException(
         code: 'GUIDE_NOT_FOUND',
@@ -161,7 +161,9 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
     if (delay > Duration.zero) await Future<void>.delayed(delay);
 
     // Validate guide existence
-    final guide = _seedGuides.where((g) => g['id'] == request.guideId).firstOrNull;
+    final guide = _seedGuides
+        .where((g) => g['id'] == request.guideId)
+        .firstOrNull;
     if (guide == null) {
       throw const AppException(
         code: 'GUIDE_NOT_FOUND',
@@ -298,10 +300,10 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
 
     final items = startIndex < total
         ? _requests
-            .skip(startIndex)
-            .take(limit)
-            .map(GuideRequestItemDto.fromJson)
-            .toList()
+              .skip(startIndex)
+              .take(limit)
+              .map(GuideRequestItemDto.fromJson)
+              .toList()
         : <GuideRequestItemDto>[];
 
     return PagedListDto<GuideRequestItemDto>(
@@ -372,7 +374,8 @@ class LocalGuidesMockDataSource implements LocalGuidesDataSource {
       );
     }
 
-    final hasValidExt = lower.endsWith('.jpg') ||
+    final hasValidExt =
+        lower.endsWith('.jpg') ||
         lower.endsWith('.jpeg') ||
         lower.endsWith('.png') ||
         lower.endsWith('.webp');

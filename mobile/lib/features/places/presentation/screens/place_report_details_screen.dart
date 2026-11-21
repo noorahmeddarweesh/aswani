@@ -100,7 +100,8 @@ class _PlaceReportDetailsScreenState
           padding: const EdgeInsetsDirectional.only(start: 16),
           child: CircleIconButton.back(
             tooltip: strings.back,
-            onPressed: widget.onBackTap ?? () => Navigator.of(context).maybePop(),
+            onPressed:
+                widget.onBackTap ?? () => Navigator.of(context).maybePop(),
           ),
         ),
         title: Text(
@@ -195,7 +196,9 @@ class _PlaceReportDetailsScreenState
                           // In tests/mock mode, simulates picking a sample photo
                           ref
                               .read(placeReportViewModelProvider.notifier)
-                              .setPhoto('assets/images/places/philae_temple.jpg');
+                              .setPhoto(
+                                'assets/images/places/philae_temple.jpg',
+                              );
                         },
                         onRemove: () {
                           ref

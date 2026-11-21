@@ -81,9 +81,9 @@ class GuidesListViewModel extends AsyncNotifier<GuidesListState> {
 
     return switch (result) {
       Success(:final value) => GuidesListState(
-          guides: value.data,
-          meta: value.meta,
-        ),
+        guides: value.data,
+        meta: value.meta,
+      ),
       Error(:final failure) => throw failure,
     };
   }
@@ -93,11 +93,8 @@ class GuidesListViewModel extends AsyncNotifier<GuidesListState> {
     if (state.hasError) state = const AsyncLoading();
     final filter = ref.read(guidesFilterProvider);
     final next = await AsyncValue.guard(
-      () => _fetchPage(
-        specialty: filter.specialty,
-        query: filter.query,
-        page: 1,
-      ),
+      () =>
+          _fetchPage(specialty: filter.specialty, query: filter.query, page: 1),
     );
     if (ref.mounted) state = next;
   }
@@ -122,8 +119,9 @@ class GuidesListViewModel extends AsyncNotifier<GuidesListState> {
 
     if (result case Success(:final value)) {
       final existingIds = current.guides.map((g) => g.id).toSet();
-      final newItems =
-          value.data.where((g) => !existingIds.contains(g.id)).toList();
+      final newItems = value.data
+          .where((g) => !existingIds.contains(g.id))
+          .toList();
       state = AsyncValue.data(
         current.copyWith(
           guides: [...current.guides, ...newItems],

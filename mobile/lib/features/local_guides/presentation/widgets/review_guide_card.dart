@@ -12,10 +12,7 @@ import '../local_guides_strings.dart';
 /// - Blue "SELECTED GUIDE" eyebrow.
 /// - Full name and "Sample profile" subtitle.
 class ReviewGuideCard extends StatelessWidget {
-  const ReviewGuideCard({
-    super.key,
-    required this.guide,
-  });
+  const ReviewGuideCard({super.key, required this.guide});
 
   final Guide guide;
 

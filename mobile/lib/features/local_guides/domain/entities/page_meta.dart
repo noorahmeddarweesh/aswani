@@ -18,10 +18,7 @@ class PageMeta {
 
 /// Generic container for a paginated list of items with pagination metadata.
 class PagedList<T> {
-  const PagedList({
-    required this.data,
-    required this.meta,
-  });
+  const PagedList({required this.data, required this.meta});
 
   final List<T> data;
   final PageMeta meta;

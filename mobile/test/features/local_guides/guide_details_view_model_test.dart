@@ -13,10 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakeLocalGuidesRepository implements LocalGuidesRepository {
-  _FakeLocalGuidesRepository({
-    this.guideToReturn,
-    this.failureToReturn,
-  });
+  _FakeLocalGuidesRepository({this.guideToReturn, this.failureToReturn});
 
   final Guide? guideToReturn;
   final Failure? failureToReturn;
@@ -46,27 +43,23 @@ class _FakeLocalGuidesRepository implements LocalGuidesRepository {
     String? query,
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideRequestResult>> createGuideRequest(
     GuideRequestCreate request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<Result<PagedList<GuideRequestItem>>> getGuideRequestsMine({
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideApplicationResult>> createGuideApplication(
     GuideApplicationCreate application,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -82,8 +75,7 @@ void main() {
       GuideSpecialty.historicalSites,
       GuideSpecialty.localExperiences,
     ],
-    bio:
-        'Passionate about local stories, Nubian architecture, and Nile experiences.',
+    bio: 'Passionate about local stories, Nubian architecture, and Nile experiences.',
     durations: [
       GuideDuration.fewHours,
       GuideDuration.oneDay,
@@ -97,15 +89,14 @@ void main() {
     test('loads guide successfully when ID exists', () async {
       final fakeRepo = _FakeLocalGuidesRepository(guideToReturn: sampleGuide);
       final container = ProviderContainer(
-        overrides: [
-          localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
+        overrides: [localGuidesRepositoryProvider.overrideWithValue(fakeRepo)],
       );
       addTearDown(container.dispose);
       container.listen(guideDetailsProvider('youssef-el-nuby'), (_, _) {});
 
-      final guide =
-          await container.read(guideDetailsProvider('youssef-el-nuby').future);
+      final guide = await container.read(
+        guideDetailsProvider('youssef-el-nuby').future,
+      );
 
       expect(guide.id, 'youssef-el-nuby');
       expect(guide.fullName, 'Youssef El Nuby');
@@ -119,9 +110,7 @@ void main() {
     test('throws Failure when guide ID is not found (404)', () async {
       final fakeRepo = _FakeLocalGuidesRepository();
       final container = ProviderContainer(
-        overrides: [
-          localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
+        overrides: [localGuidesRepositoryProvider.overrideWithValue(fakeRepo)],
       );
       addTearDown(container.dispose);
       container.listen(guideDetailsProvider('unknown-id'), (_, _) {});
@@ -147,9 +136,7 @@ void main() {
         ),
       );
       final container = ProviderContainer(
-        overrides: [
-          localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
+        overrides: [localGuidesRepositoryProvider.overrideWithValue(fakeRepo)],
       );
       addTearDown(container.dispose);
       container.listen(guideDetailsProvider('any-id'), (_, _) {});

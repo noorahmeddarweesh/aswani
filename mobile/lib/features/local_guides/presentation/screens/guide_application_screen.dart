@@ -50,21 +50,24 @@ class _GuideApplicationScreenState
 
     _nameController.addListener(() {
       final vm = ref.read(guideApplicationViewModelProvider.notifier);
-      if (_nameController.text != ref.read(guideApplicationViewModelProvider).fullName) {
+      if (_nameController.text !=
+          ref.read(guideApplicationViewModelProvider).fullName) {
         vm.setFullName(_nameController.text);
       }
     });
 
     _bioController.addListener(() {
       final vm = ref.read(guideApplicationViewModelProvider.notifier);
-      if (_bioController.text != ref.read(guideApplicationViewModelProvider).bio) {
+      if (_bioController.text !=
+          ref.read(guideApplicationViewModelProvider).bio) {
         vm.setBio(_bioController.text);
       }
     });
 
     _contactController.addListener(() {
       final vm = ref.read(guideApplicationViewModelProvider.notifier);
-      if (_contactController.text != ref.read(guideApplicationViewModelProvider).contact) {
+      if (_contactController.text !=
+          ref.read(guideApplicationViewModelProvider).contact) {
         vm.setContact(_contactController.text);
       }
     });
@@ -109,8 +112,9 @@ class _GuideApplicationScreenState
     // Default mock behavior if no external picker is injected.
     // In demo/test environment without image_picker plugin,
     // toggles a sample mock image asset.
-    final currentPhoto =
-        ref.read(guideApplicationViewModelProvider).profilePhoto;
+    final currentPhoto = ref
+        .read(guideApplicationViewModelProvider)
+        .profilePhoto;
     if (currentPhoto == null || currentPhoto.isEmpty) {
       viewModel.setProfilePhoto('assets/images/home/mariam.jpg');
     } else {
@@ -376,10 +380,7 @@ class _GuideApplicationScreenState
               decoration: BoxDecoration(
                 color: context.colors.surface,
                 border: Border(
-                  top: BorderSide(
-                    color: context.palette.border,
-                    width: 1,
-                  ),
+                  top: BorderSide(color: context.palette.border, width: 1),
                 ),
               ),
               child: PrimaryButton(

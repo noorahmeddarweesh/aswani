@@ -58,7 +58,8 @@ class _PlaceReportReasonScreenState
           padding: const EdgeInsetsDirectional.only(start: 16),
           child: CircleIconButton.back(
             tooltip: strings.back,
-            onPressed: widget.onBackTap ?? () => Navigator.of(context).maybePop(),
+            onPressed:
+                widget.onBackTap ?? () => Navigator.of(context).maybePop(),
           ),
         ),
         title: Text(

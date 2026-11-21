@@ -87,21 +87,18 @@ class _FakeLocalGuidesRepository implements LocalGuidesRepository {
   @override
   Future<Result<GuideRequestResult>> createGuideRequest(
     GuideRequestCreate request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<Result<PagedList<GuideRequestItem>>> getGuideRequestsMine({
     int page = 1,
     int limit = 20,
-  }) async =>
-      throw UnimplementedError();
+  }) async => throw UnimplementedError();
 
   @override
   Future<Result<GuideApplicationResult>> createGuideApplication(
     GuideApplicationCreate application,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -175,40 +172,46 @@ void main() {
   });
 
   group('GuidesListViewModel', () {
-    test('loads initial guides with default Nubian culture specialty', () async {
-      final fakeRepo = _FakeLocalGuidesRepository();
-      final container = ProviderContainer(
-        overrides: [
-          localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
-      );
-      addTearDown(container.dispose);
-      container.listen(guidesListProvider, (_, _) {});
+    test(
+      'loads initial guides with default Nubian culture specialty',
+      () async {
+        final fakeRepo = _FakeLocalGuidesRepository();
+        final container = ProviderContainer(
+          overrides: [
+            localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+        );
+        addTearDown(container.dispose);
+        container.listen(guidesListProvider, (_, _) {});
 
-      final state = await container.read(guidesListProvider.future);
-      expect(state.guides.length, 2);
-      expect(fakeRepo.lastSpecialty, GuideSpecialty.nubianCulture);
-      expect(state.featuredGuide?.id, 'youssef');
-      expect(state.suggestedGuides.length, 1);
-      expect(state.suggestedGuides.first.id, 'mariam');
-    });
+        final state = await container.read(guidesListProvider.future);
+        expect(state.guides.length, 2);
+        expect(fakeRepo.lastSpecialty, GuideSpecialty.nubianCulture);
+        expect(state.featuredGuide?.id, 'youssef');
+        expect(state.suggestedGuides.length, 1);
+        expect(state.suggestedGuides.first.id, 'mariam');
+      },
+    );
 
-    test('emits error state on repository failure and supports retry', () async {
-      final fakeRepo = _FakeLocalGuidesRepository(shouldFail: true);
-      final container = ProviderContainer(
-        overrides: [
-          localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
-        ],
-      );
-      addTearDown(container.dispose);
-      container.listen(guidesListProvider, (_, _) {});
+    test(
+      'emits error state on repository failure and supports retry',
+      () async {
+        final fakeRepo = _FakeLocalGuidesRepository(shouldFail: true);
+        final container = ProviderContainer(
+          overrides: [
+            localGuidesRepositoryProvider.overrideWithValue(fakeRepo),
+          ],
+        );
+        addTearDown(container.dispose);
+        container.listen(guidesListProvider, (_, _) {});
 
-      // Allow async notifier build to complete
-      await Future<void>.delayed(Duration.zero);
+        // Allow async notifier build to complete
+        await Future<void>.delayed(Duration.zero);
 
-      final state = container.read(guidesListProvider);
-      expect(state.hasError, isTrue);
-      expect(state.error, isA<Failure>());
-    });
+        final state = container.read(guidesListProvider);
+        expect(state.hasError, isTrue);
+        expect(state.error, isA<Failure>());
+      },
+    );
   });
 }

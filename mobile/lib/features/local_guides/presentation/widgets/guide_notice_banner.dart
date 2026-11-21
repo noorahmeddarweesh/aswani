@@ -24,11 +24,7 @@ class GuideNoticeBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            LucideIcons.shieldCheck,
-            size: 22,
-            color: context.palette.link,
-          ),
+          Icon(LucideIcons.shieldCheck, size: 22, color: context.palette.link),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(

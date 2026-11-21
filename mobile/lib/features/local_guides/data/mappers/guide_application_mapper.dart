@@ -15,8 +15,6 @@ extension GuideApplicationCreateMapper on GuideApplicationCreate {
 }
 
 extension GuideApplicationResultMapper on GuideApplicationResultDto {
-  GuideApplicationResult toEntity() => GuideApplicationResult(
-    id: id,
-    status: RequestStatus.fromValue(status),
-  );
+  GuideApplicationResult toEntity() =>
+      GuideApplicationResult(id: id, status: RequestStatus.fromValue(status));
 }

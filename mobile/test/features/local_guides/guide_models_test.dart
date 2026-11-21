@@ -172,12 +172,7 @@ void main() {
 
   group('PageMetaDto', () {
     test('parses and calculates pagination correctly', () {
-      final json = {
-        'page': 1,
-        'limit': 20,
-        'total': 45,
-        'total_pages': 3,
-      };
+      final json = {'page': 1, 'limit': 20, 'total': 45, 'total_pages': 3};
 
       final dto = PageMetaDto.fromJson(json);
       expect(dto.page, 1);

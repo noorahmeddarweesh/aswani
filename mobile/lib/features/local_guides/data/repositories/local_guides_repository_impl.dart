@@ -63,7 +63,10 @@ class LocalGuidesRepositoryImpl implements LocalGuidesRepository {
     int page = 1,
     int limit = 20,
   }) => _guard(() async {
-    final dto = await _dataSource.getGuideRequestsMine(page: page, limit: limit);
+    final dto = await _dataSource.getGuideRequestsMine(
+      page: page,
+      limit: limit,
+    );
     return PagedList<GuideRequestItem>(
       data: dto.data.map((d) => d.toEntity()).toList(),
       meta: dto.meta.toEntity(),

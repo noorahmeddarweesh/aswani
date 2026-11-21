@@ -46,11 +46,13 @@ class PlaceDetailsDto {
       locationAr: json['location_ar'] as String? ?? '',
       aboutEn: json['about_en'] as String? ?? '',
       aboutAr: json['about_ar'] as String? ?? '',
-      images: (json['images'] as List<dynamic>?)
+      images:
+          (json['images'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           const [],
-      facts: (json['facts'] as List<dynamic>?)
+      facts:
+          (json['facts'] as List<dynamic>?)
               ?.map((e) => PlaceFactDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],

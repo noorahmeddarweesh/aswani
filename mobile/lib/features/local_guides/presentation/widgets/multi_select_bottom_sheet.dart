@@ -51,8 +51,7 @@ class MultiSelectBottomSheet<T> extends StatefulWidget {
       _MultiSelectBottomSheetState<T>();
 }
 
-class _MultiSelectBottomSheetState<T>
-    extends State<MultiSelectBottomSheet<T>> {
+class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
   late List<T> _selected;
 
   @override
