@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.core.errors import register_error_handlers
 from app.core.limiter import limiter
 from app.db.session import engine
+from app.routers import auth, users
 
 app = FastAPI(
     title="Aswani API",
@@ -40,6 +41,8 @@ async def security_headers(request, call_next):
 api = APIRouter(prefix="/api")
 # هنضيف الـ routers هنا في الـ Tasks الجاية:
 # api.include_router(auth.router)
+api.include_router(auth.router)
+api.include_router(users.router)
 app.include_router(api)
 
 
