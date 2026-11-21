@@ -19,6 +19,7 @@ import '../../../community/community_routes.dart';
 import '../../../contributions/contributions_routes.dart';
 import '../../../culture/culture_routes.dart';
 import '../../../local_guides/guides_routes.dart';
+import '../../../places/places_routes.dart';
 import '../../domain/entities/profile.dart';
 import '../../profile_routes.dart';
 import '../viewmodels/profile_view_models.dart';
@@ -70,9 +71,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       case SavedType.story:
         context.push(CultureRoutes.story(item.id));
       case SavedType.place:
-        // Place details belong to Places (Person A); until that page
-        // exists, the full saved list is the closest place to go.
-        context.push(ProfileRoutes.saved);
+        context.push(PlacesRoutes.place(item.id));
     }
   }
 
@@ -228,6 +227,12 @@ class _ProfileBody extends StatelessWidget {
           title: l10n.contributeMine,
           subtitle: '${c.addedActivities}',
           onTap: () => context.push(ContributeRoutes.mine),
+        ),
+        ProfileLinkRow(
+          icon: LucideIcons.flag,
+          title: l10n.placeMyReports,
+          subtitle: l10n.profileReportsUnderReview(c.reportsUnderReview),
+          onTap: () => context.push(PlacesRoutes.myReports),
         ),
         ProfileLinkRow(
           icon: LucideIcons.calendarDays,

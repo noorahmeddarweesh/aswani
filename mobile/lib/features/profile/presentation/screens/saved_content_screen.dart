@@ -12,6 +12,7 @@ import '../../../../shared/widgets/app_image.dart';
 import '../../../../shared/widgets/app_top_bar.dart';
 import '../../../../shared/widgets/state_views.dart';
 import '../../../culture/culture_routes.dart';
+import '../../../places/places_routes.dart';
 import '../../domain/entities/profile.dart';
 import '../viewmodels/profile_view_models.dart';
 
@@ -128,11 +129,11 @@ class _SavedCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: AppRadii.lgAll,
-        // Place details belong to Places (Person A) and open from here once
-        // that page exists.
-        onTap: isStory
-            ? () => context.push(CultureRoutes.story(entry.id))
-            : null,
+        onTap: () => context.push(
+          isStory
+              ? CultureRoutes.story(entry.id)
+              : PlacesRoutes.place(entry.id),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

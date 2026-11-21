@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:aswani/core/errors/app_exception.dart';
+import 'package:aswani/core/errors/failure.dart';
+import 'package:aswani/core/pagination/paged.dart';
+import 'package:aswani/features/contributions/contributions_routes.dart';
+import 'package:aswani/features/contributions/data/datasources/contributions_mock_datasource.dart';
 import 'package:aswani/core/network/upload.dart';
 import 'package:aswani/core/result/result.dart';
 import 'package:aswani/core/router/app_router.dart';
@@ -18,6 +23,8 @@ import '../../helpers/fake_api.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
+  _myContributionsErrorTest();
+
   test('form rules: required fields and an Egyptian mobile number', () {
     final container = ProviderContainer(overrides: fastMocks());
     addTearDown(container.dispose);
@@ -229,5 +236,44 @@ void main() {
     expect(find.text('Nile View Terrace'), findsOneWidget);
     expect(find.text('Published'), findsNothing);
     expect(find.text('Under review'), findsOneWidget);
+  });
+}
+
+/// "Added activities" whose first load fails, then works.
+class _FlakyContributions extends ContributionsMockDataSource {
+  _FlakyContributions() : super(delay: Duration.zero);
+
+  bool fail = true;
+
+  @override
+  Future<Paged<Map<String, dynamic>>> getMine({int page = 1}) async {
+    if (fail) throw const AppException(code: ErrorCodes.serverError);
+    return super.getMine(page: page);
+  }
+}
+
+void _myContributionsErrorTest() {
+  testWidgets('Added activities: a failure shows Try again at once', (
+    tester,
+  ) async {
+    final source = _FlakyContributions();
+    final container = await pumpApp(
+      tester,
+      mocks: fastMocks(contributions: source),
+    );
+    container
+        .read(sessionProvider.notifier)
+        .signedIn(
+          const Session(userId: 'u_1', displayName: 'L', hasPreferences: true),
+        );
+    await tester.pumpAndSettle();
+    unawaited(container.read(appRouterProvider).push(ContributeRoutes.mine));
+    await tester.pumpAndSettle();
+    expect(find.text('Try again'), findsOneWidget);
+
+    source.fail = false;
+    await tester.tap(find.text('Try again'));
+    await tester.pumpAndSettle();
+    expect(find.text('Try again'), findsNothing);
   });
 }

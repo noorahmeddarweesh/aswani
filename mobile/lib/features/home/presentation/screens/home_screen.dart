@@ -7,6 +7,7 @@ import '../../../../core/responsive/window_size.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../contributions/contributions_routes.dart';
 import '../../../culture/culture_routes.dart';
+import '../../../places/places_routes.dart';
 import '../../../profile/profile_routes.dart';
 import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -179,6 +180,8 @@ class HomeScreen extends ConsumerWidget {
                         final place = value.elementAt(i);
                         return CuratedPlaceCard(
                           place: place,
+                          onTap: () =>
+                              context.push(PlacesRoutes.place(place.id)),
                           onBookmark: () => ref
                               .read(homeViewModelProvider.notifier)
                               .toggleBookmark(place.id),
