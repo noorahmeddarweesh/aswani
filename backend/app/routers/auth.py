@@ -25,7 +25,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register", status_code=201)
 @limiter.limit("10/minute")
-def register(request: Request, body: RegisterIn, db: Session = Depends(get_db)):
+def register(request: Request, response: Response, body: RegisterIn, db: Session = Depends(get_db)):
     result = auth_service.register(
         db,
         full_name=body.full_name,
@@ -37,7 +37,7 @@ def register(request: Request, body: RegisterIn, db: Session = Depends(get_db)):
 
 @router.post("/login")
 @limiter.limit("10/minute")
-def login(request: Request, body: LoginIn, db: Session = Depends(get_db)):
+def login(request: Request, response: Response, body: LoginIn, db: Session = Depends(get_db)):
     result = auth_service.login(
         db,
         identifier=body.identifier,
@@ -48,7 +48,7 @@ def login(request: Request, body: LoginIn, db: Session = Depends(get_db)):
 
 @router.post("/refresh")
 @limiter.limit("30/minute")
-def refresh(request: Request, body: RefreshIn, db: Session = Depends(get_db)):
+def refresh(request: Request, response: Response, body: RefreshIn, db: Session = Depends(get_db)):
     result = auth_service.refresh(db, body.refresh_token)
     return ok(result)
 
@@ -63,6 +63,7 @@ def logout(body: RefreshIn, user_id: str = Depends(get_current_user_id), db: Ses
 @limiter.limit("5/minute")
 def forgot_password(
     request: Request,
+    response: Response,
     body: ForgotPasswordIn,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
@@ -75,7 +76,7 @@ def forgot_password(
 
 @router.post("/reset-password", status_code=204)
 @limiter.limit("10/minute")
-def reset_password(request: Request, body: ResetPasswordIn, db: Session = Depends(get_db)):
+def reset_password(request: Request, response: Response, body: ResetPasswordIn, db: Session = Depends(get_db)):
     auth_service.reset_password(
         db,
         identifier=body.identifier,

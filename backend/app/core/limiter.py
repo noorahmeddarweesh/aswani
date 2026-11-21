@@ -35,9 +35,6 @@ from slowapi.util import get_remote_address
 # ---------------------------------------------------------------------------
 limiter = Limiter(
     key_func=get_remote_address,
-    # In production set this to your Redis URL:
-    #   storage_uri="redis://localhost:6379/0"
-    # For development, the default in-memory backend is fine.
     default_limits=["120/minute"],
-    headers_enabled=True,     # adds X-RateLimit-* headers to every response
+    headers_enabled=False,     # avoids requiring response: Response parameter injection on every route
 )
