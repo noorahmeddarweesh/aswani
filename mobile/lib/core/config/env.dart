@@ -16,7 +16,7 @@ abstract final class Env {
   /// 10.0.2.2 is the host machine as seen from the Android emulator.
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://10.0.2.2:3000/api',
+    defaultValue: 'http://10.0.2.2:8000/api',
   );
 
   static const String mapboxToken = String.fromEnvironment('MAPBOX_TOKEN');
