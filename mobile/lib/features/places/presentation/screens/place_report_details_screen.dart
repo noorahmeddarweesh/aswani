@@ -159,12 +159,12 @@ class _PlaceReportDetailsScreenState
                             fontSize: 14,
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFBFCFE),
+                          fillColor: context.palette.inputFill,
                           errorText: detailsError,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFE2EAF0),
+                            borderSide: BorderSide(
+                              color: context.palette.border,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -172,7 +172,7 @@ class _PlaceReportDetailsScreenState
                             borderSide: BorderSide(
                               color: detailsError != null
                                   ? context.colors.error
-                                  : const Color(0xFFE2EAF0),
+                                  : context.palette.border,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -212,7 +212,7 @@ class _PlaceReportDetailsScreenState
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEFF9FB),
+                          color: context.palette.successTint,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -283,12 +283,12 @@ class _PlaceReportDetailsScreenState
                       ),
                     ),
                     child: formState.isSubmitting
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.white,
+                              color: context.palette.onBrandSurface,
                             ),
                           )
                         : Text(

@@ -25,10 +25,12 @@ class ReportReasonOptionCard extends StatelessWidget {
         height: 54,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFEFF9FB) : Colors.white,
+          color: isSelected
+              ? context.palette.successTint
+              : context.colors.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? context.palette.link : const Color(0xFFE2EAF0),
+            color: isSelected ? context.palette.link : context.palette.border,
             width: isSelected ? 1.5 : 1.0,
           ),
         ),
@@ -53,16 +55,16 @@ class ReportReasonOptionCard extends StatelessWidget {
                 border: Border.all(
                   color: isSelected
                       ? context.palette.link
-                      : const Color(0xFFD2DCE2),
+                      : context.palette.divider,
                   width: 1.5,
                 ),
               ),
               child: isSelected
-                  ? const Center(
+                  ? Center(
                       child: Icon(
                         LucideIcons.check,
                         size: 13,
-                        color: Colors.white,
+                        color: context.palette.onBrandSurface,
                       ),
                     )
                   : null,

@@ -19,8 +19,8 @@ void main() {
   group('LocalGuidesRepositoryImpl', () {
     test('getGuides returns domain entities and meta', () async {
       final result = await repository.getGuides();
-      expect(result, isA<Success>());
-      final paged = (result as Success).value;
+      expect(result, isA<Success<dynamic>>());
+      final paged = (result as Success<dynamic>).value;
       expect(paged.data.length, 3);
       expect(paged.data.first, isA<Guide>());
       expect(paged.data.first.fullName, 'Youssef El Nuby');
@@ -29,15 +29,15 @@ void main() {
 
     test('getGuide returns single guide entity', () async {
       final result = await repository.getGuide('youssef-el-nuby');
-      expect(result, isA<Success>());
-      final guide = (result as Success).value;
+      expect(result, isA<Success<dynamic>>());
+      final guide = (result as Success<dynamic>).value;
       expect(guide.id, 'youssef-el-nuby');
       expect(guide.isFeatured, isTrue);
     });
 
     test('getGuide returns Error for non-existent guide', () async {
       final result = await repository.getGuide('non-existent');
-      expect(result, isA<Error>());
+      expect(result, isA<Error<dynamic>>());
       final error = result as Error;
       expect(error.failure.code, 'GUIDE_NOT_FOUND');
     });
@@ -61,12 +61,12 @@ void main() {
       );
 
       final result = await repository.createGuideRequest(request);
-      expect(result, isA<Success>());
-      final created = (result as Success).value;
+      expect(result, isA<Success<dynamic>>());
+      final created = (result as Success<dynamic>).value;
       expect(created.status, RequestStatus.pending);
 
       final mineResult = await repository.getGuideRequestsMine();
-      expect(mineResult, isA<Success>());
+      expect(mineResult, isA<Success<dynamic>>());
       final mine = (mineResult as Success).value;
       expect(mine.data.any((r) => r.id == created.id), isTrue);
       final item = mine.data.firstWhere((r) => r.id == created.id);
@@ -76,7 +76,7 @@ void main() {
     });
 
     test('createGuideApplication flow and duplicate prevention', () async {
-      final app = GuideApplicationCreate(
+      const app = GuideApplicationCreate(
         fullName: 'Ahmed Guide',
         languages: [GuideLanguage.ar, GuideLanguage.en],
         specialties: [GuideSpecialty.nile],
@@ -86,13 +86,13 @@ void main() {
       );
 
       final result = await repository.createGuideApplication(app);
-      expect(result, isA<Success>());
-      final success = (result as Success).value;
+      expect(result, isA<Success<dynamic>>());
+      final success = (result as Success<dynamic>).value;
       expect(success.status, RequestStatus.pending);
 
       // Repeat application with same contact
       final duplicate = await repository.createGuideApplication(app);
-      expect(duplicate, isA<Error>());
+      expect(duplicate, isA<Error<dynamic>>());
       expect((duplicate as Error).failure.code, 'ALREADY_APPLIED');
     });
   });

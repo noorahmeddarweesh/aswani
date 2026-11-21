@@ -34,14 +34,14 @@ class BecomeGuideCtaCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: context.palette.onBrandSurface.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
-                child: const Icon(
+                child: Icon(
                   LucideIcons.user,
                   size: 20,
-                  color: Colors.white,
+                  color: context.palette.onBrandSurface,
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -52,7 +52,7 @@ class BecomeGuideCtaCard extends StatelessWidget {
                     Text(
                       l10n.ctaTitle,
                       style: context.text.titleMedium?.copyWith(
-                        color: Colors.white,
+                        color: context.palette.onBrandSurface,
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
                       ),
@@ -61,7 +61,9 @@ class BecomeGuideCtaCard extends StatelessWidget {
                     Text(
                       l10n.ctaSubtitle,
                       style: context.text.bodySmall?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: context.palette.onBrandSurface.withValues(
+                          alpha: 0.8,
+                        ),
                         fontSize: 12,
                       ),
                     ),
@@ -71,7 +73,7 @@ class BecomeGuideCtaCard extends StatelessWidget {
               Icon(
                 isRtl ? LucideIcons.arrowLeft : LucideIcons.arrowRight,
                 size: 20,
-                color: Colors.white,
+                color: context.palette.onBrandSurface,
               ),
             ],
           ),

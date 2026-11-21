@@ -96,7 +96,7 @@ class _MockReviewRepo implements LocalGuidesRepository {
 void main() {
   const testGuideId = 'youssef-el-nuby';
 
-  final standardDraft = const GuideRequestCreate(
+  const standardDraft = GuideRequestCreate(
     guideId: testGuideId,
     date: '2026-06-20', // Saturday, 20 June
     duration: RequestDuration.oneDay,
@@ -199,7 +199,7 @@ void main() {
         await tester.binding.setSurfaceSize(const Size(390, 1000));
         addTearDown(() => tester.binding.setSurfaceSize(null));
 
-        final emptyInterestsDraft = const GuideRequestCreate(
+        const emptyInterestsDraft = GuideRequestCreate(
           guideId: testGuideId,
           date: '2026-06-20',
           duration: RequestDuration.fewHours,

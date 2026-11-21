@@ -1,7 +1,6 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/app_image.dart';
@@ -46,7 +45,7 @@ class GuidePhotoPickerTile extends StatelessWidget {
                           border: Border.all(
                             color: errorText != null
                                 ? context.colors.error
-                                : AppColors.riverBlue,
+                                : context.palette.link,
                             width: 2,
                           ),
                         ),
@@ -65,14 +64,14 @@ class GuidePhotoPickerTile extends StatelessWidget {
                           child: Container(
                             width: 24,
                             height: 24,
-                            decoration: const BoxDecoration(
-                              color: AppColors.error,
+                            decoration: BoxDecoration(
+                              color: context.colors.error,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.x,
                               size: 14,
-                              color: Colors.white,
+                              color: context.palette.onBrandSurface,
                             ),
                           ),
                         ),
@@ -83,7 +82,7 @@ class GuidePhotoPickerTile extends StatelessWidget {
                   painter: _DashedRRectPainter(
                     color: errorText != null
                         ? context.colors.error
-                        : AppColors.riverBlue,
+                        : context.palette.link,
                     strokeWidth: 1.5,
                     dashLength: 5,
                     dashGap: 3,
@@ -96,7 +95,7 @@ class GuidePhotoPickerTile extends StatelessWidget {
                       width: 90,
                       height: 54,
                       decoration: BoxDecoration(
-                        color: AppColors.selectedTint,
+                        color: context.palette.selectedTint,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -106,10 +105,10 @@ class GuidePhotoPickerTile extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             LucideIcons.imagePlus,
                             size: 20,
-                            color: AppColors.riverBlue,
+                            color: context.palette.link,
                           ),
                           const SizedBox(height: 2),
                           Text(

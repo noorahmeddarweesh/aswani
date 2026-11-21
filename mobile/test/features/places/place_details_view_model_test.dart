@@ -14,10 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
-  _FakePlaceDetailsRepo({
-    this.failWithNotFound = false,
-    this.failWithGeneric = false,
-  });
+  _FakePlaceDetailsRepo() : failWithGeneric = false, failWithNotFound = false;
 
   bool failWithNotFound;
   bool failWithGeneric;
@@ -99,7 +96,7 @@ class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
 }
 
 class _FakePlacesRepo implements PlacesRepository {
-  _FakePlacesRepo({this.failBookmark = false});
+  _FakePlacesRepo() : failBookmark = false;
 
   bool failBookmark;
   bool lastSavedState = false;

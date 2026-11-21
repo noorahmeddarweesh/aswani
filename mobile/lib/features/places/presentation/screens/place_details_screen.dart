@@ -33,7 +33,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
   final VoidCallback? onShareTap;
   final VoidCallback? onReportTap;
 
-  Widget _buildCircleButton({
+  Widget _buildCircleButton(
+    BuildContext context, {
     required Widget child,
     required String tooltip,
     required VoidCallback? onPressed,
@@ -41,14 +42,14 @@ class PlaceDetailsScreen extends ConsumerWidget {
     return Container(
       width: 40,
       height: 40,
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colors.surface,
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: context.colors.scrim.withValues(alpha: 0.08),
             blurRadius: 8,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -89,6 +90,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: _buildCircleButton(
+                      context,
                       tooltip: strings.back,
                       onPressed:
                           onBackTap ?? () => Navigator.of(context).maybePop(),
@@ -189,16 +191,16 @@ class PlaceDetailsScreen extends ConsumerWidget {
 
                     // Rounded white content sheet
                     Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
+                      decoration: BoxDecoration(
+                        color: context.colors.surface,
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(24),
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0x0F000000),
+                            color: context.colors.scrim.withValues(alpha: 0.06),
                             blurRadius: 10,
-                            offset: Offset(0, -4),
+                            offset: const Offset(0, -4),
                           ),
                         ],
                       ),
@@ -324,6 +326,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                       children: [
                         // Start: White circular back button
                         _buildCircleButton(
+                          context,
                           tooltip: strings.back,
                           onPressed:
                               onBackTap ??
@@ -337,6 +340,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         const Spacer(),
                         // End: Share button
                         _buildCircleButton(
+                          context,
                           tooltip: strings.share,
                           onPressed:
                               onShareTap ??
@@ -357,6 +361,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         const SizedBox(width: 8),
                         // End: Bookmark button
                         _buildCircleButton(
+                          context,
                           tooltip: place.isBookmarked
                               ? strings.bookmarkRemove
                               : strings.bookmarkAdd,

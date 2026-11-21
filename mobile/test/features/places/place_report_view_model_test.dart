@@ -12,10 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakePlaceDetailsRepo implements PlaceDetailsRepository {
-  _FakePlaceDetailsRepo({
-    this.failWithNotFound = false,
-    this.failWithValidation = false,
-  });
+  _FakePlaceDetailsRepo()
+    : failWithValidation = false,
+      failWithNotFound = false;
 
   bool failWithNotFound;
   bool failWithValidation;

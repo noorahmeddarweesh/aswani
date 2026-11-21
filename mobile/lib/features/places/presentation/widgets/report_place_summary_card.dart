@@ -24,7 +24,7 @@ class ReportPlaceSummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F6F9),
+        color: context.palette.surfaceMuted,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

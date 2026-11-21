@@ -161,7 +161,7 @@ void main() {
           isA<AppException>()
               .having((e) => e.code, 'code', 'VALIDATION_ERROR')
               .having(
-                (e) => e.details?['details'],
+                (e) => e.details['details'],
                 'details error',
                 'VALIDATION_ERROR',
               ),

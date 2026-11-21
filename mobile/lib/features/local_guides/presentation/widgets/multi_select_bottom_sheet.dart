@@ -1,7 +1,6 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -164,7 +163,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                               label,
                               style: context.text.bodyLarge?.copyWith(
                                 color: isSelected
-                                    ? AppColors.riverBlue
+                                    ? context.palette.link
                                     : context.palette.ink,
                                 fontWeight: isSelected
                                     ? FontWeight.w600
@@ -177,22 +176,22 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                             height: 22,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.riverBlue
+                                  ? context.palette.link
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
                                 color: isSelected
-                                    ? AppColors.riverBlue
+                                    ? context.palette.link
                                     : context.palette.border,
                                 width: 1.5,
                               ),
                             ),
                             alignment: Alignment.center,
                             child: isSelected
-                                ? const Icon(
+                                ? Icon(
                                     LucideIcons.check,
                                     size: 14,
-                                    color: Colors.white,
+                                    color: context.palette.onBrandSurface,
                                   )
                                 : null,
                           ),

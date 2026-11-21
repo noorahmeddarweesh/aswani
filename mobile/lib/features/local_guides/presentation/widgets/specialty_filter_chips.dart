@@ -71,7 +71,9 @@ class _ChipItem extends StatelessWidget {
     final backgroundColor = isSelected
         ? context.colors.primary
         : context.colors.surface;
-    final textColor = isSelected ? Colors.white : context.palette.ink;
+    final textColor = isSelected
+        ? context.palette.onBrandSurface
+        : context.palette.ink;
     final border = isSelected
         ? null
         : Border.all(color: context.palette.border);

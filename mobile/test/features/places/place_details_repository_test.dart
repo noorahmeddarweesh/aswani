@@ -17,8 +17,8 @@ void main() {
   group('PlaceDetailsRepositoryImpl', () {
     test('getPlaceDetails returns wrapped PlaceDetails entity', () async {
       final result = await repository.getPlaceDetails('philae');
-      expect(result, isA<Success>());
-      final details = (result as Success).value as PlaceDetails;
+      expect(result, isA<Success<dynamic>>());
+      final details = (result as Success<dynamic>).value as PlaceDetails;
       expect(details.id, 'philae');
       expect(details.name('en'), 'Philae Temple');
       expect(details.location('en'), 'Agilkia Island, Aswan');
@@ -28,26 +28,27 @@ void main() {
 
     test('getPlaceDetails returns Error for unknown place', () async {
       final result = await repository.getPlaceDetails('unknown-place');
-      expect(result, isA<Error>());
-      final failure = (result as Error).failure;
+      expect(result, isA<Error<dynamic>>());
+      final failure = (result as Error<dynamic>).failure;
       expect(failure.code, 'PLACE_NOT_FOUND');
     });
 
     test('createPlaceReport and getPlaceReportsMine round trip', () async {
-      final report = PlaceReportCreate(
+      const report = PlaceReportCreate(
         placeId: 'philae',
         reason: PlaceReportReason.incorrectLocation,
         details: 'Location coordinates seem slightly shifted.',
       );
 
       final result = await repository.createPlaceReport(report);
-      expect(result, isA<Success>());
-      final resultValue = (result as Success).value as PlaceReportResult;
+      expect(result, isA<Success<dynamic>>());
+      final resultValue =
+          (result as Success<dynamic>).value as PlaceReportResult;
       expect(resultValue.status, 'pending');
       expect(resultValue.pointsPending, 25);
 
       final mineResult = await repository.getPlaceReportsMine();
-      expect(mineResult, isA<Success>());
+      expect(mineResult, isA<Success<dynamic>>());
       final paged = (mineResult as Success).value;
       expect(paged.data.any((r) => r.id == resultValue.id), isTrue);
       final item = paged.data.firstWhere((r) => r.id == resultValue.id);

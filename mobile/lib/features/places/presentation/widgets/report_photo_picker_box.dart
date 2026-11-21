@@ -36,12 +36,12 @@ class ReportPhotoPickerBox extends StatelessWidget {
           child: Container(
             height: 88,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F6F9),
+              color: context.palette.surfaceMuted,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: errorText != null
                     ? context.colors.error
-                    : const Color(0xFFD2DCE2),
+                    : context.palette.divider,
                 width: 1.5,
               ),
             ),
@@ -63,18 +63,18 @@ class ReportPhotoPickerBox extends StatelessWidget {
                         child: Container(
                           width: 24,
                           height: 24,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
+                          decoration: BoxDecoration(
+                            color: context.colors.surface,
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
                             tooltip: strings.reportRemovePhoto,
                             padding: EdgeInsets.zero,
                             onPressed: onRemove,
-                            icon: const Icon(
+                            icon: Icon(
                               LucideIcons.x,
                               size: 14,
-                              color: Colors.black87,
+                              color: context.palette.ink,
                             ),
                           ),
                         ),

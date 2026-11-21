@@ -120,8 +120,8 @@ void main() {
     });
 
     test('rejects date in the past with DATE_IN_PAST', () async {
-      final pastDate = '2020-01-01';
-      final req = GuideRequestCreateDto(
+      const pastDate = '2020-01-01';
+      const req = GuideRequestCreateDto(
         guideId: 'youssef-el-nuby',
         date: pastDate,
         duration: 'one_day',
@@ -225,7 +225,7 @@ void main() {
 
   group('LocalGuidesMockDataSource - createGuideApplication', () {
     test('submits valid guide application', () async {
-      final app = GuideApplicationCreateDto(
+      const app = GuideApplicationCreateDto(
         fullName: 'New Guide Candidate',
         languages: ['ar', 'en'],
         specialties: ['nubian_culture'],
@@ -243,7 +243,7 @@ void main() {
     test(
       'second application with same contact throws 409 ALREADY_APPLIED',
       () async {
-        final app = GuideApplicationCreateDto(
+        const app = GuideApplicationCreateDto(
           fullName: 'Candidate One',
           languages: ['ar'],
           specialties: ['nile'],
@@ -266,7 +266,7 @@ void main() {
     );
 
     test('rejects invalid Egyptian contact number with 422', () async {
-      final app = GuideApplicationCreateDto(
+      const app = GuideApplicationCreateDto(
         fullName: 'Candidate',
         languages: ['ar'],
         specialties: ['nile'],
@@ -288,7 +288,7 @@ void main() {
     });
 
     test('rejects photo exceeding 5 MB with FILE_TOO_LARGE', () async {
-      final app = GuideApplicationCreateDto(
+      const app = GuideApplicationCreateDto(
         fullName: 'Candidate',
         languages: ['ar'],
         specialties: ['nile'],
@@ -313,7 +313,7 @@ void main() {
     test(
       'rejects unsupported photo file type with UNSUPPORTED_FILE_TYPE',
       () async {
-        final app = GuideApplicationCreateDto(
+        const app = GuideApplicationCreateDto(
           fullName: 'Candidate',
           languages: ['ar'],
           specialties: ['nile'],

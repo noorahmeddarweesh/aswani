@@ -33,7 +33,7 @@ class PlaceFactCard extends StatelessWidget {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F6F9),
+        color: context.palette.surfaceMuted,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

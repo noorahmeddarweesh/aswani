@@ -9,7 +9,8 @@ import '../places_strings.dart';
 class ReportTimelineIndicator extends StatelessWidget {
   const ReportTimelineIndicator({super.key});
 
-  Widget _buildNode({
+  Widget _buildNode(
+    BuildContext context, {
     required Widget child,
     required bool isFilled,
     required Color color,
@@ -18,10 +19,10 @@ class ReportTimelineIndicator extends StatelessWidget {
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: isFilled ? color : Colors.white,
+        color: isFilled ? color : context.colors.surface,
         shape: BoxShape.circle,
         border: Border.all(
-          color: isFilled ? color : const Color(0xFFD2DCE2),
+          color: isFilled ? color : context.palette.divider,
           width: 1.5,
         ),
       ),
@@ -29,8 +30,8 @@ class ReportTimelineIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildConnectingLine() {
-    return Container(height: 1.5, color: const Color(0xFFE2EAF0));
+  Widget _buildConnectingLine(BuildContext context) {
+    return Container(height: 1.5, color: context.palette.border);
   }
 
   @override
@@ -45,26 +46,29 @@ class ReportTimelineIndicator extends StatelessWidget {
           children: [
             const Spacer(flex: 2),
             _buildNode(
+              context,
               isFilled: true,
               color: primaryColor,
-              child: const Icon(
+              child: Icon(
                 LucideIcons.check,
                 size: 13,
-                color: Colors.white,
+                color: context.palette.onBrandSurface,
               ),
             ),
-            Expanded(flex: 3, child: _buildConnectingLine()),
+            Expanded(flex: 3, child: _buildConnectingLine(context)),
             _buildNode(
+              context,
               isFilled: true,
               color: primaryColor,
-              child: const Icon(
+              child: Icon(
                 LucideIcons.clock,
                 size: 13,
-                color: Colors.white,
+                color: context.palette.onBrandSurface,
               ),
             ),
-            Expanded(flex: 3, child: _buildConnectingLine()),
+            Expanded(flex: 3, child: _buildConnectingLine(context)),
             _buildNode(
+              context,
               isFilled: false,
               color: primaryColor,
               child: Icon(

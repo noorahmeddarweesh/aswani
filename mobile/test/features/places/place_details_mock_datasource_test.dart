@@ -38,7 +38,7 @@ void main() {
 
   group('PlaceDetailsMockDataSource - createPlaceReport', () {
     test('submits valid place report returning 25 points_pending', () async {
-      final report = PlaceReportCreateDto(
+      const report = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'incorrect_information',
         details: 'Visiting hours are now from 8 AM to 5 PM.',
@@ -59,7 +59,7 @@ void main() {
     });
 
     test('throws 404 PLACE_NOT_FOUND for unknown place report', () async {
-      final report = PlaceReportCreateDto(
+      const report = PlaceReportCreateDto(
         placeId: 'non-existent-place',
         reason: 'not_exist',
         details: 'Does not exist',
@@ -76,7 +76,7 @@ void main() {
     });
 
     test('rejects empty or too long details (1..1000 chars)', () async {
-      final emptyReport = PlaceReportCreateDto(
+      const emptyReport = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'other',
         details: '   ',
@@ -113,7 +113,7 @@ void main() {
     });
 
     test('rejects photo exceeding 5 MB with FILE_TOO_LARGE', () async {
-      final report = PlaceReportCreateDto(
+      const report = PlaceReportCreateDto(
         placeId: 'philae',
         reason: 'incorrect_information',
         details: 'Valid details note',
@@ -135,7 +135,7 @@ void main() {
     test(
       'rejects unsupported photo extension with UNSUPPORTED_FILE_TYPE',
       () async {
-        final report = PlaceReportCreateDto(
+        const report = PlaceReportCreateDto(
           placeId: 'philae',
           reason: 'incorrect_information',
           details: 'Valid details note',

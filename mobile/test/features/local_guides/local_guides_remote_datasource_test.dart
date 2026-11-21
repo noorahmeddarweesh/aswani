@@ -148,11 +148,7 @@ void main() {
         throwsA(
           isA<AppException>()
               .having((e) => e.code, 'code', 'VALIDATION_ERROR')
-              .having(
-                (e) => e.details?['date'],
-                'date details',
-                'DATE_IN_PAST',
-              ),
+              .having((e) => e.details['date'], 'date details', 'DATE_IN_PAST'),
         ),
       );
     });

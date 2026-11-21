@@ -40,7 +40,9 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
                       width: 72,
                       height: 72,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFBF5E8),
+                        color: context.palette.accentGold.withValues(
+                          alpha: 0.14,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
@@ -98,10 +100,10 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: context.colors.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: const Color(0xFFE2EAF0),
+                          color: context.palette.border,
                           width: 1.0,
                         ),
                       ),
@@ -145,15 +147,17 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
                               vertical: 5,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFBF5E8),
+                              color: context.palette.accentGold.withValues(
+                                alpha: 0.14,
+                              ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               strings.reportPendingReview,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF9E7D30),
+                                color: context.palette.accentGold,
                               ),
                             ),
                           ),

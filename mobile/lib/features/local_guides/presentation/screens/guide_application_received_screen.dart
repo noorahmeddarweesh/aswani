@@ -1,7 +1,6 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/extensions/context_x.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -37,14 +36,16 @@ class GuideApplicationReceivedScreen extends StatelessWidget {
                         width: 72,
                         height: 72,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFBF5E8), // Warm gold tint
+                          color: context.palette.accentGold.withValues(
+                            alpha: 0.14,
+                          ), // Warm gold tint
                           borderRadius: BorderRadius.circular(20),
                         ),
                         alignment: Alignment.center,
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.user,
                           size: 32,
-                          color: AppColors.heritageGold,
+                          color: context.palette.accentGold,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xl),
@@ -82,8 +83,8 @@ class GuideApplicationReceivedScreen extends StatelessWidget {
                           Container(
                             width: 6,
                             height: 6,
-                            decoration: const BoxDecoration(
-                              color: AppColors.skyBlue,
+                            decoration: BoxDecoration(
+                              color: context.palette.highlight,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -91,8 +92,8 @@ class GuideApplicationReceivedScreen extends StatelessWidget {
                           Container(
                             width: 6,
                             height: 6,
-                            decoration: const BoxDecoration(
-                              color: AppColors.heritageGold,
+                            decoration: BoxDecoration(
+                              color: context.palette.accentGold,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -100,8 +101,8 @@ class GuideApplicationReceivedScreen extends StatelessWidget {
                           Container(
                             width: 6,
                             height: 6,
-                            decoration: const BoxDecoration(
-                              color: AppColors.skyBlue,
+                            decoration: BoxDecoration(
+                              color: context.palette.highlight,
                               shape: BoxShape.circle,
                             ),
                           ),

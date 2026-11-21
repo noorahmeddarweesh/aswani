@@ -74,14 +74,14 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
     return Container(
       width: 40,
       height: 40,
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colors.surface,
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
+            color: context.colors.scrim.withValues(alpha: 0.08),
             blurRadius: 8,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -135,13 +135,13 @@ class _PlaceHeroCarouselState extends State<PlaceHeroCarousel> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0x99000000),
+                  color: context.colors.scrim.withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   '${_currentPage + 1} / ${effectiveImages.length}',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.palette.onBrandSurface,
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                   ),

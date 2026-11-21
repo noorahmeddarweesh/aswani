@@ -16,7 +16,7 @@ class PlaceVisitingInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFEFF9FB),
+        color: context.palette.successTint,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
