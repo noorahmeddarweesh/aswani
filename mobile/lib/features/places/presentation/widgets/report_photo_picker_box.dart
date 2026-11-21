@@ -34,7 +34,8 @@ class ReportPhotoPickerBox extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Container(
-            height: 88,
+            constraints: const BoxConstraints(minHeight: 88),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
               color: context.palette.surfaceMuted,
               borderRadius: BorderRadius.circular(12),

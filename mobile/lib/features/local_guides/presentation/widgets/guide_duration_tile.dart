@@ -29,7 +29,7 @@ class GuideDurationTile extends StatelessWidget {
     final l10n = context.guidesL10n;
 
     return Container(
-      height: 76,
+      constraints: const BoxConstraints(minHeight: 76),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: context.palette.surfaceMuted,

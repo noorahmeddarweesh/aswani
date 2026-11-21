@@ -93,7 +93,7 @@ class GuidePhotoPickerTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                       width: 90,
-                      height: 54,
+                      constraints: const BoxConstraints(minHeight: 54),
                       decoration: BoxDecoration(
                         color: context.palette.selectedTint,
                         borderRadius: BorderRadius.circular(16),
@@ -111,17 +111,20 @@ class GuidePhotoPickerTile extends StatelessWidget {
                             color: context.palette.link,
                           ),
                           const SizedBox(height: 2),
-                          Text(
-                            l10n.profilePhoto,
-                            style: context.text.labelSmall?.copyWith(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: context.palette.textSecondary,
-                              letterSpacing: 0,
+                          MediaQuery.withClampedTextScaling(
+                            maxScaleFactor: 1.3,
+                            child: Text(
+                              l10n.profilePhoto,
+                              style: context.text.labelSmall?.copyWith(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: context.palette.textSecondary,
+                                letterSpacing: 0,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),

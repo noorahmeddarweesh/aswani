@@ -23,92 +23,95 @@ class GuideApplicationReceivedScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              // Scrolls when the screen is short (landscape, large text).
               child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xxl,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Warm gold squircle tile with person icon
-                      Container(
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          color: context.palette.accentGold.withValues(
-                            alpha: 0.14,
-                          ), // Warm gold tint
-                          borderRadius: BorderRadius.circular(20),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xxl,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Warm gold squircle tile with person icon
+                        Container(
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            color: context.palette.accentGold.withValues(
+                              alpha: 0.14,
+                            ), // Warm gold tint
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            LucideIcons.user,
+                            size: 32,
+                            color: context.palette.accentGold,
+                          ),
                         ),
-                        alignment: Alignment.center,
-                        child: Icon(
-                          LucideIcons.user,
-                          size: 32,
-                          color: context.palette.accentGold,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.xl),
 
-                      // Headline
-                      Text(
-                        l10n.applicationReceivedTitle,
-                        style: context.text.headlineMedium?.copyWith(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: context.palette.ink,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-
-                      // Reassuring body text
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 310),
-                        child: Text(
-                          l10n.applicationReceivedBody,
-                          style: context.text.bodyMedium?.copyWith(
-                            color: context.palette.textSecondary,
-                            height: 1.5,
+                        // Headline
+                        Text(
+                          l10n.applicationReceivedTitle,
+                          style: context.text.headlineMedium?.copyWith(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: context.palette.ink,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
+                        const SizedBox(height: AppSpacing.sm),
 
-                      // 3 status indicator dots (Sky blue, Gold, Sky blue)
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: context.palette.highlight,
-                              shape: BoxShape.circle,
+                        // Reassuring body text
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 310),
+                          child: Text(
+                            l10n.applicationReceivedBody,
+                            style: context.text.bodyMedium?.copyWith(
+                              color: context.palette.textSecondary,
+                              height: 1.5,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(width: 6),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: context.palette.accentGold,
-                              shape: BoxShape.circle,
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+
+                        // 3 status indicator dots (Sky blue, Gold, Sky blue)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: context.palette.highlight,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: context.palette.highlight,
-                              shape: BoxShape.circle,
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: context.palette.accentGold,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: context.palette.highlight,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

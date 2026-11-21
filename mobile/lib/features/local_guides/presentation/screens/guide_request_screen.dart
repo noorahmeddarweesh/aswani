@@ -345,7 +345,7 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                       onTap: () => _pickDate(state),
                       borderRadius: AppRadii.mdAll,
                       child: Container(
-                        height: 50,
+                        constraints: const BoxConstraints(minHeight: 50),
                         decoration: BoxDecoration(
                           color: context.palette.inputFill,
                           borderRadius: AppRadii.mdAll,
@@ -358,6 +358,7 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
+                          vertical: AppSpacing.xs,
                         ),
                         child: Row(
                           children: [
@@ -367,13 +368,15 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                               color: context.palette.textSecondary,
                             ),
                             const SizedBox(width: AppSpacing.sm),
-                            Text(
-                              state.date ?? l10n.requestSelectDate,
-                              style: context.text.bodyMedium?.copyWith(
-                                fontSize: 14,
-                                color: state.date != null
-                                    ? context.palette.ink
-                                    : context.palette.textTertiary,
+                            Expanded(
+                              child: Text(
+                                state.date ?? l10n.requestSelectDate,
+                                style: context.text.bodyMedium?.copyWith(
+                                  fontSize: 14,
+                                  color: state.date != null
+                                      ? context.palette.ink
+                                      : context.palette.textTertiary,
+                                ),
                               ),
                             ),
                           ],
@@ -619,13 +622,17 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                                         color: context.palette.textSecondary,
                                       ),
                                       const SizedBox(width: AppSpacing.xs),
-                                      Text(
-                                        state.startTime,
-                                        style: context.text.bodyMedium
-                                            ?.copyWith(
-                                              fontSize: 14,
-                                              color: context.palette.ink,
-                                            ),
+                                      Expanded(
+                                        child: Text(
+                                          state.startTime,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: context.text.bodyMedium
+                                              ?.copyWith(
+                                                fontSize: 14,
+                                                color: context.palette.ink,
+                                              ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -726,11 +733,15 @@ class _GuideRequestScreenState extends ConsumerState<GuideRequestScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              l10n.languageLabel(state.language),
-                              style: context.text.bodyMedium?.copyWith(
-                                fontSize: 14,
-                                color: context.palette.ink,
+                            Expanded(
+                              child: Text(
+                                l10n.languageLabel(state.language),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: context.text.bodyMedium?.copyWith(
+                                  fontSize: 14,
+                                  color: context.palette.ink,
+                                ),
                               ),
                             ),
                             Icon(

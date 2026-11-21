@@ -29,150 +29,160 @@ class PlaceReportSubmittedScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(),
-              // Top & Center Content
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Status Icon Tile (72x72 squircle fill #FBF5E8)
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        color: context.palette.accentGold.withValues(
-                          alpha: 0.14,
+              // The content scrolls when the screen is short (landscape,
+              // large text); the button stays at the bottom.
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Status Icon Tile (72x72 squircle fill #FBF5E8)
+                        Container(
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            color: context.palette.accentGold.withValues(
+                              alpha: 0.14,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              LucideIcons.clock,
+                              size: 32,
+                              color: context.palette.accentGold,
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          LucideIcons.clock,
-                          size: 32,
-                          color: context.palette.accentGold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                    // Eyebrow
-                    Text(
-                      strings.reportUnderReviewEyebrow,
-                      style: context.text.labelSmall?.copyWith(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.8,
-                        color: context.palette.accentGold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Title
-                    Text(
-                      strings.reportThankYou,
-                      textAlign: TextAlign.center,
-                      style: context.text.headlineMedium?.copyWith(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        color: context.palette.ink,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Subtitle
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 310),
-                      child: Text(
-                        strings.reportDoneSubtitle,
-                        textAlign: TextAlign.center,
-                        style: context.text.bodyMedium?.copyWith(
-                          fontSize: 14,
-                          color: context.palette.textSecondary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Points Reward Card (flexible layout to prevent overflow)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 14,
-                      ),
-                      decoration: BoxDecoration(
-                        color: context.colors.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: context.palette.border,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            LucideIcons.star,
-                            size: 24,
+                        // Eyebrow
+                        Text(
+                          strings.reportUnderReviewEyebrow,
+                          style: context.text.labelSmall?.copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.8,
                             color: context.palette.accentGold,
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
+                        ),
+                        const SizedBox(height: 10),
+
+                        // Title
+                        Text(
+                          strings.reportThankYou,
+                          textAlign: TextAlign.center,
+                          style: context.text.headlineMedium?.copyWith(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            color: context.palette.ink,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Subtitle
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 310),
+                          child: Text(
+                            strings.reportDoneSubtitle,
+                            textAlign: TextAlign.center,
+                            style: context.text.bodyMedium?.copyWith(
+                              fontSize: 14,
+                              color: context.palette.textSecondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Points Reward Card (flexible layout to prevent overflow)
+                        MediaQuery.withClampedTextScaling(
+                          maxScaleFactor: 1.3,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 14,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.colors.surface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: context.palette.border,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Row(
                               children: [
-                                Text(
-                                  pointsText,
-                                  style: context.text.titleMedium?.copyWith(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: context.palette.ink,
+                                Icon(
+                                  LucideIcons.star,
+                                  size: 24,
+                                  color: context.palette.accentGold,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        pointsText,
+                                        style: context.text.titleMedium
+                                            ?.copyWith(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: context.palette.ink,
+                                            ),
+                                      ),
+                                      Text(
+                                        strings.reportPointsPending,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: context.text.bodySmall?.copyWith(
+                                          fontSize: 11,
+                                          color: context.palette.textSecondary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  strings.reportPointsPending,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: context.text.bodySmall?.copyWith(
-                                    fontSize: 11,
-                                    color: context.palette.textSecondary,
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: context.palette.accentGold
+                                        .withValues(alpha: 0.14),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    strings.reportPendingReview,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: context.palette.accentGold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.palette.accentGold.withValues(
-                                alpha: 0.14,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              strings.reportPendingReview,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: context.palette.accentGold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 28),
+                        ),
+                        const SizedBox(height: 28),
 
-                    // 3-Step Review Progress Timeline
-                    const ReportTimelineIndicator(),
-                  ],
+                        // 3-Step Review Progress Timeline
+                        MediaQuery.withClampedTextScaling(
+                          maxScaleFactor: 1.3,
+                          child: const ReportTimelineIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-
-              const Spacer(flex: 2),
+              const SizedBox(height: 16),
 
               // Bottom Done Button
               SizedBox(

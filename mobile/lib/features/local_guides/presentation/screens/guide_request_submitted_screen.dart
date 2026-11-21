@@ -41,94 +41,97 @@ class GuideRequestSubmittedScreen extends StatelessWidget {
           children: [
             // Centered Content
             Expanded(
+              // Scrolls when the screen is short (landscape, large text).
               child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.screen,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Squircle Check Icon Tile
-                      Container(
-                        key: const Key('submitted_check_tile'),
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          color: context.palette.successTint,
-                          borderRadius: BorderRadius.circular(20),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.screen,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Squircle Check Icon Tile
+                        Container(
+                          key: const Key('submitted_check_tile'),
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            color: context.palette.successTint,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Icon(
+                            LucideIcons.check,
+                            size: 32,
+                            color: context.palette.selectedBorder,
+                          ),
                         ),
-                        child: Icon(
-                          LucideIcons.check,
-                          size: 32,
-                          color: context.palette.selectedBorder,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.xl),
 
-                      // Title Heading
-                      Text(
-                        l10n.requestSubmittedTitle,
-                        key: const Key('submitted_title'),
-                        textAlign: TextAlign.center,
-                        style: context.text.headlineSmall?.copyWith(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: context.palette.ink,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-
-                      // Body Paragraph
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 300),
-                        child: Text(
-                          l10n.requestSubmittedBody,
-                          key: const Key('submitted_body'),
+                        // Title Heading
+                        Text(
+                          l10n.requestSubmittedTitle,
+                          key: const Key('submitted_title'),
                           textAlign: TextAlign.center,
-                          style: context.text.bodyMedium?.copyWith(
-                            fontSize: 14,
-                            color: context.palette.textSecondary,
-                            height: 1.4,
+                          style: context.text.headlineSmall?.copyWith(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: context.palette.ink,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
+                        const SizedBox(height: AppSpacing.sm),
 
-                      // 3 Status Dots: Sky Blue, Gold, Sky Blue
-                      Row(
-                        key: const Key('submitted_status_dots'),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.palette.highlight,
+                        // Body Paragraph
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 300),
+                          child: Text(
+                            l10n.requestSubmittedBody,
+                            key: const Key('submitted_body'),
+                            textAlign: TextAlign.center,
+                            style: context.text.bodyMedium?.copyWith(
+                              fontSize: 14,
+                              color: context.palette.textSecondary,
+                              height: 1.4,
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.palette.accentGold,
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+
+                        // 3 Status Dots: Sky Blue, Gold, Sky Blue
+                        Row(
+                          key: const Key('submitted_status_dots'),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.palette.highlight,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 6),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.palette.highlight,
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.palette.accentGold,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 6),
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.palette.highlight,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

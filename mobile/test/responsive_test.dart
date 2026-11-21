@@ -31,6 +31,16 @@ const sprint2Routes = [
   '/profile/saved',
   '/profile/settings',
   '/profile/settings/interests',
+  '/places/philae',
+  '/places/philae/report',
+  '/places/philae/report/details',
+  '/places/philae/report/done?points=25',
+  '/guides',
+  '/guides/youssef-el-nuby',
+  '/guides/youssef-el-nuby/request',
+  '/guides/youssef-el-nuby/request/done',
+  '/guides/apply',
+  '/guides/apply/done',
 ];
 
 void main() {
