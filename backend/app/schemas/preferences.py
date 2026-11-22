@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
+# Allowed values as defined in Sprint 1 API Contract
 Persona = Literal["visitor", "newcomer", "resident"]
 Purpose = Literal["tourism", "living", "studying", "work", "family", "other"]
 StayLength = Literal[
@@ -39,6 +40,11 @@ Language = Literal["ar", "en"]
 
 
 class PreferencesIn(BaseModel):
+    """
+    Onboarding personalization preferences payload.
+    All fields are optional; every step can be skipped by the client.
+    List fields accept empty list or null, with maximum length bounds.
+    """
     persona: Optional[Persona] = None
     purpose: Optional[Purpose] = None
     stay_length: Optional[StayLength] = None

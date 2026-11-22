@@ -3,7 +3,7 @@ app/routers/users.py
 ────────────────────
 User profile, preferences, settings, avatar upload, and account deletion endpoints.
 """
-from typing import Optional
+from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, File, Response, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -16,6 +16,23 @@ from app.schemas.preferences import PreferencesIn
 from app.services import auth_service, preferences_service, storage_service
 
 router = APIRouter(prefix="/users", tags=["Users"])
+
+# Type aliases for dependency injection
+DbSession = Annotated[Session, Depends(get_db)]
+
+
+def _get_current_user(
+    user_id: Annotated[str, Depends(get_current_user_id)],
+    db: DbSession,
+) -> User:
+    """Load authenticated user model from DB; raise 401 if not found."""
+    user = db.get(User, user_id)
+    if not user:
+        raise AppError(401, "UNAUTHORIZED", "Missing, expired or invalid token")
+    return user
+
+
+CurrentUser = Annotated[User, Depends(_get_current_user)]
 
 
 class ProfileUpdateIn(BaseModel):
@@ -40,10 +57,11 @@ def me(user_id: str = Depends(get_current_user_id), db: Session = Depends(get_db
 @router.put("/preferences", status_code=204)
 def put_preferences(
     body: PreferencesIn,
-    user_id: str = Depends(get_current_user_id),
-    db: Session = Depends(get_db),
+    user: CurrentUser,
+    db: DbSession,
 ):
-    preferences_service.save_preferences(db, user_id, body)
+    # Delegate to service layer to save preferences
+    preferences_service.save_preferences(db, user, body)
     return Response(status_code=204)
 
 
