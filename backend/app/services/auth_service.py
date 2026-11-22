@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.errors import AppError
 from app.core.security import (
+    _hmac_reset_code,
     as_utc,
     burn_time,
     create_access_token,
@@ -34,6 +35,19 @@ from app.db.models import PasswordResetCode, RefreshToken, User
 logger = logging.getLogger(__name__)
 
 DEMO_CODE = "1234"
+
+
+def _is_demo(user: "User") -> bool:
+    """Demo code works only when DEMO_MODE is true AND the user is the seeded demo account."""
+    return (
+        settings.DEMO_MODE
+        and user.identifier.lower() == settings.SEED_DEMO_EMAIL.lower()
+    )
+
+
+def _hmac_demo_code() -> str:
+    """Return the HMAC hash of DEMO_CODE — same function used for all reset codes."""
+    return _hmac_reset_code(DEMO_CODE)
 
 
 def user_to_dict(user: User) -> dict:
@@ -191,18 +205,13 @@ def forgot_password(db: Session, identifier: str) -> tuple[str, str, bool]:
             {"identifier": "USER_NOT_FOUND"},
         )
 
-    # In staging / demo mode for Laila Hassan
-    is_demo = (
-        not settings.is_production
-        and user.identifier.lower() == settings.SEED_DEMO_EMAIL.lower()
-    )
+    # In demo mode for the seeded demo account
+    is_demo = _is_demo(user)
     if is_demo:
-        code = DEMO_CODE
-        plain, hashed = DEMO_CODE, DEMO_CODE
+        plain, hashed = DEMO_CODE, _hmac_demo_code()
     else:
         plain, hashed = generate_reset_code()
-        code = plain
-
+    code = plain
     # Invalidate previous unused codes
     db.execute(
         update(PasswordResetCode)
@@ -257,12 +266,8 @@ def reset_password(
 
     code_row.attempts += 1
 
-    # Check demo code or HMAC code
-    is_demo = (
-        not settings.is_production
-        and user.identifier.lower() == settings.SEED_DEMO_EMAIL.lower()
-    )
-    valid = (code == DEMO_CODE) if is_demo else verify_reset_code(code, code_row.code_hash)
+    # All codes (demo or not) are verified via HMAC — demo code was stored hashed too
+    valid = verify_reset_code(code, code_row.code_hash)
 
     if not valid:
         db.commit()  # commit incremented attempt count

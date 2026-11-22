@@ -59,6 +59,9 @@ class Settings(BaseSettings):
     # ── CORS ──────────────────────────────────────────────────────────────────
     CORS_ORIGINS: str = "*"           # comma-separated in .env
 
+    # ── Demo mode (fixed code "1234" only when explicitly enabled) ───────────
+    DEMO_MODE: bool = False
+
     # ── Seed account (matches mobile mock data) ───────────────────────────────
     SEED_DEMO_EMAIL: str = "laila@example.com"
     SEED_DEMO_PASSWORD: str = "Aswan2026"
