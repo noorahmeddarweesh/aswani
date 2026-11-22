@@ -14,7 +14,7 @@ MODE="${1:-release}"
 APP_ID="1:297721741384:android:d1f45cd80aac04191c187d"
 GROUPS="android-testers"
 RELEASE_NOTES="${2:-Aswani build $(date '+%Y-%m-%d %H:%M')}"
-BASE_URL="${3:-https://wright-expansys-eco-coated.trycloudflare.com/api}"
+BASE_URL="${3:-https://criteria-kindness-unfasten.ngrok-free.dev/api}"
 USE_MOCKS="false"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

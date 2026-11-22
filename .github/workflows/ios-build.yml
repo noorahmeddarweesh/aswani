@@ -6,7 +6,7 @@ on:
       base_url:
         description: "API Base URL"
         required: false
-        default: "https://wright-expansys-eco-coated.trycloudflare.com/api"
+        default: "https://criteria-kindness-unfasten.ngrok-free.dev/api"
       use_mocks:
         description: "Use Mocks (true/false)"
         required: false
@@ -46,7 +46,7 @@ jobs:
         run: |
           BASE_URL="${{ inputs.base_url }}"
           if [ -z "$BASE_URL" ]; then
-            BASE_URL="https://wright-expansys-eco-coated.trycloudflare.com/api"
+            BASE_URL="https://criteria-kindness-unfasten.ngrok-free.dev/api"
           fi
           USE_MOCKS="${{ inputs.use_mocks }}"
           if [ -z "$USE_MOCKS" ]; then
@@ -70,7 +70,7 @@ jobs:
         run: |
           BASE_URL="${{ inputs.base_url }}"
           if [ -z "$BASE_URL" ]; then
-            BASE_URL="https://wright-expansys-eco-coated.trycloudflare.com/api"
+            BASE_URL="https://criteria-kindness-unfasten.ngrok-free.dev/api"
           fi
           USE_MOCKS="${{ inputs.use_mocks }}"
           if [ -z "$USE_MOCKS" ]; then

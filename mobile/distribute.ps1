@@ -18,7 +18,7 @@ param(
 
     [string]$ReleaseNotes = "Aswani build $(Get-Date -Format 'yyyy-MM-dd HH:mm')",
 
-    [string]$BaseUrl = "https://wright-expansys-eco-coated.trycloudflare.com/api",
+    [string]$BaseUrl = "https://criteria-kindness-unfasten.ngrok-free.dev/api",
 
     [bool]$UseMocks = $false
 )
