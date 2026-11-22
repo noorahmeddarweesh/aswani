@@ -83,7 +83,7 @@ class Pagination:
     def __init__(
         self,
         page: int = Query(default=1, ge=1, description="1-based page number"),
-        limit: int = Query(default=20, ge=1, le=100, description="Items per page (max 100)"),
+        limit: int = Query(default=20, ge=1, le=50, description="Items per page (max 50)"),
     ) -> None:
         self.page, self.limit = clamp_page(page, limit)
 
