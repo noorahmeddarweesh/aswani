@@ -22,7 +22,7 @@ defaults:
 jobs:
   build-ios:
     name: Build iOS IPA & Simulator
-    runs-on: macos-14
+    runs-on: macos-latest
     timeout-minutes: 45
 
     steps:
@@ -43,11 +43,16 @@ jobs:
 
       # 1. Build Physical Device Release (Unsigned IPA for Sideloadly / AltStore)
       - name: Build iOS Release (Device)
-        env:
-          BASE_URL: ${{ github.event.inputs.base_url || 'https://wright-expansys-eco-coated.trycloudflare.com/api' }}
-          USE_MOCKS: ${{ github.event.inputs.use_mocks || 'false' }}
         run: |
-          echo "Building iOS for physical devices with Base URL: $BASE_URL"
+          BASE_URL="${{ inputs.base_url }}"
+          if [ -z "$BASE_URL" ]; then
+            BASE_URL="https://wright-expansys-eco-coated.trycloudflare.com/api"
+          fi
+          USE_MOCKS="${{ inputs.use_mocks }}"
+          if [ -z "$USE_MOCKS" ]; then
+            USE_MOCKS="false"
+          fi
+          echo "Building iOS for physical devices with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
           flutter build ios --release --no-codesign \
             --dart-define=USE_MOCKS="$USE_MOCKS" \
             --dart-define=BASE_URL="$BASE_URL"
@@ -62,11 +67,16 @@ jobs:
 
       # 2. Build iOS Simulator (for Appetize.io browser testing)
       - name: Build iOS Simulator
-        env:
-          BASE_URL: ${{ github.event.inputs.base_url || 'https://wright-expansys-eco-coated.trycloudflare.com/api' }}
-          USE_MOCKS: ${{ github.event.inputs.use_mocks || 'false' }}
         run: |
-          echo "Building iOS for Simulator with Base URL: $BASE_URL"
+          BASE_URL="${{ inputs.base_url }}"
+          if [ -z "$BASE_URL" ]; then
+            BASE_URL="https://wright-expansys-eco-coated.trycloudflare.com/api"
+          fi
+          USE_MOCKS="${{ inputs.use_mocks }}"
+          if [ -z "$USE_MOCKS" ]; then
+            USE_MOCKS="false"
+          fi
+          echo "Building iOS for Simulator with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
           flutter build ios --simulator \
             --dart-define=USE_MOCKS="$USE_MOCKS" \
             --dart-define=BASE_URL="$BASE_URL"
