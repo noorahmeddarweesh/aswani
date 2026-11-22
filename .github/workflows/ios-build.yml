@@ -1,0 +1,90 @@
+name: iOS Cloud Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "API Base URL"
+        required: false
+        default: "https://wright-expansys-eco-coated.trycloudflare.com/api"
+      use_mocks:
+        description: "Use Mocks (true/false)"
+        required: false
+        default: "false"
+  push:
+    branches: [main, "Sprint-*"]
+    paths: ["mobile/**", ".github/workflows/ios-build.yml"]
+
+defaults:
+  run:
+    working-directory: mobile
+
+jobs:
+  build-ios:
+    name: Build iOS IPA & Simulator
+    runs-on: macos-14
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate localizations
+        run: flutter gen-l10n
+
+      # 1. Build Physical Device Release (Unsigned IPA for Sideloadly / AltStore)
+      - name: Build iOS Release (Device)
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || 'https://wright-expansys-eco-coated.trycloudflare.com/api' }}
+          USE_MOCKS: ${{ github.event.inputs.use_mocks || 'false' }}
+        run: |
+          echo "Building iOS for physical devices with Base URL: $BASE_URL"
+          flutter build ios --release --no-codesign \
+            --dart-define=USE_MOCKS="$USE_MOCKS" \
+            --dart-define=BASE_URL="$BASE_URL"
+
+      - name: Package Unsigned IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/ios/iphoneos/Runner.app build/Payload/
+          cd build
+          zip -r aswani-ios-unsigned.ipa Payload
+          cd ..
+
+      # 2. Build iOS Simulator (for Appetize.io browser testing)
+      - name: Build iOS Simulator
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || 'https://wright-expansys-eco-coated.trycloudflare.com/api' }}
+          USE_MOCKS: ${{ github.event.inputs.use_mocks || 'false' }}
+        run: |
+          echo "Building iOS for Simulator with Base URL: $BASE_URL"
+          flutter build ios --simulator \
+            --dart-define=USE_MOCKS="$USE_MOCKS" \
+            --dart-define=BASE_URL="$BASE_URL"
+          cd build/ios/iphonesimulator
+          zip -r ../../aswani-ios-simulator.zip Runner.app
+          cd ../../
+
+      # 3. Upload Artifacts to GitHub Actions
+      - name: Upload Unsigned IPA (For Physical iPhone Sideloading)
+        uses: actions/upload-artifact@v4
+        with:
+          name: aswani-ios-unsigned-ipa
+          path: mobile/build/aswani-ios-unsigned.ipa
+          retention-days: 14
+
+      - name: Upload Simulator ZIP (For Appetize.io Browser Testing)
+        uses: actions/upload-artifact@v4
+        with:
+          name: aswani-ios-simulator-zip
+          path: mobile/build/aswani-ios-simulator.zip
+          retention-days: 14
