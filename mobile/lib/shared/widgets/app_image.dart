@@ -57,7 +57,9 @@ class AppImage extends StatelessWidget {
 
     // Optimize remote Unsplash images to fetch responsive WebP/JPEG instead of raw 3MB+ camera files
     String networkUrl = path;
-    if (network && networkUrl.contains('images.unsplash.com') && !networkUrl.contains('w=')) {
+    if (network &&
+        networkUrl.contains('images.unsplash.com') &&
+        !networkUrl.contains('w=')) {
       final delimiter = networkUrl.contains('?') ? '&' : '?';
       networkUrl = '$networkUrl${delimiter}w=800&auto=format&q=75';
     }
