@@ -12,7 +12,7 @@ set -euo pipefail
 
 MODE="${1:-release}"
 APP_ID="1:297721741384:android:d1f45cd80aac04191c187d"
-GROUPS="android-testers"
+TESTERS="fatmanazieh0@gmail.com,haddert102@gmail.com,mariamhussien3110@gmail.com,minasamoil205@gmail.com,noorahmed2703@gmail.com,nourhankhal3d@gmail.com,realitymawada9@gmail.com"
 RELEASE_NOTES="${2:-Aswani build $(date '+%Y-%m-%d %H:%M')}"
 BASE_URL="${3:-https://criteria-kindness-unfasten.ngrok-free.dev/api}"
 USE_MOCKS="false"
@@ -46,7 +46,7 @@ fi
 echo -e "\n[2/3] Distributing APK to Firebase App Distribution..."
 firebase appdistribution:distribute "$APK_PATH" \
     --app "$APP_ID" \
-    --groups "$GROUPS" \
+    --testers "$TESTERS" \
     --release-notes "$RELEASE_NOTES"
 
 echo -e "\n=========================================================="

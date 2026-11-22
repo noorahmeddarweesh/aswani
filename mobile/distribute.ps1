@@ -14,7 +14,9 @@ param(
 
     [string]$AppId = "1:297721741384:android:d1f45cd80aac04191c187d",
 
-    [string]$Groups = "android-testers",
+    [string]$Groups = "",
+
+    [string]$Testers = "fatmanazieh0@gmail.com,haddert102@gmail.com,mariamhussien3110@gmail.com,minasamoil205@gmail.com,noorahmed2703@gmail.com,nourhankhal3d@gmail.com,realitymawada9@gmail.com",
 
     [string]$ReleaseNotes = "Aswani build $(Get-Date -Format 'yyyy-MM-dd HH:mm')",
 
@@ -79,9 +81,15 @@ $DistributeArgs = @(
     "appdistribution:distribute",
     $ApkPath,
     "--app", $AppId,
-    "--groups", $Groups,
     "--release-notes", $ReleaseNotes
 )
+
+if ($Groups) {
+    $DistributeArgs += @("--groups", $Groups)
+}
+if ($Testers) {
+    $DistributeArgs += @("--testers", $Testers)
+}
 
 & firebase @DistributeArgs
 
