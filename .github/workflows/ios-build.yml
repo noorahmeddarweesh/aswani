@@ -13,7 +13,6 @@ on:
         default: "false"
   push:
     branches: [main, "Sprint-*"]
-    paths: ["mobile/**", ".github/workflows/ios-build.yml"]
 
 defaults:
   run:
@@ -21,9 +20,9 @@ defaults:
 
 jobs:
   build-ios:
-    name: Build iOS IPA & Simulator
+    name: Build iPhone Release IPA
     runs-on: macos-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -41,7 +40,7 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      # 1. Build Physical Device Release (Unsigned IPA for Sideloadly / AltStore)
+      # Build Physical iPhone Device Release (Unsigned IPA for Sideloadly)
       - name: Build iOS Release (Device)
         run: |
           BASE_URL="${{ inputs.base_url }}"
@@ -52,7 +51,7 @@ jobs:
           if [ -z "$USE_MOCKS" ]; then
             USE_MOCKS="false"
           fi
-          echo "Building iOS for physical devices with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
+          echo "Building iOS for physical iPhone with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
           flutter build ios --release --no-codesign \
             --dart-define=USE_MOCKS="$USE_MOCKS" \
             --dart-define=BASE_URL="$BASE_URL"
@@ -65,36 +64,10 @@ jobs:
           zip -r aswani-ios-unsigned.ipa Payload
           cd ..
 
-      # 2. Build iOS Simulator (for Appetize.io browser testing)
-      - name: Build iOS Simulator
-        run: |
-          BASE_URL="${{ inputs.base_url }}"
-          if [ -z "$BASE_URL" ]; then
-            BASE_URL="https://criteria-kindness-unfasten.ngrok-free.dev/api"
-          fi
-          USE_MOCKS="${{ inputs.use_mocks }}"
-          if [ -z "$USE_MOCKS" ]; then
-            USE_MOCKS="false"
-          fi
-          echo "Building iOS for Simulator with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
-          flutter build ios --simulator \
-            --dart-define=USE_MOCKS="$USE_MOCKS" \
-            --dart-define=BASE_URL="$BASE_URL"
-          cd build/ios/iphonesimulator
-          zip -r ../../aswani-ios-simulator.zip Runner.app
-          cd ../../
-
-      # 3. Upload Artifacts to GitHub Actions
+      # Upload IPA Artifact to GitHub Actions
       - name: Upload Unsigned IPA (For Physical iPhone Sideloading)
         uses: actions/upload-artifact@v4
         with:
           name: aswani-ios-unsigned-ipa
           path: mobile/build/aswani-ios-unsigned.ipa
-          retention-days: 14
-
-      - name: Upload Simulator ZIP (For Appetize.io Browser Testing)
-        uses: actions/upload-artifact@v4
-        with:
-          name: aswani-ios-simulator-zip
-          path: mobile/build/aswani-ios-simulator.zip
           retention-days: 14

@@ -54,6 +54,14 @@ class AppImage extends StatelessWidget {
       if (borderRadius == null) return placeholder;
       return ClipRRect(borderRadius: borderRadius!, child: placeholder);
     }
+
+    // Optimize remote Unsplash images to fetch responsive WebP/JPEG instead of raw 3MB+ camera files
+    String networkUrl = path;
+    if (network && networkUrl.contains('images.unsplash.com') && !networkUrl.contains('w=')) {
+      final delimiter = networkUrl.contains('?') ? '&' : '?';
+      networkUrl = '$networkUrl${delimiter}w=800&auto=format&q=75';
+    }
+
     final image = picked && !kIsWeb
         ? Image.file(
             File(path.replaceFirst('file://', '')),
@@ -67,8 +75,9 @@ class AppImage extends StatelessWidget {
           )
         : network
         ? Image.network(
-            path,
+            networkUrl,
             fit: fit,
+            cacheWidth: 800,
             width: double.infinity,
             height: double.infinity,
             semanticLabel: semanticLabel,
