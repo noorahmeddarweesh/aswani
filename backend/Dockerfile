@@ -29,5 +29,5 @@ USER appuser
 
 EXPOSE 8000
 
-# Run migrations at startup, then launch uvicorn
-CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'"]
+# Run migrations at startup (ignore errors if tables already exist), then launch uvicorn
+CMD ["sh", "-c", "(alembic upgrade head || true) && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'"]
