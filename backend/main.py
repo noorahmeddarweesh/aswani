@@ -102,8 +102,9 @@ def create_app() -> FastAPI:
         app.include_router(r)
 
     # ── Health check ──────────────────────────────────────────────────────────
+    @app.get("/", tags=["System"])
     @app.get("/health", tags=["System"])
-    @app.get("/api/health", tags=["System"], summary="Health check for Render")
+    @app.get("/api/health", tags=["System"], summary="Health check")
     def health(request: Request) -> dict:
         return ok({"status": "ok", "version": app.version, "env": settings.APP_ENV})
 
