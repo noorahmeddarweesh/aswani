@@ -1,24 +1,9 @@
-# Community hub
+# Community
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 4 or later.
-**Owner:** _(add your name when you take this feature)_
+**Status:** Sprint 2.
+**Owner:** Person B (Culture & Community).
+**Contract:** API Contract v0.3, section "Person B".
 
-Questions and answers, replies, upvotes, local advice.
+**Screens:** Feed with a header that hides on scroll and comes back on a small scroll up, story circles that open full-screen stories (most appreciated moments of each theme, contract v0.3 `sort=top`), comments and appreciations sheets, double tap to appreciate, New post (camera or gallery from "Your moment"), Post details, My posts.
 
-## Where things go
-
-| Folder | Put here |
-| --- | --- |
-| `data/models/` | DTOs exactly like the API contract (`community_*_dto.dart`) |
-| `data/datasources/` | `community_remote_datasource.dart` (dio) and `community_mock_datasource.dart` |
-| `data/mappers/` | DTO to Entity conversion, one place only |
-| `data/repositories/` | `community_repository_impl.dart` |
-| `domain/entities/` | Clean app models (camelCase, immutable) |
-| `domain/repositories/` | Abstract `CommunityRepository`: the interface the UI depends on |
-| `presentation/screens/` | One file per screen |
-| `presentation/widgets/` | Widgets used only by this feature |
-| `presentation/viewmodels/` | One Riverpod Notifier per screen |
-
-Delete the `.gitkeep` file in a folder when you add the first real file to it.
-Read `docs/ARCHITECTURE.md` before starting.
+**Routes:** /community (tab), /community/new, /community/posts/:id, /community/highlights/:id, /community/mine (registered in `community_routes.dart`).

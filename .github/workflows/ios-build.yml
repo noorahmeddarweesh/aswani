@@ -1,0 +1,73 @@
+name: iOS Cloud Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "API Base URL"
+        required: false
+        default: "https://criteria-kindness-unfasten.ngrok-free.dev/api"
+      use_mocks:
+        description: "Use Mocks (true/false)"
+        required: false
+        default: "false"
+  push:
+    branches: [main, "Sprint-*"]
+
+defaults:
+  run:
+    working-directory: mobile
+
+jobs:
+  build-ios:
+    name: Build iPhone Release IPA
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate localizations
+        run: flutter gen-l10n
+
+      # Build Physical iPhone Device Release (Unsigned IPA for Sideloadly)
+      - name: Build iOS Release (Device)
+        run: |
+          BASE_URL="${{ inputs.base_url }}"
+          if [ -z "$BASE_URL" ]; then
+            BASE_URL="https://criteria-kindness-unfasten.ngrok-free.dev/api"
+          fi
+          USE_MOCKS="${{ inputs.use_mocks }}"
+          if [ -z "$USE_MOCKS" ]; then
+            USE_MOCKS="false"
+          fi
+          echo "Building iOS for physical iPhone with Base URL: $BASE_URL, USE_MOCKS: $USE_MOCKS"
+          flutter build ios --release --no-codesign \
+            --dart-define=USE_MOCKS="$USE_MOCKS" \
+            --dart-define=BASE_URL="$BASE_URL"
+
+      - name: Package Unsigned IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/ios/iphoneos/Runner.app build/Payload/
+          cd build
+          zip -r aswani-ios-unsigned.ipa Payload
+          cd ..
+
+      # Upload IPA Artifact to GitHub Actions
+      - name: Upload Unsigned IPA (For Physical iPhone Sideloading)
+        uses: actions/upload-artifact@v4
+        with:
+          name: aswani-ios-unsigned-ipa
+          path: mobile/build/aswani-ios-unsigned.ipa
+          retention-days: 14

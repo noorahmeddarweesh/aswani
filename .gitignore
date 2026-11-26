@@ -17,3 +17,5 @@ Thumbs.db
 key.properties
 google-services.json
 GoogleService-Info.plist
+cloudflared.exe
+ngrok.exe

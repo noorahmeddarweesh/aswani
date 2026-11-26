@@ -34,6 +34,26 @@ flutter run --dart-define=USE_MOCKS=true
 flutter run --dart-define=USE_MOCKS=false --dart-define=BASE_URL=https://<backend>/api
 ```
 
+With `USE_MOCKS=false` every feature uses its `*_remote_datasource.dart`, built
+from `docs/api-contract/openapi.yaml`. The shared HTTP code is in
+`lib/core/network/`: the client, the Bearer token with automatic refresh, and
+error mapping to the contract's codes. Debug builds may use plain `http` to a
+local backend (`http://10.0.2.2:3000/api` from the Android emulator).
+
+## Working in parallel (Sprint 2)
+
+- **Routes:** each feature registers its routes in its own
+  `lib/features/<feature>/<feature>_routes.dart` (`*TabRoutes` inside a tab,
+  `*RootRoutes` full screen). `app_router.dart` only puts the lists together.
+- **Strings:** start new keys with the feature (`community…`, `culture…`,
+  `guides…`, `report…`) and run `dart run tool/sort_arb.dart` before a pull
+  request; sorted files rarely conflict.
+- **Error codes:** one registry, `lib/core/errors/error_messages.dart`; a new
+  contract code gets its message there first.
+- **Photo uploads:** `buildFormData()` in `lib/core/network/upload.dart` and the
+  shared `PhotoPickerField` (max 6 photos, 5 MB, jpg/png/webp).
+- Shared files (router, error codes, Home) change in a small separate PR.
+
 ## Rules that CI enforces
 
 - Colours come only from the theme (`context.colors`, `context.palette`).

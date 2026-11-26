@@ -1,27 +1,839 @@
 {
   "@@locale": "en",
+  "agreeTerms": "I agree to the terms and privacy policy",
   "appTitle": "Aswani",
-  "galleryTitle": "Design system",
-  "@galleryTitle": {"description": "Internal screen that previews the theme."},
+  "authTagline": "Welcome to Aswan",
+  "back": "Back",
+  "backToHome": "Back to home",
+  "bookmarkAdd": "Save place",
+  "bookmarkRemove": "Remove from saved",
+  "brandName": "ASWANI",
+  "cancel": "Cancel",
+  "categoryCulture": "Culture",
+  "categoryFood": "Food & cafés",
+  "categoryLocal": "Local experiences",
+  "categoryPlaces": "Places",
+  "categoryServices": "Services",
+  "comingSoonBody": "We're building this part of ASWANI. Check back soon.",
+  "comingSoonTitle": "Coming soon",
+  "communityAddLocation": "Add location",
+  "communityAddPhotosSubtitle": "Choose up to 6 photos",
+  "communityAddPhotosTitle": "Add your travel photos",
+  "communityAppreciations": "{count, plural, =1{1 appreciation} other{{count} appreciations}}",
+  "@communityAppreciations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityBackToTop": "Back to the top",
+  "communityCaptionHint": "What's the story behind this moment?",
+  "communityCaptionLabel": "Write a caption",
+  "communityCatFood": "Food",
+  "communityCatLocalExperience": "Local experience",
+  "communityCatNile": "Nile",
+  "communityCatNubian": "Nubian",
+  "communityCatOther": "Other",
+  "communityComment": "Comment",
+  "communityCommentHint": "Add a thoughtful comment…",
+  "communityComments": "Comments",
+  "communityDeleteComment": "Delete comment",
+  "communityDeleteCommentBody": "This cannot be undone.",
+  "communityDeleteCommentTitle": "Delete this comment?",
+  "communityDeletePost": "Delete post",
+  "communityDeletePostBody": "It will be removed from the community. This cannot be undone.",
+  "communityDeletePostTitle": "Delete this post?",
+  "communityEmpty": "No posts here yet. Share the first moment!",
+  "communityEyebrow": "FROM PEOPLE, FOR PEOPLE",
+  "communityLike": "Appreciate",
+  "communityLikesEmpty": "No appreciations yet.",
+  "communityLikesTitle": "Appreciations",
+  "communityLocationHint": "e.g. Aswan Corniche",
+  "communityMomentCamera": "Take a photo",
+  "communityMomentGallery": "Choose from gallery",
+  "communityMore": "More options",
+  "communityMyPosts": "My posts",
+  "communityMyPostsEmpty": "You haven't posted yet.",
+  "communityNewPost": "New post",
+  "communityNoComments": "No comments yet. Be the first.",
+  "communityPhotoOf": "Photo {index} of {count}",
+  "@communityPhotoOf": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityPostCategory": "Post category",
+  "communityPostDeleted": "Post deleted.",
+  "communityPosted": "Your post is live.",
+  "communityPostTitle": "From the community",
+  "communityPublish": "Publish",
+  "communityPublishToCommunity": "Publish to community",
+  "communityRespectNote": "Share respectfully and get permission from people in your photos.",
+  "communitySave": "Save post",
+  "communitySendComment": "Send comment",
+  "communityShareText": "{caption}\n\nShared from Aswani",
+  "@communityShareText": {
+    "placeholders": {
+      "caption": {
+        "type": "String"
+      }
+    }
+  },
+  "communityTitle": "Aswani community",
+  "communityUnlike": "Remove appreciation",
+  "communityUnsave": "Remove from saved",
+  "communityViewComments": "{count, plural, =1{View 1 comment} other{View all {count} comments}}",
+  "@communityViewComments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityYourMoment": "Your moment",
+  "continueLabel": "Continue",
+  "contributeAddActivity": "Add an activity",
+  "contributeAddress": "Address or location",
+  "contributeAddressHint": "Area or nearest landmark",
+  "contributeBody": "Share your business or a local activity and help people discover more of Aswan.",
+  "contributeCatCafe": "Café",
+  "contributeCatClinic": "Clinic",
+  "contributeCategory": "Category",
+  "contributeCatEntertainment": "Entertainment",
+  "contributeCatMaintenance": "Maintenance",
+  "contributeCatOther": "Other",
+  "contributeCatRestaurant": "Restaurant",
+  "contributeChooseCategory": "Choose a category",
+  "contributeContact": "Contact number (optional)",
+  "contributeContactNote": "Contact details or hours will not be shown as verified before review.",
+  "contributeCurrentPhotos": "Current photos",
+  "contributeDescription": "Short description",
+  "contributeDescriptionHint": "What makes this place special?",
+  "contributeDetailsTitle": "Activity details",
+  "contributeEdit": "Edit",
+  "contributeEdited": "Changes sent. Your activity is under review again.",
+  "contributeEditNote": "After you edit, your activity is reviewed again before the change appears.",
+  "contributeEditSubmit": "Send changes",
+  "contributeEditTitle": "Edit activity",
+  "contributeErrorName": "Enter the name (at least 2 letters).",
+  "contributeErrorPhone": "Enter an Egyptian mobile number, e.g. 01012345678.",
+  "contributeErrorRequired": "This field is required.",
+  "contributeEyebrow": "A COMMUNITY-BUILT GUIDE",
+  "contributeMine": "Added activities",
+  "contributeMineEmpty": "Places you add will appear here.",
+  "contributeName": "Activity name",
+  "contributeNameHint": "Name people know it by",
+  "contributeNoPhotos": "No photos",
+  "contributePhotosSubtitle": "Optional • up to 6 photos",
+  "contributePhotosTitle": "Add clear photos",
+  "contributePoints": "+{points} points",
+  "@contributePoints": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "contributePreviewBody": "Check the details before you send them for review.",
+  "contributePreviewSubmit": "Preview & submit",
+  "contributePreviewTitle": "Preview",
+  "contributeReceivedBody": "Thank you for helping people discover more of Aswan. We'll review the information before it appears in the directory.",
+  "contributeReceivedTitle": "Contribution received",
+  "contributeRemovePhoto": "Remove photo",
+  "contributeReviewedNote": "Every contribution is reviewed before publication.",
+  "contributeStatusAccepted": "Published",
+  "contributeStatusPending": "Under review",
+  "contributeStatusRejected": "Not accepted",
+  "contributeStep": "Step {current} of {total}",
+  "@contributeStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "contributeSubmit": "Submit contribution",
+  "contributeTitle": "Make your place part of ASWANI",
+  "contributeTrackAction": "View my activities",
+  "contributeTrackNote": "You can follow it anytime from Profile › Added activities.",
+  "createAccountButton": "Create account",
+  "createAccountLink": "Create an account",
+  "cultureAllStories": "All stories",
+  "cultureBrowseByTheme": "Browse by theme",
+  "cultureEmpty": "No stories in this theme yet.",
+  "cultureEyebrow": "MEMORY OF THE PLACE",
+  "cultureHeadline": "Stories that live on the banks of the Nile",
+  "cultureIntro": "Get closer to the heritage, the people and the details that make Aswan who it is.",
+  "cultureMinRead": "{minutes} min read",
+  "@cultureMinRead": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "cultureReadStory": "Read story",
+  "cultureSample": "Sample",
+  "cultureSampleContent": "Sample content",
+  "cultureSampleEditorial": "Sample editorial",
+  "cultureSave": "Save story",
+  "cultureSaved": "Saved",
+  "cultureSavedEmpty": "Stories you save will appear here.",
+  "cultureSavedReads": "Saved reads",
+  "cultureSelectedReads": "Selected reads",
+  "cultureShareText": "{title}\n\nRead it on Aswani",
+  "@cultureShareText": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cultureStoryTitle": "Cultural story",
+  "cultureThemeAncientHistory": "Ancient history",
+  "cultureThemeArtsCrafts": "Arts & crafts",
+  "cultureThemeNubianHeritage": "Nubian heritage",
+  "cultureThemeTraditions": "Traditions",
+  "cultureUnsave": "Remove from saved",
+  "delete": "Delete",
+  "done": "Done",
+  "errorAlreadyApplied": "You have already applied to be a guide.",
+  "errorCommentNotFound": "This comment was removed.",
+  "errorContributionNotFound": "This contribution is no longer available.",
+  "errorDateInPast": "Choose today or a later date.",
+  "errorDeletionRequested": "You have already asked to delete your account.",
+  "errorEmailExists": "An account with this email or phone already exists",
+  "errorFileTooLarge": "Each photo must be 5 MB or less.",
+  "errorForbidden": "You can only change what you posted.",
+  "errorGuideNotFound": "This guide is no longer available.",
+  "errorInvalidCode": "This code is wrong or expired",
+  "errorInvalidCredentials": "Email, phone or password is incorrect",
+  "errorInvalidCurrentPassword": "Your current password is not correct.",
+  "errorNoConnection": "No internet connection. Check your network and try again.",
+  "errorPlaceNotFound": "This place is no longer available.",
+  "errorPostNotFound": "This post was removed.",
+  "errorServer": "Something went wrong on our side. Try again later.",
+  "errorStoryNotFound": "This story is no longer available.",
+  "errorTimeout": "The server took too long to answer. Try again.",
+  "errorTooManyPhotos": "You can add up to 6 photos.",
+  "errorUnauthorized": "Your session has ended. Please sign in again.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "errorUnsupportedFile": "Use a JPG, PNG or WEBP photo.",
+  "errorUserNotFound": "We couldn't find an account with this email or phone",
+  "errorValidation": "Please check the highlighted fields.",
+  "exploreEditorsPick": "EDITOR'S PICK",
+  "exploreEmpty": "No places match this filter yet.",
+  "exploreEyebrow": "DISCOVER YOUR WAY",
+  "exploreFilters": "Filters",
+  "explorePopular": "Popular places",
+  "exploreSearchHint": "Search places or experiences",
+  "exploreTitle": "Explore Aswan",
+  "exploreViewMap": "View map",
+  "fieldCode": "Verification code",
+  "fieldConfirmPassword": "Confirm password",
+  "fieldEmail": "Email",
+  "fieldFullName": "Full name",
+  "fieldFullNameHint": "Laila Hassan",
+  "fieldIdentifier": "Email or phone",
+  "fieldIdentifierHint": "laila@example.com",
+  "fieldNewPassword": "New password",
+  "fieldPassword": "Password",
+  "filterAll": "All",
+  "filterFood": "Food",
+  "filterHistory": "History",
+  "filterNature": "Nature",
+  "filterNubian": "Nubian villages",
+  "forgotPassword": "Forgot password?",
+  "forgotSubtitle": "Enter your email or phone and we'll send a verification code.",
+  "forgotTitle": "Reset your password",
   "galleryIntro": "Every screen is built from these tokens and components. If something here looks different from the design, fix the theme, not the screen.",
   "gallerySectionColors": "Colours",
-  "gallerySectionTypography": "Typography",
   "gallerySectionComponents": "Components",
-  "switchLanguage": "العربية",
-  "@switchLanguage": {"description": "Label of the button that switches to the OTHER language, written in that language."},
-  "switchTheme": "Switch light / dark theme",
-  "sampleEyebrow": "STEP 1 OF 8",
-  "sampleDisplay": "Discover the soul of Aswan",
-  "sampleHeadline": "Welcome back",
-  "sampleSectionTitle": "Curated for you",
-  "sampleCardTitle": "Philae Temple",
+  "gallerySectionTypography": "Typography",
+  "galleryTitle": "Design system",
+  "@galleryTitle": {
+    "description": "Internal screen that previews the theme."
+  },
+  "getStarted": "Get Started",
+  "guidesAlreadyApplied": "An application with this mobile number already exists.",
+  "guidesApplicationReceivedBody": "We'll review the information and contact you. Submission does not indicate official verification or certification.",
+  "guidesApplicationReceivedTitle": "Application received",
+  "guidesApplyIntro": "Show visitors Aswan through your local perspective. Details are reviewed before publication.",
+  "guidesApplyTitle": "Become a guide",
+  "guidesAvailabilityNoticeSubtitle": "The date is confirmed only after the guide accepts.",
+  "guidesAvailabilityNoticeTitle": "Availability is not guaranteed",
+  "guidesAvailableTourDurations": "Available tour durations",
+  "guidesBack": "Back",
+  "guidesBackToGuides": "Back to guides",
+  "guidesBackToHome": "Back to home",
+  "guidesBioHint": "Share your experience and interests...",
+  "guidesBioLabel": "Short biography *",
+  "guidesBioTooShort": "Biography must be at least 10 characters",
+  "guidesCancel": "Cancel",
+  "guidesChangePhoto": "Change photo",
+  "guidesConfirmAndSendRequest": "Confirm and send request",
+  "guidesContactLabel": "Contact details *",
+  "guidesCtaSubtitle": "Apply to offer guide services",
+  "guidesCtaTitle": "Know Aswan by heart?",
+  "guidesDetailsDurationLabelFewHours": "Few hours",
+  "guidesDetailsDurationLabelMultipleDays": "Multiple days",
+  "guidesDetailsDurationLabelOneDay": "One day",
+  "guidesDetailsSpecialtyLabelHistoricalSites": "Historical walks",
+  "guidesDone": "Done",
+  "guidesDurationLabelFewHours": "Few hours",
+  "guidesDurationLabelMultipleDays": "Multiple days",
+  "guidesDurationLabelOneDay": "Full day",
+  "guidesDurationsHint": "Few hours, full day",
+  "guidesDurationsLabel": "Available durations",
+  "guidesEmptyFilter": "No guides available for this specialty.",
+  "guidesEmptySearch": "No guides match your search.",
+  "guidesErrorLoading": "Failed to load guides. Please try again.",
+  "guidesEyebrow": "LOCAL KNOWLEDGE",
+  "guidesFieldRequired": "This field is required",
+  "guidesFileTooLarge": "Profile photo must be less than 5 MB.",
+  "guidesFilterAction": "Filter →",
+  "guidesFilterAll": "All",
+  "guidesFullNameHint": "Name shown to visitors",
+  "guidesFullNameLabel": "Full name *",
+  "guidesGeneralValidationError": "Please correct the highlighted errors.",
+  "guidesGroupSize": "{count, plural, =1{1 person} other{{count} people}}",
+  "@guidesGroupSize": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "guidesHoursCount": "{hours, plural, =1{1 hour} other{{hours} hours}}",
+  "@guidesHoursCount": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guidesIllustrativeNote": "Illustrative information",
+  "guidesInvalidPhone": "Enter a valid Egyptian mobile number (e.g. 010xxxxxxxx)",
+  "guidesLanguageLabelAr": "Arabic",
+  "guidesLanguageLabelDe": "German",
+  "guidesLanguageLabelEn": "English",
+  "guidesLanguageLabelEs": "Spanish",
+  "guidesLanguageLabelFr": "French",
+  "guidesLanguageLabelIt": "Italian",
+  "guidesLanguagesHint": "Arabic, English",
+  "guidesLanguagesJoiner": " & ",
+  "guidesLanguagesLabel": "Languages *",
+  "guidesMyRequestsEmpty": "No guide requests yet. Pick a guide and tell them when you're coming.",
+  "guidesMyRequestsFind": "Find a guide",
+  "guidesNotFound": "Guide not found.",
+  "guidesNoticeSubtitle": "The guide reviews details before any time is confirmed.",
+  "guidesNoticeTitle": "A request, not a confirmed booking",
+  "guidesProfilePhoto": "Profile photo",
+  "guidesRemovePhoto": "Remove photo",
+  "guidesRequestAdditionalNotes": "Additional notes (optional)",
+  "guidesRequestCustomDurationLabel": "Custom hours",
+  "guidesRequestCustomHoursRequired": "Custom duration must be between 1 and 12 hours",
+  "guidesRequestDateInPast": "Date cannot be in the past",
+  "guidesRequestDateRequired": "Date is required",
+  "guidesRequestDurationLabelCustom": "Custom",
+  "guidesRequestDurationLabelFewHours": "A few hours",
+  "guidesRequestDurationLabelOneDay": "One day",
+  "guidesRequestDurationLabelThreeDays": "3 days",
+  "guidesRequestDurationLabelTwoDays": "Two days",
+  "guidesRequestGroupSize": "Group size",
+  "guidesRequestIntro": "Tell us what fits your plans. Choose exactly how long you need.",
+  "guidesRequestNotesHint": "Tell the guide what matters to you...",
+  "guidesRequestPreferredDate": "Preferred date",
+  "guidesRequestPreferredLanguage": "Preferred language",
+  "guidesRequestReviewButton": "Review request",
+  "guidesRequestScreenTitle": "Request a guide",
+  "guidesRequestSelectDate": "Select date",
+  "guidesRequestStartTime": "Start time",
+  "guidesRequestStatusAccepted": "Accepted",
+  "guidesRequestStatusPending": "Waiting for the guide",
+  "guidesRequestStatusRejected": "Declined",
+  "guidesRequestSubmittedBody": "Your request is under review. It is not a confirmed booking yet; we'll notify you when the guide responds.",
+  "guidesRequestSubmittedTitle": "Request submitted",
+  "guidesRequestThisGuide": "Request this guide",
+  "guidesRequestTourDuration": "Tour duration",
+  "guidesRetry": "Try again",
+  "guidesReviewDateLabel": "Date",
+  "guidesReviewDurationCustom": "Custom • {duration}",
+  "@guidesReviewDurationCustom": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "guidesReviewDurationFormattedFewHours": "A few hours",
+  "guidesReviewDurationFormattedOneDay": "One day • 6 hours",
+  "guidesReviewDurationFormattedThreeDays": "3 days",
+  "guidesReviewDurationFormattedTwoDays": "Two days",
+  "guidesReviewDurationLabel": "Duration",
+  "guidesReviewGroupLabel": "Group",
+  "guidesReviewInterestsLabel": "Interests",
+  "guidesReviewLanguageLabel": "Language",
+  "guidesReviewSampleProfile": "Sample profile",
+  "guidesReviewScreenTitle": "Review request",
+  "guidesSampleProfile": "SAMPLE PROFILE",
+  "guidesSampleProfileNotVerified": "SAMPLE PROFILE • NOT VERIFIED",
+  "guidesSearchHint": "Search by name or specialty",
+  "guidesSelectAtLeastOne": "Please select at least one option",
+  "guidesSelectDurations": "Select available durations",
+  "guidesSelectedGuideEyebrow": "SELECTED GUIDE",
+  "guidesSelectLanguages": "Select languages",
+  "guidesSelectSpecialties": "Select tour specialties",
+  "guidesShare": "Share",
+  "guidesShareText": "{name}, local guide in Aswan\n\nFind them on Aswani",
+  "@guidesShareText": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guidesSpecialties": "Specialties",
+  "guidesSpecialtiesHint": "Nubian culture, Nile...",
+  "guidesSpecialtiesLabel": "Tour specialties *",
+  "guidesSpecialtyLabelHistoricalSites": "Historical sites",
+  "guidesSpecialtyLabelLocalExperiences": "Local experiences",
+  "guidesSpecialtyLabelNile": "Nile",
+  "guidesSpecialtyLabelNubianCulture": "Nubian culture",
+  "guidesSpecialtyLabelPhotography": "Photography",
+  "guidesSubmitApplication": "Submit application",
+  "guidesSubtitle": "Find someone who knows its stories, culture, and hidden places.",
+  "guidesSuggestedSectionTitle": "Suggested guides",
+  "guidesTitle": "Explore Aswan with a local guide",
+  "guidesUnsupportedFileType": "Only JPG, PNG, and WEBP formats are supported.",
+  "haveAccount": "Already have an account?",
+  "hidePassword": "Hide password",
+  "homeAddActivity": "Add your activity",
+  "homeContributeBody": "Add a local place or help keep information accurate.",
+  "homeContributeEyebrow": "POWERED BY COMMUNITY",
+  "homeContributeTitle": "Contribute to Aswan's guide",
+  "homeCurated": "Curated for you",
+  "homeExplore": "Explore",
+  "homeGreetingAfternoon": "Good afternoon, {name}",
+  "@homeGreetingAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingEvening": "Good evening, {name}",
+  "@homeGreetingEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingMorning": "Good morning, {name}",
+  "@homeGreetingMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGuideAction": "View profile",
+  "homeGuideBody": "Explore Aswan with someone who knows its stories.",
+  "homeGuideEyebrow": "SAMPLE PROFILE",
+  "homeGuideName": "Youssef El Nuby",
+  "homeGuides": "Local guides",
+  "homeHeroBody": "Discover nearby places and stories that shaped the soul of Aswan.",
+  "homeHeroEyebrow": "NEAR YOU",
+  "homeHeroTitle": "Let the Nile lead your story",
+  "homeLocation": "Aswan, Egypt",
+  "homeReportPlace": "Report a place",
+  "homeSearchHint": "Where would you like to explore?",
+  "homeStoryAction": "Read the story",
+  "homeStoryEyebrow": "NUBIAN HERITAGE",
+  "homeStoryTitle": "Stories that live along the Nile",
+  "interestCommunity": "Community events",
+  "interestFood": "Food & cafés",
+  "interestHistorical": "Historical places",
+  "interestLocal": "Local experiences",
+  "interestNature": "Nature & Nile",
+  "interestNubian": "Nubian culture",
+  "interestPhotography": "Photography",
+  "interestTraditionalFood": "Traditional food",
+  "langArabicSubtitle": "اللغة الافتراضية",
+  "langArabicTitle": "العربية",
+  "langEnglishSubtitle": "English interface",
+  "langEnglishTitle": "English",
+  "mockCodeHint": "Demo code: 1234",
+  "mockSignInHint": "Demo account: laila@example.com / Aswan2026",
+  "navCommunity": "Community",
+  "navCulture": "Culture",
+  "navExplore": "Explore",
+  "navGuides": "Local guides",
+  "navHome": "Home",
+  "needActivitiesSubtitle": "What's happening and when",
+  "needActivitiesTitle": "Activities & events",
+  "needFindingPlacesSubtitle": "Destinations that fit me",
+  "needFindingPlacesTitle": "Finding places",
+  "needGettingAroundSubtitle": "Understanding transport",
+  "needGettingAroundTitle": "Getting around",
+  "needLocalGuidesSubtitle": "Someone who knows the city",
+  "needLocalGuidesTitle": "Local guides",
+  "needLocalRecsSubtitle": "Suggestions from Aswan",
+  "needLocalRecsTitle": "Local recommendations",
+  "needServicesSubtitle": "Everyday practical needs",
+  "needServicesTitle": "Local services",
+  "next": "Next",
+  "noAccount": "New to ASWANI?",
+  "notifications": "Notifications",
+  "offlineBanner": "You're offline. Some content may be out of date.",
+  "onboarding1Body": "Explore the Nile, discover remarkable destinations, and experience the charm of Southern Egypt.",
+  "onboarding1Label": "The Nile, Aswan",
+  "onboarding1Title": "Discover the Beauty of Aswan",
+  "onboarding2Body": "Explore Nubian traditions, local experiences, and the stories that make Aswan unique.",
+  "onboarding2Label": "Colors that tell stories",
+  "onboarding2Title": "Discover Stories, Culture & Heritage",
+  "onboarding3Body": "Discover places, connect with local people, find trusted guides, and explore local services.",
+  "onboarding3Label": "Places & experiences",
+  "onboarding3Title": "Everything You Need, All in One Place",
+  "onboardingEyebrow": "MEET ASWAN • {number}",
+  "@onboardingEyebrow": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "optional": "Optional",
+  "passwordUpdated": "Password updated. Sign in with your new password.",
+  "personalizationSave": "Save changes",
+  "personalizationSaved": "Your preferences were saved.",
+  "personaNewcomerSubtitle": "Newcomer",
+  "personaNewcomerTitle": "I'm new to Aswan",
+  "personaResidentSubtitle": "Local resident",
+  "personaResidentTitle": "I live in Aswan",
+  "personaVisitorSubtitle": "Tourist",
+  "personaVisitorTitle": "I'm visiting Aswan",
+  "photosAdd": "Add photos",
+  "photosChoose": "Choose photos",
+  "photosLimit": "Choose up to {count} photos",
+  "@photosLimit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photosRemove": "Remove photo",
+  "placeAboutTitle": "About this place",
+  "placeBack": "Back",
+  "placeBookmarkAdd": "Save place",
+  "placeBookmarkRemove": "Remove bookmark",
+  "placeEyebrow": "HISTORICAL PLACE",
+  "placeGenericError": "Something went wrong. Please try again.",
+  "placeMyReports": "My place reports",
+  "placeMyReportsEmpty": "You haven't reported a place yet. Spot something wrong on a place page? Tap \"Report\".",
+  "placeNotFound": "Place not found.",
+  "placeReasonLabelIncorrectInformation": "Incorrect information",
+  "placeReasonLabelIncorrectLocation": "Incorrect location",
+  "placeReasonLabelNotExist": "Place does not exist",
+  "placeReasonLabelOther": "Other",
+  "placeReasonLabelPermanentlyClosed": "Permanently closed",
+  "placeReasonLabelTemporarilyClosed": "Temporarily closed",
+  "placeReportAddPhoto": "Add supporting photo",
+  "placeReportContinue": "Continue",
+  "placeReportDetailsHint": "Add details that help the review team...",
+  "placeReportDetailsRequired": "Please provide details about what needs updating",
+  "placeReportDetailsTitle": "Report details",
+  "placeReportDetailsTooLong": "Details must be 1000 characters or fewer",
+  "placeReportDoneButton": "Done",
+  "placeReportDoneSubtitle": "Your report is with the review team. Points are awarded only if the information is accepted.",
+  "placeReportEyebrow": "HELP IMPROVE THE GUIDE",
+  "placeReportNoticeSubtitle": "Points are awarded only after acceptance.",
+  "placeReportNoticeTitle": "Every report is reviewed",
+  "placeReportPendingReview": "Pending review",
+  "placeReportPhotoOptional": "Optional",
+  "placeReportPhotoTooLarge": "Photo exceeds 5 MB limit",
+  "placeReportPhotoUnsupported": "Only JPG, PNG, and WebP photos are supported",
+  "placeReportPointsPending": "points pending",
+  "placeReportRemovePhoto": "Remove photo",
+  "placeReportRowText": "See something inaccurate? Report it",
+  "placeReportSelectedPlace": "SELECTED PLACE",
+  "placeReportStatusAccepted": "Accepted",
+  "placeReportStatusPending": "Under review",
+  "placeReportStatusRejected": "Not accepted",
+  "placeReportStepPoints": "Points after acceptance",
+  "placeReportStepSubmitted": "Submitted",
+  "placeReportStepUnderReview": "Under review",
+  "placeReportSubmit": "Submit report",
+  "placeReportSubtitle": "Choose the reason that best matches what you found.",
+  "placeReportTellUs": "Tell us what you found *",
+  "placeReportThankYou": "Thank you for helping keep ASWANI accurate",
+  "placeReportTimelineCaption": "Submitted • Under review • Points after acceptance",
+  "placeReportTitle": "Report a place",
+  "placeReportUnderReviewEyebrow": "UNDER REVIEW",
+  "placeReportWhatNeedsUpdating": "What needs updating?",
+  "placeRetry": "Try again",
+  "placeShare": "Share",
+  "placeShareCopied": "Link copied to clipboard",
+  "placeShareText": "{name}, {city}\n\nDiscover it on Aswani",
+  "@placeShareText": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "placeVisitingInfoSubtitle": "Unverified hours and prices are intentionally not shown.",
+  "placeVisitingInfoTitle": "Visiting information",
+  "profileChangePhoto": "Change profile photo",
+  "profileContributions": "My contributions",
+  "profileDetails": "Details",
+  "profileEditProfile": "Edit profile",
+  "profileFilterAll": "All",
+  "profileFilterPlaces": "Places",
+  "profileFilterStories": "Stories",
+  "profileGuideRequests": "Guide requests",
+  "profileGuideRequestsPending": "{count} pending",
+  "@profileGuideRequestsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profilePhotoUpdated": "Profile photo updated.",
+  "profilePointsEarned": "{count, plural, =1{1 point earned} other{{count} points earned}}",
+  "@profilePointsEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileReportsUnderReview": "{count, plural, =0{No reports under review} =1{1 report under review} other{{count} reports under review}}",
+  "@profileReportsUnderReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileSavedContent": "My saved content",
+  "profileSavedEmpty": "Nothing saved yet. Save a place or a story and it will appear here.",
+  "profileStatPoints": "Points",
+  "profileStatPosts": "Posts",
+  "profileStatSavedPlaces": "Saved places",
+  "profileStatSavedStories": "Saved stories",
+  "profileTitle": "Profile",
+  "profileViewAll": "View all",
+  "purposeFamilySubtitle": "Spending time with loved ones",
+  "purposeFamilyTitle": "Visiting family",
+  "purposeLivingSubtitle": "I moved or plan to stay",
+  "purposeLivingTitle": "Living in Aswan",
+  "purposeOtherSubtitle": "I'll shape my own experience",
+  "purposeOtherTitle": "Something else",
+  "purposeStudyingSubtitle": "University or a study program",
+  "purposeStudyingTitle": "Studying",
+  "purposeTourismSubtitle": "I'm exploring Aswan",
+  "purposeTourismTitle": "Tourism & discovery",
+  "purposeWorkSubtitle": "Business trip or a new role",
+  "purposeWorkTitle": "Work",
+  "resetSubtitle": "We sent a verification code. Use it to create a new password and never share it.",
+  "resetTitle": "Check your messages",
+  "retry": "Try again",
   "sampleBody": "Explore the Nile, discover remarkable destinations, and experience the charm of Southern Egypt.",
-  "sampleFieldLabel": "Email or phone",
+  "sampleCardTitle": "Philae Temple",
+  "sampleCheckbox": "I agree to the terms and privacy policy",
+  "sampleDisplay": "Discover the soul of Aswan",
+  "sampleEyebrow": "STEP 1 OF 8",
   "sampleFieldHint": "laila@example.com",
-  "samplePrimaryButton": "Continue",
-  "sampleOutlinedButton": "Add your activity",
-  "sampleTextButton": "Forgot password?",
-  "sampleOptionTitle": "I'm visiting Aswan",
+  "sampleFieldLabel": "Email or phone",
+  "sampleHeadline": "Welcome back",
   "sampleOptionSubtitle": "Tourist",
-  "sampleCheckbox": "I agree to the terms and privacy policy"
+  "sampleOptionTitle": "I'm visiting Aswan",
+  "sampleOutlinedButton": "Add your activity",
+  "samplePrimaryButton": "Continue",
+  "sampleSectionTitle": "Curated for you",
+  "sampleTextButton": "Forgot password?",
+  "save": "Save",
+  "savePassword": "Save password",
+  "seeAll": "See all",
+  "sendCode": "Send verification code",
+  "settingsAbout": "About ASWANI",
+  "settingsAccount": "ACCOUNT",
+  "settingsAppPreferences": "APP PREFERENCES",
+  "settingsChangePassword": "Change password",
+  "settingsDeleteAccount": "Delete account",
+  "settingsDeleteConfirm": "Request deletion",
+  "settingsDeleteMessage": "This will request deletion of your data. It cannot be undone once completed.",
+  "settingsDeleteTitle": "Delete account?",
+  "settingsEmailContact": "Email & contact",
+  "settingsHelp": "Help center",
+  "settingsInterests": "Interests & personalization",
+  "settingsLanguage": "App language",
+  "settingsLanguageHint": "Layout direction updates instantly",
+  "settingsLocation": "Location permissions",
+  "settingsLocationInfo": "Aswani asks for your location only when a feature needs it. You can change this any time in your phone's settings.",
+  "settingsLogOut": "Log out",
+  "settingsLogOutMessage": "You can sign in again any time with the same account.",
+  "settingsLogOutTitle": "Log out?",
+  "settingsNotifications": "Notifications",
+  "settingsPrivacy": "Privacy settings",
+  "settingsPrivacySecurity": "PRIVACY & SECURITY",
+  "settingsSecurity": "Account security",
+  "settingsSupport": "SUPPORT",
+  "settingsTerms": "Terms & privacy",
+  "settingsTitle": "Settings",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "Share",
+  "showPassword": "Show password",
+  "signInButton": "Sign in",
+  "signInSubtitle": "Sign in to continue exploring.",
+  "signInTitle": "Welcome back",
+  "signUpSubtitle": "One step closer to your personalized journey.",
+  "signUpTitle": "Create your account",
+  "skip": "Skip",
+  "startExploring": "Start exploring",
+  "stayFewDaysSubtitle": "A short visit",
+  "stayFewDaysTitle": "A few days",
+  "stayLongTermSubtitle": "Aswan is my new home",
+  "stayLongTermTitle": "Long-term",
+  "stayMonthsSubtitle": "Getting to know the city",
+  "stayMonthsTitle": "Several months",
+  "stayMonthSubtitle": "An extended stay",
+  "stayMonthTitle": "About a month",
+  "stayNotSureSubtitle": "I'm still planning",
+  "stayNotSureTitle": "Not sure yet",
+  "stayWeekSubtitle": "Time to explore",
+  "stayWeekTitle": "About a week",
+  "step1Subtitle": "Let's shape an experience that feels right for you.",
+  "step1Title": "How do you connect with Aswan?",
+  "step2Subtitle": "Choose what best describes this chapter of your journey.",
+  "step2Title": "What brings you to Aswan?",
+  "step3Subtitle": "We'll tune recommendations to the time you have.",
+  "step3Title": "How long are you staying?",
+  "step4Subtitle": "Choose what inspires you. You can change this later.",
+  "step4Title": "What would you love to discover?",
+  "step5Subtitle": "Choose one or more styles that match your pace.",
+  "step5Title": "How do you like to experience a place?",
+  "step6Subtitle": "This helps us suggest experiences that fit your group.",
+  "step6Title": "Who are you exploring with?",
+  "step7Subtitle": "Choose everything you need and we'll bring it forward.",
+  "step7Title": "What can ASWANI help with most?",
+  "step8Subtitle": "You can switch languages anytime in Settings.",
+  "step8Title": "Choose your app language",
+  "stepOf": "STEP {current} OF {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "storyClose": "Close",
+  "storyEmpty": "No moments here yet.",
+  "storyNext": "Next",
+  "storyOf": "Moment {current} of {total}",
+  "@storyOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "storyPrevious": "Previous",
+  "storyViewPost": "View post",
+  "styleAdventurousSubtitle": "Movement and new experiences",
+  "styleAdventurousTitle": "Adventurous",
+  "styleCalmSubtitle": "A slower pace and lovely views",
+  "styleCalmTitle": "Calm & relaxing",
+  "styleCulturalSubtitle": "Stories, heritage, and arts",
+  "styleCulturalTitle": "Cultural",
+  "styleHiddenSubtitle": "Beyond the usual routes",
+  "styleHiddenTitle": "Hidden places",
+  "styleMixSubtitle": "A little of everything",
+  "styleMixTitle": "A varied mix",
+  "styleSocialSubtitle": "Meeting people and community",
+  "styleSocialTitle": "Social",
+  "switchLanguage": "العربية",
+  "@switchLanguage": {
+    "description": "Label of the button that switches to the OTHER language, written in that language."
+  },
+  "switchTheme": "Switch light / dark theme",
+  "timeDays": "{count}d",
+  "@timeDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHours": "{count}h",
+  "@timeHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMinutes": "{count}m",
+  "@timeMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeNow": "now",
+  "validationCode": "Enter the 4-digit code",
+  "validationEmail": "Enter a valid email address",
+  "validationIdentifier": "Enter a valid email or Egyptian phone number",
+  "validationName": "Enter your full name",
+  "validationPassword": "Use at least 8 characters, with letters and numbers",
+  "validationPasswordsMismatch": "Passwords don't match",
+  "validationRequired": "This field is required",
+  "validationTerms": "Please accept the terms to continue",
+  "welcomeBody": "Remarkable places, Nubian stories, and a local community ready to welcome you.",
+  "welcomeEyebrow": "WELCOME TO THE SOUTH",
+  "welcomeHaveAccount": "Have an account?",
+  "welcomeSignIn": "Sign in",
+  "welcomeTitle": "Discover the soul of Aswan",
+  "withFamilySubtitle": "Something for everyone",
+  "withFamilyTitle": "With family",
+  "withFriendsSubtitle": "Discovering together",
+  "withFriendsTitle": "With friends",
+  "withGroupSubtitle": "An organized trip",
+  "withGroupTitle": "With a group",
+  "withMayChangeSubtitle": "Plans are still forming",
+  "withMayChangeTitle": "It may change",
+  "withPartnerSubtitle": "Experiences for two",
+  "withPartnerTitle": "With a partner",
+  "withSoloSubtitle": "Exploring at my own pace",
+  "withSoloTitle": "Solo"
 }

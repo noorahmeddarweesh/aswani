@@ -1,24 +1,13 @@
 # Profile and settings
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 4 or later.
-**Owner:** _(add your name when you take this feature)_
+**Status:** Sprint 2, built (mock and remote).
+**Owner:** Person B (Culture & Community).
+**Contract:** API Contract v0.2, section "Person B — Profile & Settings".
 
-Profile, edit profile, saved places, settings (language, theme).
+**Screens:** Profile (photo with edit badge, stats, saved content, contributions), My saved content (View all, with Places / Stories filters), Settings (language, notifications, location, interests), Log out and Delete account sheets.
 
-## Where things go
+**Routes:** /profile, /profile/saved, /profile/settings, /profile/settings/interests, /profile/soon/:page (registered in `profile_routes.dart`).
 
-| Folder | Put here |
-| --- | --- |
-| `data/models/` | DTOs exactly like the API contract (`profile_*_dto.dart`) |
-| `data/datasources/` | `profile_remote_datasource.dart` (dio) and `profile_mock_datasource.dart` |
-| `data/mappers/` | DTO to Entity conversion, one place only |
-| `data/repositories/` | `profile_repository_impl.dart` |
-| `domain/entities/` | Clean app models (camelCase, immutable) |
-| `domain/repositories/` | Abstract `ProfileRepository`: the interface the UI depends on |
-| `presentation/screens/` | One file per screen |
-| `presentation/widgets/` | Widgets used only by this feature |
-| `presentation/viewmodels/` | One Riverpod Notifier per screen |
+**Endpoints:** GET /users/me/profile, PUT /users/me/avatar, GET /saved, GET and PATCH /users/settings, POST /users/me/deletion-request; GET /users/preferences (in personalization); POST /auth/logout (in auth).
 
-Delete the `.gitkeep` file in a folder when you add the first real file to it.
-Read `docs/ARCHITECTURE.md` before starting.
+**Not built yet (no design):** Edit profile, Change password, Email & contact, Privacy settings, Account security, Help center, Terms & privacy open a "Coming soon" page. A saved place opens nothing until Place details (Person A) exists.

@@ -1,0 +1,38 @@
+# ── Core Framework ────────────────────────────────────────────────────────────
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20          # required for Form / UploadFile
+
+# ── Database ───────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10           # sync driver for Supabase / standard PostgreSQL
+alembic==1.14.0
+
+# ── Settings & Validation ──────────────────────────────────────────────────────
+pydantic==2.10.2
+pydantic-settings==2.6.1
+
+# ── Security ───────────────────────────────────────────────────────────────────
+argon2-cffi==23.1.0               # Argon2 password hashing
+pyjwt[crypto]==2.10.1             # JWT (HS256 access + RS256 optional future)
+cryptography==44.0.0              # required by pyjwt[crypto]
+
+# ── File uploads & storage (Supabase Storage via REST) ────────────────────────
+httpx==0.28.0                     # async-capable HTTP client for Storage calls
+python-magic-bin==0.4.14 ; sys_platform == "win32"
+python-magic==0.4.27 ; sys_platform != "win32"
+
+# ── Rate limiting ──────────────────────────────────────────────────────────────
+slowapi==0.1.9
+limits==3.14.0
+
+# ── Timezone support ──────────────────────────────────────────────────────────
+tzdata==2024.2                    # IANA timezone data for `zoneinfo`
+
+# ── Email ─────────────────────────────────────────────────────────────────────
+# Standard library smtplib used; no extra dep needed unless using SendGrid/SES
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest==8.3.3
+pytest-asyncio==0.24.0
+httpx==0.28.0                     # also the async test client

@@ -1,7 +1,7 @@
 # Personalisation
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 2.
+**Status:** UI + mock data implemented (Sprint 1). Remote data source waits for `PUT /api/users/preferences`.
+**Planned for:** Sprint 1.
 **Owner:** _(add your name when you take this feature)_
 
 The 8-step setup: how the user connects with Aswan, purpose, stay length, interests, style, companions, needs, and app language.

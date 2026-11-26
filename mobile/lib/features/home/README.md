@@ -1,7 +1,7 @@
 # Home
 
-**Status:** placeholder, not implemented yet.
-**Planned for:** Sprint 3.
+**Status:** UI implemented with mock places (Sprint 1). Uses the places feature through `places_providers.dart` and `places/domain`.
+**Planned for:** Sprint 1.
 **Owner:** _(add your name when you take this feature)_
 
 Home screen: greeting, search, explore categories, curated places, stories teaser, local guides, community call-to-action.

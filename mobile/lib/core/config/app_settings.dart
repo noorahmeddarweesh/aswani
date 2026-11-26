@@ -1,37 +1,57 @@
-import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:async';
+import 'dart:ui' show PlatformDispatcher;
 
-/// App language. Arabic and English are supported; the user picks one in the
-/// last personalisation step and can change it in Settings.
-///
-/// TODO(sprint-2): persist the choice with shared_preferences.
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../storage/app_bootstrap.dart';
+import '../storage/key_value_store.dart';
+
+/// App language: Arabic or English. Saved, so the app reopens in the same
+/// language. On a first launch it follows the phone's language.
 class LocaleController extends Notifier<Locale> {
   static const Locale english = Locale('en');
   static const Locale arabic = Locale('ar');
 
   @override
-  Locale build() => english;
+  Locale build() {
+    final saved = ref.read(startupStateProvider).locale;
+    if (saved != null) return saved;
+    final device = PlatformDispatcher.instance.locale.languageCode;
+    return device == 'ar' ? arabic : english;
+  }
 
-  void setLocale(Locale locale) => state = locale;
+  void setLocale(Locale locale) {
+    state = locale;
+    unawaited(
+      ref
+          .read(prefsStoreProvider)
+          .write(StorageKeys.locale, locale.languageCode),
+    );
+  }
 
-  void toggle() => state = state == arabic ? english : arabic;
+  void toggle() => setLocale(state == arabic ? english : arabic);
 }
 
 final localeProvider = NotifierProvider<LocaleController, Locale>(
   LocaleController.new,
 );
 
-/// Light / dark / system theme.
-///
-/// TODO(sprint-2): persist the choice with shared_preferences.
+/// Light / dark / system theme. Saved like the language.
 class ThemeModeController extends Notifier<ThemeMode> {
   @override
-  ThemeMode build() => ThemeMode.light;
+  ThemeMode build() =>
+      ref.read(startupStateProvider).themeMode ?? ThemeMode.light;
 
-  void setMode(ThemeMode mode) => state = mode;
+  void setMode(ThemeMode mode) {
+    state = mode;
+    unawaited(
+      ref.read(prefsStoreProvider).write(StorageKeys.themeMode, mode.name),
+    );
+  }
 
   void toggle() =>
-      state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+      setMode(state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
 }
 
 final themeModeProvider = NotifierProvider<ThemeModeController, ThemeMode>(
